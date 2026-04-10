@@ -375,6 +375,10 @@ export function MomentForm({
       selectionListValues:
         Object.keys(selClean).length > 0 ? selClean : undefined,
       friendIds: friendIds.length ? friendIds : undefined,
+      placeTipsBlurb:
+        kind === 'restaurant' || kind === 'sight'
+          ? prev?.placeTipsBlurb
+          : undefined,
     }
 
     if (editId) updateMemory(memory)

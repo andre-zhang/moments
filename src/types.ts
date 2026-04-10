@@ -105,6 +105,8 @@ export interface Memory {
   selectionListValues?: Record<string, string>
   /** Up to 8 friend ids */
   friendIds?: string[]
+  /** Casual pre-visit ideas for restaurant/sight moments; generated on demand */
+  placeTipsBlurb?: string
 }
 
 export interface Destination {
@@ -116,4 +118,6 @@ export interface Destination {
 export interface Trip {
   id: string
   name: string
+  /** Short journal-style paragraph; generated on demand, stored with the trip */
+  recapBlurb?: string
 }

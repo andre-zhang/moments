@@ -1064,6 +1064,43 @@ a:hover {
   margin-bottom: 1.5rem;
 }
 
+.journal-trip-recap {
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md, 10px);
+  background: var(--surface-elevated, var(--surface));
+}
+
+.journal-trip-recap-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.journal-trip-recap-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.journal-trip-recap-hint {
+  margin: 0.4rem 0 0;
+}
+
+.journal-trip-recap-error {
+  margin-top: 0.5rem;
+}
+
+.journal-trip-recap-body {
+  margin: 0.75rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
 .journal-spoiler summary {
   cursor: pointer;
   font-size: 0.88rem;
@@ -2194,6 +2231,46 @@ a:hover {
   font-weight: 500;
 }
 
+.memory-place-tips {
+  padding: 0.85rem 0.95rem;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  background: rgb(0 0 0 / 3%);
+}
+
+.memory-place-tips-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.memory-place-tips-title {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.memory-place-tips-hint {
+  margin: 0.35rem 0 0;
+}
+
+.memory-place-tips-error {
+  margin-top: 0.45rem;
+}
+
+.memory-place-tips-body {
+  margin: 0.65rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  white-space: pre-line;
+  color: var(--text);
+}
+
 .memory-detail-body {
   margin: 0;
   font-size: 0.92rem;
@@ -2801,6 +2878,12 @@ a:hover {
 .form-hint {
   font-size: 0.88rem;
   color: var(--muted);
+}
+
+.form-error {
+  font-size: 0.88rem;
+  color: var(--danger, #b91c1c);
+  margin: 0.35rem 0 0;
 }
 
 .form-actions {

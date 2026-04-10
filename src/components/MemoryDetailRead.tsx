@@ -5,6 +5,7 @@ import { friendChipStyle, tagChipStyle } from '../lib/chipStyles'
 import { formatDurationMinutes } from '../lib/flightDuration'
 import { KIND_EMOJI, KIND_LABEL } from '../lib/kindMeta'
 import { IconDots, IconMapPin, IconPencil, IconTrash } from './Icons'
+import { MemoryPlaceTips } from './MemoryPlaceTips'
 import { PhotoStrip } from './PhotoStrip'
 
 function KindExtras({ memory }: { memory: Memory }) {
@@ -205,6 +206,10 @@ export function MemoryDetailRead({
       </div>
 
       <KindExtras memory={memory} />
+
+      {variant !== 'passport-stamp' ? (
+        <MemoryPlaceTips memory={memory} destinationName={destName} />
+      ) : null}
 
       <PhotoStrip memoryId={memory.id} />
       {memory.body ? <p className="memory-detail-body">{memory.body}</p> : null}
