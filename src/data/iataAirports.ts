@@ -1,0 +1,53 @@
+/** Approximate passenger-terminal coordinates for common IATA codes (route lines on map). */
+export const IATA_AIRPORTS: Record<string, { lat: number; lng: number }> = {
+  AMS: { lat: 52.3105, lng: 4.7683 },
+  ATL: { lat: 33.6407, lng: -84.4277 },
+  BCN: { lat: 41.2974, lng: 2.0833 },
+  BER: { lat: 52.3667, lng: 13.5033 },
+  BOM: { lat: 19.0896, lng: 72.8656 },
+  BOS: { lat: 42.3656, lng: -71.0096 },
+  CDG: { lat: 49.0097, lng: 2.5479 },
+  DEN: { lat: 39.8561, lng: -104.6737 },
+  DFW: { lat: 32.8998, lng: -97.0403 },
+  DOH: { lat: 25.2731, lng: 51.6081 },
+  DXB: { lat: 25.2532, lng: 55.3657 },
+  EWR: { lat: 40.6895, lng: -74.1745 },
+  FCO: { lat: 41.8003, lng: 12.2389 },
+  FRA: { lat: 50.0379, lng: 8.5622 },
+  GRU: { lat: -23.4356, lng: -46.4731 },
+  HKG: { lat: 22.308, lng: 113.9185 },
+  HND: { lat: 35.5494, lng: 139.7798 },
+  IAH: { lat: 29.9902, lng: -95.3368 },
+  ICN: { lat: 37.4602, lng: 126.4407 },
+  IST: { lat: 41.2753, lng: 28.7519 },
+  JFK: { lat: 40.6413, lng: -73.7781 },
+  LAS: { lat: 36.084, lng: -115.1537 },
+  LAX: { lat: 33.9416, lng: -118.4085 },
+  LGA: { lat: 40.7769, lng: -73.874 },
+  LHR: { lat: 51.47, lng: -0.4543 },
+  LIS: { lat: 38.7813, lng: -9.1357 },
+  MAD: { lat: 40.4839, lng: -3.568 },
+  MEX: { lat: 19.4363, lng: -99.0721 },
+  MIA: { lat: 25.7959, lng: -80.287 },
+  MSP: { lat: 44.882, lng: -93.2218 },
+  MUC: { lat: 48.3538, lng: 11.7861 },
+  NRT: { lat: 35.7647, lng: 140.3864 },
+  ORD: { lat: 41.9742, lng: -87.9073 },
+  PEK: { lat: 40.0799, lng: 116.6031 },
+  PHL: { lat: 39.8729, lng: -75.2437 },
+  PHX: { lat: 33.4342, lng: -112.0116 },
+  SEA: { lat: 47.4502, lng: -122.3088 },
+  SFO: { lat: 37.6213, lng: -122.379 },
+  SIN: { lat: 1.3644, lng: 103.9915 },
+  SYD: { lat: -33.9399, lng: 151.1753 },
+  TLV: { lat: 32.0114, lng: 34.8867 },
+  YVR: { lat: 49.1947, lng: -123.1792 },
+  YYZ: { lat: 43.6777, lng: -79.6248 },
+  ZRH: { lat: 47.4647, lng: 8.5492 },
+}
+
+export function lookupIata(code: string | undefined): { lat: number; lng: number } | null {
+  if (!code) return null
+  const k = code.trim().toUpperCase()
+  return IATA_AIRPORTS[k] ?? null
+}
