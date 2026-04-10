@@ -32,6 +32,15 @@ import {
   cloneDefaultCategories,
   DEFAULT_TAG_CATEGORIES,
 } from '../whimsy/tagLibrary'
+import {
+  cancelScheduledRemoteSave,
+  fetchRemoteState,
+  flushRemoteSaveNow,
+  markRemotePersistenceFailed,
+  remotePersistenceActive,
+  scheduleRemoteSave,
+} from '../lib/remotePersistence'
+import { isNeonSyncEnabled } from '../lib/syncEnv'
 import { getDemoPersistedState, seedIfEmpty } from './seed'
 
 const STORAGE_V2 = 'moments-travel-v2'
@@ -52,7 +61,7 @@ export interface TravelState {
   uiSoundEnabled: boolean
 }
 
-type PersistedState = Omit<TravelState, 'landedMemoryIds' | 'tripLinePlayKey'>
+export type PersistedState = Omit<TravelState, 'landedMemoryIds' | 'tripLinePlayKey'>
 
 type Action =
   | { type: 'hydrate'; payload: PersistedState }
@@ -233,7 +242,7 @@ function reducer(state: TravelState, action: Action): TravelState {
   }
 }
 
-function normalizePersisted(p: Partial<PersistedState>): PersistedState {
+export function normalizePersisted(p: Partial<PersistedState>): PersistedState {
   const rawCats =
     p.tagCategories?.length &&
     p.tagCategories.some((c) => (c.tags?.length ?? 0) > 0)
@@ -332,27 +341,78 @@ const TravelContext = createContext<Ctx | null>(null)
 
 export function TravelProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initial)
-  const hydrated = useRef(false)
+  const persistReady = useRef(false)
 
   useEffect(() => {
-    const persisted = loadPersisted()
-    if (persisted) {
-      dispatch({ type: 'hydrate', payload: persisted })
-    } else {
-      dispatch({ type: 'hydrate', payload: seedIfEmpty() })
+    let cancelled = false
+    async function go() {
+      if (isNeonSyncEnabled()) {
+        try {
+          const data = await fetchRemoteState()
+          if (cancelled) return
+          if (data != null && typeof data === 'object' && !Array.isArray(data)) {
+            dispatch({
+              type: 'hydrate',
+              payload: normalizePersisted(data as Partial<PersistedState>),
+            })
+          } else {
+            const fromLocal = loadPersisted()
+            if (fromLocal) {
+              dispatch({ type: 'hydrate', payload: fromLocal })
+              void flushRemoteSaveNow(fromLocal).catch(() => {
+                markRemotePersistenceFailed()
+              })
+            } else {
+              const seed = seedIfEmpty()
+              dispatch({ type: 'hydrate', payload: seed })
+              void flushRemoteSaveNow(seed).catch(() => {
+                markRemotePersistenceFailed()
+              })
+            }
+          }
+        } catch {
+          markRemotePersistenceFailed()
+          if (cancelled) return
+          const persisted = loadPersisted()
+          if (persisted) {
+            dispatch({ type: 'hydrate', payload: persisted })
+          } else {
+            dispatch({ type: 'hydrate', payload: seedIfEmpty() })
+          }
+        }
+      } else {
+        const persisted = loadPersisted()
+        if (persisted) {
+          dispatch({ type: 'hydrate', payload: persisted })
+        } else {
+          dispatch({ type: 'hydrate', payload: seedIfEmpty() })
+        }
+      }
+      if (!cancelled) {
+        persistReady.current = true
+      }
     }
-    hydrated.current = true
+    void go()
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   useEffect(() => {
-    if (!hydrated.current) return
+    if (!persistReady.current) return
     const { landedMemoryIds, tripLinePlayKey, ...rest } = state
     void landedMemoryIds
     void tripLinePlayKey
-    localStorage.setItem(STORAGE_V2, JSON.stringify(rest))
-    localStorage.removeItem(LEGACY_STORAGE_V2)
-    localStorage.removeItem(LEGACY_STORAGE_V1)
+    if (remotePersistenceActive()) {
+      scheduleRemoteSave(rest)
+    } else {
+      localStorage.setItem(STORAGE_V2, JSON.stringify(rest))
+      localStorage.removeItem(LEGACY_STORAGE_V2)
+      localStorage.removeItem(LEGACY_STORAGE_V1)
+    }
   }, [state])
+
+  useEffect(() => () => cancelScheduledRemoteSave(), [])
 
   useEffect(() => {
     if (state.landedMemoryIds.length === 0) return
@@ -456,15 +516,23 @@ export function TravelProvider({ children }: { children: ReactNode }) {
 
   const importBackup = useCallback((json: string) => {
     const p = JSON.parse(json) as Partial<PersistedState>
+    const payload = withTriplessInfrastructure(normalizePersisted(p))
     dispatch({
       type: 'importState',
-      payload: withTriplessInfrastructure(normalizePersisted(p)),
+      payload,
     })
+    if (remotePersistenceActive()) {
+      void flushRemoteSaveNow(payload).catch(() => markRemotePersistenceFailed())
+    }
   }, [])
 
   const resetToDemo = useCallback(async () => {
     await clearAllPhotos()
-    dispatch({ type: 'importState', payload: getDemoPersistedState() })
+    const demo = getDemoPersistedState()
+    dispatch({ type: 'importState', payload: demo })
+    if (remotePersistenceActive()) {
+      await flushRemoteSaveNow(demo).catch(() => markRemotePersistenceFailed())
+    }
   }, [])
 
   const value = useMemo(

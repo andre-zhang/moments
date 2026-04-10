@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App'
 import './index.css'
 import { migratePhotosDbFromLegacy } from './db/photosDb'
+import { isNeonSyncEnabled } from './lib/syncEnv'
 
 import L from 'leaflet'
 import iconRetina from 'leaflet/dist/images/marker-icon-2x.png'
@@ -15,10 +16,16 @@ L.Marker.prototype.options.icon = DefaultIcon
 
 const root = document.getElementById('root')!
 
-void migratePhotosDbFromLegacy().finally(() => {
+function mount() {
   createRoot(root).render(
     <StrictMode>
       <App />
     </StrictMode>
   )
-})
+}
+
+if (isNeonSyncEnabled()) {
+  mount()
+} else {
+  void migratePhotosDbFromLegacy().finally(mount)
+}
