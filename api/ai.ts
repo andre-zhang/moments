@@ -15,12 +15,48 @@ Only use facts and details the user actually gave you. If something is unknown, 
 
 const JSON_OUTPUT_RULES = `Reply with a single JSON object only. No markdown code fences. No text before or after the JSON.`
 
+/** Pull first balanced `{...}` object; respects double-quoted strings so `{` in copy does not break. */
+function sliceFirstJsonObject(text: string): string {
+  const s = text.indexOf('{')
+  if (s < 0) throw new Error('No JSON object in model output')
+  let i = s
+  let depth = 0
+  let inString = false
+  let escape = false
+  while (i < text.length) {
+    const c = text[i]!
+    if (inString) {
+      if (escape) escape = false
+      else if (c === '\\') escape = true
+      else if (c === '"') inString = false
+      i++
+      continue
+    }
+    if (c === '"') {
+      inString = true
+      i++
+      continue
+    }
+    if (c === '{') depth++
+    else if (c === '}') {
+      depth--
+      if (depth === 0) return text.slice(s, i + 1)
+    }
+    i++
+  }
+  throw new Error('Unclosed JSON object in model output')
+}
+
 function extractJsonObject(text: string): unknown {
-  let t = text.trim()
-  const fence = /^```(?:json)?\s*([\s\S]*?)```$/m
+  let t = text.replace(/^\uFEFF/, '').trim()
+  const fence = /```(?:json)?\s*([\s\S]*?)```/i
   const m = t.match(fence)
   if (m?.[1]) t = m[1].trim()
-  return JSON.parse(t) as unknown
+  try {
+    return JSON.parse(t) as unknown
+  } catch {
+    return JSON.parse(sliceFirstJsonObject(t)) as unknown
+  }
 }
 
 async function callClaude(

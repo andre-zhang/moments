@@ -81,10 +81,6 @@ export function PassportKindCurateBar({
       {error ? (
         <p className="form-error passport-kind-curate-error">{error}</p>
       ) : null}
-      <p className="form-hint passport-kind-curate-hint">
-        Reorders the list and rewrites the one-line blurbs. Optional line under
-        the title. One click per run.
-      </p>
     </div>
   )
 }

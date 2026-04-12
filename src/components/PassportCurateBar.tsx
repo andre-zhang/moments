@@ -134,10 +134,6 @@ export function PassportCurateBar() {
         {loading ? 'Curating…' : 'Curate stamps & year cards'}
       </button>
       {error ? <p className="form-error passport-curate-error">{error}</p> : null}
-      <p className="form-hint passport-curate-hint">
-        Rewrites stamp lines and year highlights in a plain voice. Runs only when
-        you click. Uses your Anthropic key.
-      </p>
     </div>
   )
 }
