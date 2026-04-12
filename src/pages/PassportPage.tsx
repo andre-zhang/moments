@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { DiscoverPanel } from '../components/DiscoverPanel'
+import { PassportCurateBar } from '../components/PassportCurateBar'
 import {
   PASSPORT_VIEW_STORAGE_KEY,
   readPassportViewMode,
@@ -47,6 +48,7 @@ export function PassportPage() {
                   Your story begins with the first moment.
                 </p>
               )}
+              <PassportCurateBar />
             </div>
             <div className="passport-view-toggle" role="group" aria-label="Passport display">
               <span className="passport-view-toggle-label" id="passport-view-label">

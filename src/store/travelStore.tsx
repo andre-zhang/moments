@@ -40,6 +40,11 @@ import {
   remotePersistenceActive,
   scheduleRemoteSave,
 } from '../lib/remotePersistence'
+import {
+  invalidatePassportStampsAndYears,
+  prunePassportCurations,
+  type PassportAiCurations,
+} from '../lib/passportCurations'
 import { isNeonSyncEnabled } from '../lib/syncEnv'
 import { getDemoPersistedState, seedIfEmpty } from './seed'
 
@@ -59,6 +64,7 @@ export interface TravelState {
   landedMemoryIds: string[]
   tripLinePlayKey: number
   uiSoundEnabled: boolean
+  passportCurations?: PassportAiCurations
 }
 
 export type PersistedState = Omit<TravelState, 'landedMemoryIds' | 'tripLinePlayKey'>
@@ -84,6 +90,7 @@ type Action =
   | { type: 'deleteDestination'; destinationId: string }
   | { type: 'importState'; payload: PersistedState }
   | { type: 'clearLandings' }
+  | { type: 'setPassportCurations'; payload: PassportAiCurations | undefined }
 
 const initial: TravelState = {
   trips: [],
@@ -96,6 +103,7 @@ const initial: TravelState = {
   landedMemoryIds: [],
   tripLinePlayKey: 0,
   uiSoundEnabled: true,
+  passportCurations: undefined,
 }
 
 function stripFriendFromMemories(memories: Memory[], friendId: string): Memory[] {
@@ -124,6 +132,7 @@ function reducer(state: TravelState, action: Action): TravelState {
         friends: merged.friends ?? [],
         uiSoundEnabled: merged.uiSoundEnabled ?? true,
         landedMemoryIds: [],
+        passportCurations: merged.passportCurations,
       }
     }
     case 'selectTrip':
@@ -151,6 +160,10 @@ function reducer(state: TravelState, action: Action): TravelState {
       return {
         ...state,
         memories: state.memories.filter((m) => m.id !== action.id),
+        passportCurations: prunePassportCurations(
+          state.passportCurations,
+          new Set([action.id])
+        ),
       }
     case 'addFriend':
       return { ...state, friends: [...state.friends, action.friend] }
@@ -184,15 +197,26 @@ function reducer(state: TravelState, action: Action): TravelState {
       }
     case 'deleteTrip':
       if (action.tripId === TRIPLESS_TRIP_ID) return state
-      return {
-        ...state,
-        trips: state.trips.filter((t) => t.id !== action.tripId),
-        destinations: state.destinations.filter(
-          (d) => d.tripId !== action.tripId
-        ),
-        memories: state.memories.filter((m) => m.tripId !== action.tripId),
-        selectedTripId:
-          state.selectedTripId === action.tripId ? null : state.selectedTripId,
+      {
+        const removed = new Set(
+          state.memories
+            .filter((m) => m.tripId === action.tripId)
+            .map((m) => m.id)
+        )
+        return {
+          ...state,
+          trips: state.trips.filter((t) => t.id !== action.tripId),
+          destinations: state.destinations.filter(
+            (d) => d.tripId !== action.tripId
+          ),
+          memories: state.memories.filter((m) => m.tripId !== action.tripId),
+          selectedTripId:
+            state.selectedTripId === action.tripId ? null : state.selectedTripId,
+          passportCurations: invalidatePassportStampsAndYears(
+            state.passportCurations,
+            removed
+          ),
+        }
       }
     case 'addDestination':
       return {
@@ -208,17 +232,30 @@ function reducer(state: TravelState, action: Action): TravelState {
       }
     case 'deleteDestination':
       if (action.destinationId === TRIPLESS_DEFAULT_DEST_ID) return state
-      return {
-        ...state,
-        destinations: state.destinations.filter(
-          (d) => d.id !== action.destinationId
-        ),
-        memories: state.memories.filter(
-          (m) => m.destinationId !== action.destinationId
-        ),
+      {
+        const removed = new Set(
+          state.memories
+            .filter((m) => m.destinationId === action.destinationId)
+            .map((m) => m.id)
+        )
+        return {
+          ...state,
+          destinations: state.destinations.filter(
+            (d) => d.id !== action.destinationId
+          ),
+          memories: state.memories.filter(
+            (m) => m.destinationId !== action.destinationId
+          ),
+          passportCurations: invalidatePassportStampsAndYears(
+            state.passportCurations,
+            removed
+          ),
+        }
       }
     case 'importState': {
-      const merged = withTriplessInfrastructure(action.payload)
+      const merged = withTriplessInfrastructure(
+        normalizePersisted(action.payload)
+      )
       return {
         ...state,
         ...merged,
@@ -233,10 +270,13 @@ function reducer(state: TravelState, action: Action): TravelState {
         friends: merged.friends ?? [],
         uiSoundEnabled: merged.uiSoundEnabled ?? true,
         landedMemoryIds: [],
+        passportCurations: merged.passportCurations,
       }
     }
     case 'clearLandings':
       return { ...state, landedMemoryIds: [] }
+    case 'setPassportCurations':
+      return { ...state, passportCurations: action.payload }
     default:
       return state
   }
@@ -270,6 +310,7 @@ export function normalizePersisted(p: Partial<PersistedState>): PersistedState {
     selectionLists: mergeSelectionLists(p.selectionLists),
     selectedTripId: p.selectedTripId ?? null,
     uiSoundEnabled: p.uiSoundEnabled ?? true,
+    passportCurations: p.passportCurations,
   }
 }
 
@@ -335,6 +376,7 @@ interface Ctx {
   importBackup: (json: string) => void
   exportBackup: () => string
   resetToDemo: () => Promise<void>
+  setPassportCurations: (p: PassportAiCurations | undefined) => void
 }
 
 const TravelContext = createContext<Ctx | null>(null)
@@ -535,6 +577,13 @@ export function TravelProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
+  const setPassportCurations = useCallback(
+    (payload: PassportAiCurations | undefined) => {
+      dispatch({ type: 'setPassportCurations', payload })
+    },
+    []
+  )
+
   const value = useMemo(
     () => ({
       state,
@@ -558,6 +607,7 @@ export function TravelProvider({ children }: { children: ReactNode }) {
       importBackup,
       exportBackup,
       resetToDemo,
+      setPassportCurations,
     }),
     [
       state,
@@ -581,6 +631,7 @@ export function TravelProvider({ children }: { children: ReactNode }) {
       importBackup,
       exportBackup,
       resetToDemo,
+      setPassportCurations,
     ]
   )
 

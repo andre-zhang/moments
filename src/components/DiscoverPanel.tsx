@@ -6,12 +6,14 @@ import type { Memory } from '../types'
 import { KIND_EMOJI } from '../lib/kindMeta'
 import type { PassportViewMode } from '../lib/passportViewMode'
 import { computeModeStats, computeYearInReview } from '../lib/stats'
+import { mergeYearInReviewCurated } from '../lib/passportCurations'
 import {
   computeStamps,
   STAMP_GROUP_LABEL,
   STAMP_GROUP_ORDER,
   type StampGroup,
 } from '../lib/stamps'
+import { useTravel } from '../store/travelStore'
 
 export type { PassportViewMode } from '../lib/passportViewMode'
 
@@ -33,6 +35,8 @@ export function DiscoverPanel({
   memories: Memory[]
   viewMode: PassportViewMode
 }) {
+  const passportCurations = useTravel().state.passportCurations
+
   const years = useMemo(() => yearOptions(memories), [memories])
   const [year, setYear] = useState(() => years[0] ?? new Date().getFullYear())
 
@@ -41,10 +45,20 @@ export function DiscoverPanel({
   }, [years, year])
 
   const cards = useMemo(
-    () => computeYearInReview(memories, year),
-    [memories, year]
+    () =>
+      mergeYearInReviewCurated(
+        computeYearInReview(memories, year),
+        passportCurations?.yearCards?.[year]
+      ),
+    [memories, year, passportCurations?.yearCards]
   )
-  const stamps = useMemo(() => computeStamps(memories), [memories])
+  const stamps = useMemo(() => {
+    const raw = computeStamps(memories)
+    return raw.map((s) => ({
+      ...s,
+      detail: passportCurations?.stampDetails?.[s.id] ?? s.detail,
+    }))
+  }, [memories, passportCurations?.stampDetails])
   const stampsByGroup = useMemo(() => {
     const m = new Map<StampGroup, typeof stamps>()
     for (const g of STAMP_GROUP_ORDER) m.set(g, [])

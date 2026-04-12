@@ -5,6 +5,7 @@ import {
   readPassportViewMode,
   type PassportViewMode,
 } from '../lib/passportViewMode'
+import { PassportKindCurateBar } from '../components/PassportKindCurateBar'
 import { computeInsightsForKind } from '../lib/passportKindInsights'
 import { passportMomentSummary } from '../lib/passportSummary'
 import type { MemoryKind } from '../types'
@@ -30,17 +31,40 @@ export function PassportKindPage() {
   const [viewMode] = useState<PassportViewMode>(() => readPassportViewMode())
   const book = viewMode === 'book'
 
+  const rawFiltered = useMemo(() => {
+    if (!kind) return []
+    return state.memories.filter((m) => m.kind === kind)
+  }, [state.memories, kind])
+
+  const momentsNewestFirst = useMemo(
+    () =>
+      [...rawFiltered].sort(
+        (a, b) => Date.parse(b.visitedAt) - Date.parse(a.visitedAt)
+      ),
+    [rawFiltered]
+  )
+
   const list = useMemo(() => {
     if (!kind) return []
-    return [...state.memories]
-      .filter((m) => m.kind === kind)
-      .sort((a, b) => Date.parse(b.visitedAt) - Date.parse(a.visitedAt))
-  }, [state.memories, kind])
+    const order = state.passportCurations?.kindMomentOrder?.[kind]
+    if (!order?.length) {
+      return momentsNewestFirst
+    }
+    const idx = new Map(order.map((id, i) => [id, i]))
+    return [...rawFiltered].sort((a, b) => {
+      const ia = idx.get(a.id)
+      const ib = idx.get(b.id)
+      if (ia != null && ib != null && ia !== ib) return ia - ib
+      if (ia != null && ib == null) return -1
+      if (ia == null && ib != null) return 1
+      return Date.parse(b.visitedAt) - Date.parse(a.visitedAt)
+    })
+  }, [rawFiltered, kind, state.passportCurations?.kindMomentOrder])
 
   const insightCards = useMemo(() => {
     if (!kind) return []
-    return computeInsightsForKind(kind, list, state.memories)
-  }, [kind, list, state.memories])
+    return computeInsightsForKind(kind, rawFiltered, state.memories)
+  }, [kind, rawFiltered, state.memories])
 
   if (!kind) {
     return (
@@ -55,6 +79,9 @@ export function PassportKindPage() {
 
   const tripName = (id: string) =>
     state.trips.find((t) => t.id === id)?.name ?? id
+
+  const destName = (id: string) =>
+    state.destinations.find((d) => d.id === id)?.name ?? id
 
   return (
     <div
@@ -75,9 +102,20 @@ export function PassportKindPage() {
         <h1 className={`page-title${book ? ' passport-title' : ''}`}>
           {KIND_LABEL[kind]}
         </h1>
+        {state.passportCurations?.kindBlurbs?.[kind]?.trim() ? (
+          <p className="passport-kind-ai-blurb">
+            {state.passportCurations.kindBlurbs[kind]}
+          </p>
+        ) : null}
         <p className={book ? 'passport-kind-subtitle' : 'page-subtitle'}>
           {list.length} moment{list.length === 1 ? '' : 's'}
         </p>
+        <PassportKindCurateBar
+          kind={kind}
+          momentsNewestFirst={momentsNewestFirst}
+          tripName={tripName}
+          destName={destName}
+        />
       </header>
 
       {insightCards.length > 0 ? (
@@ -123,7 +161,8 @@ export function PassportKindPage() {
               >
                 <span className="passport-kind-row-title">{m.title}</span>
                 <span className="passport-kind-row-sub">
-                  {passportMomentSummary(m)}
+                  {state.passportCurations?.momentPassportLines?.[m.id] ??
+                    passportMomentSummary(m)}
                 </span>
                 <span className="passport-kind-row-meta">
                   {new Date(m.visitedAt).toLocaleDateString(undefined, {
