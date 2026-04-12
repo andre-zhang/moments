@@ -1,8 +1,6 @@
 import { Pool } from '@neondatabase/serverless'
 
-export interface VercelRequestLike {
-  headers: { [key: string]: string | string[] | undefined }
-}
+export { requireAuth, type VercelRequestLike } from './syncAuth'
 
 let pool: Pool | null = null
 
@@ -50,11 +48,3 @@ export async function ensureSchema(): Promise<void> {
 const STATE_ROW_ID = 'default'
 
 export { STATE_ROW_ID }
-
-export function requireAuth(req: VercelRequestLike): boolean {
-  const secret = process.env.MOMENTS_SYNC_SECRET
-  if (!secret || secret.length < 8) return false
-  const h = req.headers['x-moments-sync-secret']
-  const v = Array.isArray(h) ? h[0] : h
-  return v === secret
-}

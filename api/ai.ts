@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { requireAuth, type VercelRequestLike } from './lib/momentsDb'
+import { requireAuth } from './lib/syncAuth'
 
 const ANTHROPIC_VERSION = '2023-06-01'
 
@@ -189,29 +189,31 @@ Write exactly 2 or 3 lines. Each line must start with "- " (hyphen and space). S
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST')
-    return res.status(405).json({ error: 'Method not allowed' })
-  }
-
-  if (!requireAuth(req as VercelRequestLike)) {
-    return res.status(401).json({ error: 'Unauthorized' })
-  }
-
-  if (!process.env.ANTHROPIC_API_KEY?.trim()) {
-    return res.status(503).json({ error: 'AI is not configured (ANTHROPIC_API_KEY)' })
-  }
-
-  let body: unknown
   try {
-    body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-  } catch {
-    return res.status(400).json({ error: 'Invalid JSON body' })
-  }
+    if (req.method !== 'POST') {
+      res.setHeader('Allow', 'POST')
+      return res.status(405).json({ error: 'Method not allowed' })
+    }
 
-  const b = body as { action?: string }
+    if (!requireAuth(req)) {
+      return res.status(401).json({ error: 'Unauthorized' })
+    }
 
-  try {
+    if (!process.env.ANTHROPIC_API_KEY?.trim()) {
+      return res
+        .status(503)
+        .json({ error: 'AI is not configured (ANTHROPIC_API_KEY)' })
+    }
+
+    let body: unknown
+    try {
+      body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    } catch {
+      return res.status(400).json({ error: 'Invalid JSON body' })
+    }
+
+    const b = body as { action?: string }
+
     if (b.action === 'trip_recap') {
       const tripName = (b as { tripName?: string }).tripName?.trim()
       const moments = (b as { moments?: MomentLine[] }).moments
@@ -431,6 +433,8 @@ Rules:
   } catch (e) {
     console.error(e)
     const msg = e instanceof Error ? e.message : 'AI request failed'
-    return res.status(500).json({ error: msg })
+    if (!res.headersSent) {
+      return res.status(500).json({ error: msg })
+    }
   }
 }
