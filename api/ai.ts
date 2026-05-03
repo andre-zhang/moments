@@ -102,43 +102,6 @@ async function callClaude(
   return text.trim()
 }
 
-type MomentLine = {
-  visitedAt: string
-  kind: string
-  title: string
-  destinationName: string
-  placeLabel?: string
-  bodySnippet?: string
-  tags?: string[]
-}
-
-function buildTripRecapUserPrompt(
-  tripName: string,
-  moments: MomentLine[]
-): string {
-  const lines = moments
-    .map((m) => {
-      const bits = [
-        m.visitedAt,
-        m.kind,
-        `"${m.title}"`,
-        `@ ${m.destinationName}`,
-      ]
-      if (m.placeLabel) bits.push(`place: ${m.placeLabel}`)
-      if (m.bodySnippet) bits.push(`note: ${m.bodySnippet}`)
-      if (m.tags?.length) bits.push(`tags: ${m.tags.join(', ')}`)
-      return `- ${bits.join(' · ')}`
-    })
-    .join('\n')
-
-  return `Trip name: ${tripName}
-
-Moments on this trip (most recent first):
-${lines || '(none listed)'}
-
-Write ONE short paragraph, 3–6 sentences, as a personal memory of the trip. Sound like someone's journal, not a brochure. No bullet points in your answer. No title line. Plain text only.`
-}
-
 function buildPlaceTipsUserPrompt(payload: {
   kind: 'restaurant' | 'sight'
   title: string
@@ -213,17 +176,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const b = body as { action?: string }
-
-    if (b.action === 'trip_recap') {
-      const tripName = (b as { tripName?: string }).tripName?.trim()
-      const moments = (b as { moments?: MomentLine[] }).moments
-      if (!tripName || !Array.isArray(moments)) {
-        return res.status(400).json({ error: 'tripName and moments[] required' })
-      }
-      const user = buildTripRecapUserPrompt(tripName, moments)
-      const text = await callClaude(TONE_SYSTEM, user, 400)
-      return res.status(200).json({ text })
-    }
 
     if (b.action === 'place_tips') {
       const p = b as {

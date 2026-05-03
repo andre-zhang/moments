@@ -513,8 +513,7 @@ export function MomentForm({
       <section className="form-section">
         <h2 className="form-section-title">Location on map</h2>
         <p className="form-hint location-map-hint">
-          Drag the pin or click the map to set where this moment happened. Search
-          above jumps the pin; country and region update from the pin automatically.
+          Drag the pin or click the map. Search above moves the pin.
         </p>
         <LocationMapPicker
           lat={pinLat}
@@ -599,10 +598,6 @@ export function MomentForm({
         <div className="moment-form-more-body">
           <section className="moment-form-more-section">
             <h3 className="moment-form-more-heading">Place label &amp; pin</h3>
-            <p className="moment-form-more-lede">
-              Optional caption and custom emoji for the map. Photos are above in{' '}
-              <strong>Photos</strong>.
-            </p>
             <label>
               Place label
               <input

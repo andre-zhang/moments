@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PageHeader } from '../components/PageHeader'
 import { PhotoStrip } from '../components/PhotoStrip'
-import { TripRecapSection } from '../components/TripRecapSection'
 import { SelectWithPlus } from '../components/SelectWithPlus'
 import { IconDots, IconPencil, IconTrash } from '../components/Icons'
 import {
@@ -176,10 +175,6 @@ export function JournalPage() {
           </div>
         }
       />
-
-      {selectedTripId && selectedTripId !== TRIPLESS_TRIP_ID ? (
-        <TripRecapSection tripId={selectedTripId} />
-      ) : null}
 
       <details className="journal-spoiler">
         <summary>On this date, other years</summary>

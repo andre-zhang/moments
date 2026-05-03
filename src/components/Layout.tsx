@@ -1,53 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import { IconDots } from './Icons'
 import { PlusCreateMenu } from './PlusCreateMenu'
-import { useTravel } from '../store/travelStore'
 
 export function Layout() {
-  const { importBackup, exportBackup } = useTravel()
-  const navigate = useNavigate()
-  const fileRef = useRef<HTMLInputElement>(null)
   const menusRef = useRef<HTMLDivElement>(null)
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     if (!menuOpen) return
     const close = (e: MouseEvent) => {
-      if (menusRef.current?.contains(e.target as Node)) return
-      setMenuOpen(false)
+      if (!menusRef.current?.contains(e.target as Node)) setMenuOpen(false)
     }
     document.addEventListener('mousedown', close)
     return () => document.removeEventListener('mousedown', close)
   }, [menuOpen])
-
-  const downloadBackup = () => {
-    const blob = new Blob([exportBackup()], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `moments-backup-${new Date().toISOString().slice(0, 10)}.json`
-    a.click()
-    URL.revokeObjectURL(url)
-    setMenuOpen(false)
-  }
-
-  const onImportFile: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const f = e.target.files?.[0]
-    if (!f) return
-    const reader = new FileReader()
-    reader.onload = () => {
-      try {
-        importBackup(String(reader.result))
-        setMenuOpen(false)
-        navigate('/')
-      } catch {
-        alert('Could not import that file.')
-      }
-    }
-    reader.readAsText(f)
-    e.target.value = ''
-  }
 
   return (
     <div className="shell">
@@ -73,10 +40,10 @@ export function Layout() {
             Map
           </NavLink>
           <NavLink
-            to="/places"
+            to="/storybook"
             className={({ isActive }) => (isActive ? 'active' : '')}
           >
-            Places &amp; people
+            Storybook
           </NavLink>
         </nav>
 
@@ -98,35 +65,24 @@ export function Layout() {
             </button>
             {menuOpen ? (
               <div className="dropdown dropdown--wide" role="menu">
-                <div className="dropdown-section-label">More</div>
-                <Link to="/storybook" role="menuitem" onClick={() => setMenuOpen(false)}>
-                  Storybook
+                <Link
+                  to="/places"
+                  role="menuitem"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Places &amp; people
                 </Link>
-                <Link to="/settings" role="menuitem" onClick={() => setMenuOpen(false)}>
+                <Link
+                  to="/settings"
+                  role="menuitem"
+                  onClick={() => setMenuOpen(false)}
+                >
                   Settings
                 </Link>
-                <div className="dropdown-section-label">Data</div>
-                <button type="button" role="menuitem" onClick={downloadBackup}>
-                  Export backup
-                </button>
-                <button
-                  type="button"
-                  role="menuitem"
-                  onClick={() => fileRef.current?.click()}
-                >
-                  Import backup
-                </button>
               </div>
             ) : null}
           </div>
         </div>
-        <input
-          ref={fileRef}
-          type="file"
-          accept="application/json,.json"
-          className="sr-only"
-          onChange={onImportFile}
-        />
       </header>
 
       <div className="shell-body">
@@ -134,7 +90,7 @@ export function Layout() {
       </div>
 
       <footer className="site-footer">
-        <p>Local only unless you export.</p>
+        <p>Synced in the cloud.</p>
       </footer>
     </div>
   )

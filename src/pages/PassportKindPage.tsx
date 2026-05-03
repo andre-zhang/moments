@@ -144,10 +144,8 @@ export function PassportKindPage() {
 
       {list.length === 0 ? (
         <p className="form-hint">
-          Nothing here yet. Use <strong>+</strong> in the header for a{' '}
-          <Link to="/add/trip">trip</Link> or <Link to="/add/moment">moment</Link>
-          . Trips, places, and friends live under{' '}
-          <Link to="/places">Places &amp; people</Link>.
+          Nothing here yet. Add a <Link to="/add/moment">moment</Link> or{' '}
+          <Link to="/places">places &amp; people</Link>.
         </p>
       ) : (
         <ul

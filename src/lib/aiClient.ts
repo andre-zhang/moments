@@ -16,40 +16,6 @@ async function readJsonBody(r: Response): Promise<unknown> {
   }
 }
 
-export type TripRecapMomentPayload = {
-  visitedAt: string
-  kind: string
-  title: string
-  destinationName: string
-  placeLabel?: string
-  bodySnippet?: string
-  tags?: string[]
-}
-
-export async function requestTripRecap(
-  tripName: string,
-  moments: TripRecapMomentPayload[]
-): Promise<string> {
-  const r = await fetch(apiUrl('/api/ai'), {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...syncHeaders(),
-    },
-    body: JSON.stringify({
-      action: 'trip_recap',
-      tripName,
-      moments,
-    }),
-  })
-  const j = (await readJsonBody(r)) as { text?: string; error?: string }
-  if (!r.ok) throw new Error(j.error || `Request failed (${r.status})`)
-  if (typeof j.text !== 'string' || !j.text.trim()) {
-    throw new Error('Empty response')
-  }
-  return j.text.trim()
-}
-
 export async function requestPlaceTips(payload: {
   kind: 'restaurant' | 'sight'
   title: string

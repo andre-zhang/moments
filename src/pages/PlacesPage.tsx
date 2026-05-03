@@ -93,15 +93,7 @@ export function PlacesPage() {
 
   return (
     <div className="page places-page">
-      <PageHeader
-        className="places-hero"
-        title="Places & people"
-        subtitle={
-          <p className="page-subtitle places-page-lede">
-            Use the pencil on each section to add trips, places, and friends.
-          </p>
-        }
-      />
+      <PageHeader className="places-hero" title="Places & people" />
 
       <div className="places-merged-stack">
         <section className="places-merged-panel">

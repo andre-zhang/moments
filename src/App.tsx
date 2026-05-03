@@ -21,9 +21,9 @@ export default function App() {
     <BrowserRouter>
       <TravelProvider>
         <Routes>
-          <Route path="storybook" element={<StorybookPage />} />
           <Route element={<Layout />}>
             <Route index element={<JournalPage />} />
+            <Route path="storybook" element={<StorybookPage />} />
             <Route path="map" element={<MapPage />} />
             <Route path="passport" element={<PassportPage />} />
             <Route path="passport/:kind" element={<PassportKindPage />} />

@@ -52,7 +52,7 @@ export function DestinationDetailPage() {
                 <Link
                   to={`/storybook?trip=${encodeURIComponent(dest.tripId)}&replay=1`}
                 >
-                  Replay this trip
+                  Storybook
                 </Link>
               </>
             ) : null}
@@ -64,8 +64,7 @@ export function DestinationDetailPage() {
 
       {memories.length === 0 ? (
         <p className="form-hint">
-          No moments here yet.{' '}
-          <Link to="/add/moment">Add a moment</Link> and pick this place.
+          <Link to="/add/moment">Add a moment</Link> for this place.
         </p>
       ) : (
         <ul className="destination-moment-list">

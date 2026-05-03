@@ -249,8 +249,7 @@ export function SettingsPage() {
       <section className="panel-block" id="choice-lists">
         <h2 className="panel-block-title">Choice lists</h2>
         <p className="form-hint settings-tag-intro">
-          Single-choice chips on moments (e.g. cuisine on restaurants). Reload draft
-          uses the same button as tags above.
+          Single choice per list on moments (same save as tags).
         </p>
         <div className="settings-cats">
           {lists.map((list) => (

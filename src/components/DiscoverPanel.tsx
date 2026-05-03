@@ -101,9 +101,7 @@ export function DiscoverPanel({
           <div className="yir-cards">
             {cards.length === 0 ? (
               <p className="discover-muted passport-muted-box">
-                {book
-                  ? 'No moments in this year yet — your page awaits ink.'
-                  : 'No moments in this year yet.'}
+                No moments in this year yet.
               </p>
             ) : (
               cards.map((c) => (
@@ -124,16 +122,9 @@ export function DiscoverPanel({
             />
             <h2>Stamps</h2>
           </div>
-          {book ? (
-            <p className="passport-pane-lede">
-              A handful of highlights — your start, coverage, and where you’ve been on the map.
-            </p>
-          ) : null}
           {stamps.length === 0 ? (
             <p className="discover-muted passport-muted-box">
-              {book
-                ? 'Add moments to see your passport milestones here.'
-                : 'Add moments to see trip and place summaries here.'}
+              Add moments to fill this page.
             </p>
           ) : book ? (
             <div className="stamp-groups">
@@ -193,15 +184,6 @@ export function DiscoverPanel({
           />
           <h2>Entries by kind</h2>
         </div>
-        {book ? (
-          <p className="passport-pane-lede">
-            Visa-style spreads — tap a category to open your moments.
-          </p>
-        ) : (
-          <p className="passport-pane-lede passport-pane-lede--simple">
-            Open a category to browse moments and stats.
-          </p>
-        )}
         <div
           className={`mode-grid passport-mode-grid${book ? ' passport-mode-grid--book' : ''}`}
         >

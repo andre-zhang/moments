@@ -228,9 +228,6 @@ function StorybookMemoryVeil({
           </div>
         ) : null}
 
-        <p className="storybook-veil-footnote" aria-hidden>
-          A glimpse only — the path continues when you leave this veil.
-        </p>
       </div>
     </div>
   )
@@ -262,10 +259,10 @@ function MomentTeaser({
           <p className="storybook-mystic-moment__body">{memory.body}</p>
         ) : (
           <p className="storybook-mystic-moment__body storybook-mystic-moment__body--muted">
-            Tap to open this memory in the story.
+            No note yet.
           </p>
         )}
-        <span className="storybook-mystic-moment__hint">Open memory ✦</span>
+        <span className="storybook-mystic-moment__hint">Open</span>
       </button>
     </article>
   )
@@ -297,7 +294,7 @@ export function StorybookTourView({
   }, [steps])
 
   useEffect(() => {
-    const t = window.setTimeout(() => setPhase('slides'), 3400)
+    const t = window.setTimeout(() => setPhase('slides'), 2800)
     return () => window.clearTimeout(t)
   }, [])
 
@@ -351,10 +348,8 @@ export function StorybookTourView({
           <p className="storybook-intro-sigil" aria-hidden>
             ✦
           </p>
-          <h1 className="storybook-intro-title">Moments</h1>
-          <p className="storybook-intro-epigraph">
-            The thread of days, rewoven in starlight.
-          </p>
+          <h1 className="storybook-intro-title">Storybook</h1>
+          <p className="storybook-intro-epigraph">Once upon your travels…</p>
         </div>
       ) : (
         <div className="storybook-slides storybook-slides--split">
@@ -378,7 +373,7 @@ export function StorybookTourView({
               <ZoomControl position="bottomright" />
               <TileLayer
                 attribution='&copy; <a href="https://carto.com/">CARTO</a>'
-                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 subdomains="abcd"
                 maxZoom={20}
               />
@@ -386,9 +381,9 @@ export function StorybookTourView({
                 <Polyline
                   positions={linePositions}
                   pathOptions={{
-                    color: '#c4b5fd',
+                    color: '#c9a227',
                     weight: 3,
-                    opacity: 0.65,
+                    opacity: 0.75,
                     dashArray: '10 12',
                     lineCap: 'round',
                     lineJoin: 'round',

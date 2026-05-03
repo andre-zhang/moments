@@ -56,9 +56,7 @@ export function PlusCreateMenu({
             onClick={() => setOpen(false)}
           >
             <span className="plus-create__item-title">+ Trip</span>
-            <span className="plus-create__item-desc">
-              New trip — then add places under Places &amp; people
-            </span>
+            <span className="plus-create__item-desc">New trip</span>
           </Link>
           <Link
             to="/add/moment"
@@ -67,9 +65,7 @@ export function PlusCreateMenu({
             onClick={() => setOpen(false)}
           >
             <span className="plus-create__item-title">+ Moment</span>
-            <span className="plus-create__item-desc">
-              Meal, stay, flight, sight, or note on the map
-            </span>
+            <span className="plus-create__item-desc">New moment</span>
           </Link>
         </div>
       ) : null}

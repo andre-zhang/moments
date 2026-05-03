@@ -73,8 +73,7 @@ export function MemoryPlaceTips({
         </button>
       </div>
       <p className="form-hint memory-place-tips-hint">
-        Rough suggestions from what you logged — not facts. Only sent when you
-        click.
+        Draft ideas from your notes — not facts. Runs when you click.
       </p>
       {error ? <p className="form-error memory-place-tips-error">{error}</p> : null}
       {memory.placeTipsBlurb ? (

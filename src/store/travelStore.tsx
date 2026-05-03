@@ -373,8 +373,6 @@ interface Ctx {
   addDestination: (d: Destination) => void
   updateDestination: (d: Destination) => void
   deleteDestination: (destinationId: string) => void
-  importBackup: (json: string) => void
-  exportBackup: () => string
   resetToDemo: () => Promise<void>
   setPassportCurations: (p: PassportAiCurations | undefined) => void
 }
@@ -549,25 +547,6 @@ export function TravelProvider({ children }: { children: ReactNode }) {
     [state.memories]
   )
 
-  const exportBackup = useCallback(() => {
-    const { landedMemoryIds, tripLinePlayKey, ...rest } = state
-    void landedMemoryIds
-    void tripLinePlayKey
-    return JSON.stringify(rest, null, 2)
-  }, [state])
-
-  const importBackup = useCallback((json: string) => {
-    const p = JSON.parse(json) as Partial<PersistedState>
-    const payload = withTriplessInfrastructure(normalizePersisted(p))
-    dispatch({
-      type: 'importState',
-      payload,
-    })
-    if (remotePersistenceActive()) {
-      void flushRemoteSaveNow(payload).catch(() => markRemotePersistenceFailed())
-    }
-  }, [])
-
   const resetToDemo = useCallback(async () => {
     await clearAllPhotos()
     const demo = getDemoPersistedState()
@@ -604,8 +583,6 @@ export function TravelProvider({ children }: { children: ReactNode }) {
       addDestination,
       updateDestination,
       deleteDestination,
-      importBackup,
-      exportBackup,
       resetToDemo,
       setPassportCurations,
     }),
@@ -628,8 +605,6 @@ export function TravelProvider({ children }: { children: ReactNode }) {
       addDestination,
       updateDestination,
       deleteDestination,
-      importBackup,
-      exportBackup,
       resetToDemo,
       setPassportCurations,
     ]

@@ -72,17 +72,11 @@ export function FriendDetailPage() {
             <span>{friend.name}</span>
           </span>
         }
-        subtitle={
-          <p className="page-subtitle">
-            {total} moment{total === 1 ? '' : 's'} across {sortedTrips.length} trip
-            {sortedTrips.length === 1 ? '' : 's'}.
-          </p>
-        }
       />
 
       {total === 0 ? (
         <p className="form-hint">
-          Tag them on a moment under <Link to="/add/moment">Add moment</Link>.
+          Tag them when you <Link to="/add/moment">add a moment</Link>.
         </p>
       ) : (
         <div className="friend-trip-sections">

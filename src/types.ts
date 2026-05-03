@@ -118,6 +118,4 @@ export interface Destination {
 export interface Trip {
   id: string
   name: string
-  /** Short journal-style paragraph; generated on demand, stored with the trip */
-  recapBlurb?: string
 }
