@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
+import { PageHeader } from '../components/PageHeader'
 import { StorybookTourView } from '../components/storybook/StorybookTourView'
 import {
   buildStorybookSteps,
@@ -103,12 +104,15 @@ export function StorybookPage() {
 
   return (
     <div className="page storybook-picker-page">
-      <header className="storybook-picker-head">
-        <Link to="/" className="storybook-back">
-          ← Journal
-        </Link>
-        <h1 className="page-title">Storybook</h1>
-      </header>
+      <PageHeader
+        className="storybook-picker-head page-header-shell--plain"
+        preTitle={
+          <Link to="/" className="storybook-back">
+            ← Journal
+          </Link>
+        }
+        title="Storybook"
+      />
 
       <div className="storybook-picker-card">
         <div className="storybook-mode-row">

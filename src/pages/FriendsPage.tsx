@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { PageHeader } from '../components/PageHeader'
 import { parseHex } from '../lib/colorAccent'
 import { friendChipStyle } from '../lib/chipStyles'
 import { useTravel } from '../store/travelStore'
@@ -25,9 +26,7 @@ export function FriendsPage() {
 
   return (
     <div className="page friends-page">
-      <header className="page-hero">
-        <h1 className="page-title">Friends</h1>
-      </header>
+      <PageHeader title="Friends" />
 
       <section className="panel-block">
         <h2 className="panel-block-title">Add</h2>

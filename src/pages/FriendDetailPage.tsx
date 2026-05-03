@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { PageHeader } from '../components/PageHeader'
 import { fallbackFriendColor } from '../lib/colorAccent'
 import { KIND_EMOJI, KIND_LABEL } from '../lib/kindMeta'
 import { sortTripsForDisplay } from '../lib/tripless'
@@ -53,27 +54,31 @@ export function FriendDetailPage() {
 
   return (
     <div className="page friend-detail-page">
-      <header className="page-hero">
-        <p className="friend-detail-back">
-          <Link to="/friends">Friends</Link>
-        </p>
-        <div className="friend-detail-title-row">
-          <div
-            className="friend-detail-accent-bar"
-            style={{
-              background: friend.color ?? fallbackFriendColor(friend.name),
-            }}
-            aria-hidden
-          />
-          <h1 className="page-title" style={{ margin: 0 }}>
-            {friend.name}
-          </h1>
-        </div>
-        <p className="page-subtitle">
-          {total} moment{total === 1 ? '' : 's'} across {sortedTrips.length} trip
-          {sortedTrips.length === 1 ? '' : 's'}.
-        </p>
-      </header>
+      <PageHeader
+        preTitle={
+          <p className="friend-detail-back">
+            <Link to="/friends">Friends</Link>
+          </p>
+        }
+        title={
+          <span className="friend-detail-title-flex">
+            <span
+              className="friend-detail-accent-bar"
+              style={{
+                background: friend.color ?? fallbackFriendColor(friend.name),
+              }}
+              aria-hidden
+            />
+            <span>{friend.name}</span>
+          </span>
+        }
+        subtitle={
+          <p className="page-subtitle">
+            {total} moment{total === 1 ? '' : 's'} across {sortedTrips.length} trip
+            {sortedTrips.length === 1 ? '' : 's'}.
+          </p>
+        }
+      />
 
       {total === 0 ? (
         <p className="form-hint">

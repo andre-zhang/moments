@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { PageHeader } from '../components/PageHeader'
 import { useTravel } from '../store/travelStore'
 
 export function AddTripPage() {
@@ -23,9 +24,7 @@ export function AddTripPage() {
 
   return (
     <div className="page add-trip-page">
-      <header className="page-hero">
-        <h1 className="page-title">New trip</h1>
-      </header>
+      <PageHeader title="New trip" />
       <form className="panel-block" onSubmit={submit}>
         <label>
           Trip name

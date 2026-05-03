@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { PageHeader } from '../components/PageHeader'
 import { PhotoStrip } from '../components/PhotoStrip'
 import { TripRecapSection } from '../components/TripRecapSection'
 import { SelectWithPlus } from '../components/SelectWithPlus'
@@ -11,7 +12,7 @@ import {
 } from '../lib/chipStyles'
 import { KIND_EMOJI, KIND_LABEL } from '../lib/kindMeta'
 import { sortTripsForDisplay, TRIPLESS_TRIP_ID } from '../lib/tripless'
-import type { Memory, MemoryKind } from '../types'
+import type { Memory, MemoryKind, TagCategory } from '../types'
 import { useTravel } from '../store/travelStore'
 
 type JournalSort = 'date-desc' | 'date-asc' | 'type' | 'rating'
@@ -27,6 +28,18 @@ const KIND_ORDER: MemoryKind[] = [
 function kindOrderIndex(k: MemoryKind): number {
   const i = KIND_ORDER.indexOf(k)
   return i >= 0 ? i : 99
+}
+
+const MAX_JOURNAL_CATEGORY_TAGS = 5
+
+function categoryTagPicks(m: Memory, categories: TagCategory[]) {
+  const out: { catId: string; tag: string }[] = []
+  for (const cat of categories) {
+    const picked = m.categoryTags?.[cat.id]
+    if (!picked?.length) continue
+    for (const tag of picked) out.push({ catId: cat.id, tag })
+  }
+  return out
 }
 
 function momentRating(m: Memory): number | null {
@@ -119,47 +132,50 @@ export function JournalPage() {
 
   return (
     <div className="page journal-page">
-      <header className="journal-head">
-        <h1 className="journal-title">Journal</h1>
-        <div className="journal-toolbar">
-          <SelectWithPlus>
-            <select
-              value={selectedTripId ?? ''}
-              onChange={(e) =>
-                selectTrip(e.target.value ? e.target.value : null)
-              }
-              aria-label="Filter by trip"
-            >
-              <option value="">All trips</option>
-              {tripsSorted.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
-          </SelectWithPlus>
-          <div className="journal-toolbar-sort">
-            <select
-              value={sort}
-              onChange={(e) => setSort(e.target.value as JournalSort)}
-              aria-label="Sort moments"
-            >
-              <option value="date-desc">Newest first</option>
-              <option value="date-asc">Oldest first</option>
-              <option value="type">Type</option>
-              <option value="rating">Rating (restaurant / hotel stars)</option>
-            </select>
+      <PageHeader
+        className="page-header-shell--journal"
+        title="Journal"
+        actions={
+          <div className="journal-toolbar">
+            <SelectWithPlus>
+              <select
+                value={selectedTripId ?? ''}
+                onChange={(e) =>
+                  selectTrip(e.target.value ? e.target.value : null)
+                }
+                aria-label="Filter by trip"
+              >
+                <option value="">All trips</option>
+                {tripsSorted.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.name}
+                  </option>
+                ))}
+              </select>
+            </SelectWithPlus>
+            <div className="journal-toolbar-sort">
+              <select
+                value={sort}
+                onChange={(e) => setSort(e.target.value as JournalSort)}
+                aria-label="Sort moments"
+              >
+                <option value="date-desc">Newest first</option>
+                <option value="date-asc">Oldest first</option>
+                <option value="type">Type</option>
+                <option value="rating">Rating (restaurant / hotel stars)</option>
+              </select>
+            </div>
+            {selectedTripId && selectedTripId !== TRIPLESS_TRIP_ID ? (
+              <Link
+                className="btn-secondary journal-replay-trip"
+                to={`/storybook?trip=${encodeURIComponent(selectedTripId)}&replay=1`}
+              >
+                Replay this trip
+              </Link>
+            ) : null}
           </div>
-          {selectedTripId && selectedTripId !== TRIPLESS_TRIP_ID ? (
-            <Link
-              className="btn-secondary journal-replay-trip"
-              to={`/storybook?trip=${encodeURIComponent(selectedTripId)}&replay=1`}
-            >
-              Replay this trip
-            </Link>
-          ) : null}
-        </div>
-      </header>
+        }
+      />
 
       {selectedTripId && selectedTripId !== TRIPLESS_TRIP_ID ? (
         <TripRecapSection tripId={selectedTripId} />
@@ -249,19 +265,36 @@ export function JournalPage() {
                     {m.categoryTags &&
                     Object.values(m.categoryTags).some((a) => a?.length) ? (
                       <div className="memory-tags">
-                        {tagCategories.map((cat) => {
-                          const picked = m.categoryTags?.[cat.id]
-                          if (!picked?.length) return null
-                          return picked.map((tag) => (
-                            <span
-                              key={`${cat.id}-${tag}`}
-                              className="memory-tag"
-                              style={tagChipStyle(cat, tag)}
-                            >
-                              {tag}
-                            </span>
-                          ))
-                        })}
+                        {(() => {
+                          const picks = categoryTagPicks(m, tagCategories)
+                          const shown = picks.slice(0, MAX_JOURNAL_CATEGORY_TAGS)
+                          const more = picks.length - shown.length
+                          return (
+                            <>
+                              {shown.map(({ catId, tag }) => {
+                                const cat = tagCategories.find((c) => c.id === catId)
+                                if (!cat) return null
+                                return (
+                                  <span
+                                    key={`${catId}-${tag}`}
+                                    className="memory-tag"
+                                    style={tagChipStyle(cat, tag)}
+                                  >
+                                    {tag}
+                                  </span>
+                                )
+                              })}
+                              {more > 0 ? (
+                                <span
+                                  className="memory-tag memory-tag--overflow"
+                                  title={`${more} more tag${more === 1 ? '' : 's'} — open moment to see all`}
+                                >
+                                  +{more}
+                                </span>
+                              ) : null}
+                            </>
+                          )
+                        })()}
                       </div>
                     ) : null}
                     {selectionLists.some(

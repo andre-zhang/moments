@@ -13,6 +13,7 @@ import { friendChipStyle } from '../lib/chipStyles'
 import { playSaveChirp } from '../lib/saveSound'
 import { photonReverse } from '../lib/photon'
 import { sortTripsForDisplay } from '../lib/tripless'
+import { PageHeader } from './PageHeader'
 import { EmojiPicker } from './EmojiPicker'
 import { PhotoUploader } from './PhotoUploader'
 import { LocationMapPicker } from './LocationMapPicker'
@@ -390,18 +391,21 @@ export function MomentForm({
 
   return (
     <form className="moment-form" onSubmit={submit}>
-      <header className="page-header">
-        <h1>{editId ? 'Edit moment' : 'New moment'}</h1>
-        {onCancel ? (
-          <button type="button" className="link-quiet" onClick={handleCancel}>
-            Cancel
-          </button>
-        ) : (
-          <Link to="/add" className="link-quiet">
-            Back
-          </Link>
-        )}
-      </header>
+      <PageHeader
+        className="page-header-shell--form"
+        title={editId ? 'Edit moment' : 'New moment'}
+        actions={
+          onCancel ? (
+            <button type="button" className="link-quiet" onClick={handleCancel}>
+              Cancel
+            </button>
+          ) : (
+            <Link to="/add" className="link-quiet">
+              Back
+            </Link>
+          )
+        }
+      />
 
       {state.trips.length === 0 ? (
         <p className="form-hint">

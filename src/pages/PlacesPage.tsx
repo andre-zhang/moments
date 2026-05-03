@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { PageHeader } from '../components/PageHeader'
 import { IconPencil } from '../components/Icons'
 import {
   TRIPLESS_DEFAULT_DEST_ID,
@@ -92,12 +93,15 @@ export function PlacesPage() {
 
   return (
     <div className="page places-page">
-      <header className="page-hero places-hero">
-        <h1 className="page-title">Places &amp; people</h1>
-        <p className="page-subtitle places-page-lede">
-          Use the pencil on each section to add trips, places, and friends.
-        </p>
-      </header>
+      <PageHeader
+        className="places-hero"
+        title="Places & people"
+        subtitle={
+          <p className="page-subtitle places-page-lede">
+            Use the pencil on each section to add trips, places, and friends.
+          </p>
+        }
+      />
 
       <div className="places-merged-stack">
         <section className="places-merged-panel">

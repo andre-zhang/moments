@@ -3,8 +3,19 @@
 
 :root {
   --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-display: var(--font-sans);
+  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   font-family: var(--font-sans);
+  /* Type scale — use for hierarchy across neutral pages */
+  --text-xs: 0.72rem;
+  --text-sm: 0.8125rem;
+  --text-md: 0.875rem;
+  --text-body: 0.9375rem;
+  --leading-snug: 1.35;
+  --leading-body: 1.55;
+  --heading-page: clamp(1.55rem, 3.2vw, 1.95rem);
+  --heading-card: 1.28rem;
+  --weight-page: 600;
+  --weight-card: 600;
   --bg: #d9d9d9;
   --bg-elevated: #f5f5f5;
   --panel: #ffffff;
@@ -712,22 +723,108 @@ a:hover {
   display: none;
 }
 
-.page-title {
-  font-family: var(--font-sans);
+/* Shared page header (see PageHeader.tsx) */
+.page-header-shell {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.page-header-shell__primary {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.page-header-shell--has-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+}
+
+.page-header-shell--has-actions .page-title {
   margin: 0;
-  font-size: clamp(1.5rem, 3.2vw, 1.85rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
+}
+
+.page-header-shell--has-actions .page-header-shell__actions {
+  flex-shrink: 0;
+}
+
+.page-header-shell--journal {
+  align-items: flex-end;
+  padding-top: 0.15rem;
+}
+
+.page-header-pretitle {
+  margin: 0 0 0.45rem;
+}
+
+.page-header-pretitle .storybook-back {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+}
+
+.page-header-pretitle:last-child {
+  margin-bottom: 0;
+}
+
+.page-header-subtitle {
+  margin-top: 0.5rem;
+}
+
+.page-header-subtitle .page-subtitle {
+  margin-top: 0;
+}
+
+.page-header-shell--form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.page-header-shell--form .page-title {
+  margin: 0;
+}
+
+.page-header-shell--form .page-header-shell__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.page-header-shell--plain {
+  margin-bottom: 1.25rem;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.page-header-shell:not(.page-header-shell--has-actions):not(.page-header-shell--form) .page-title {
+  margin: 0;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  margin: 0;
+  font-size: var(--heading-page);
+  font-weight: var(--weight-page);
+  letter-spacing: 0.02em;
+  line-height: var(--leading-snug);
   color: var(--text);
 }
 
 .page-subtitle {
   margin: 0.5rem 0 0;
-  max-width: 36rem;
-  font-size: 0.9375rem;
+  max-width: min(40rem, 100%);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
   color: var(--text-secondary);
-  line-height: 1.5;
   font-weight: 400;
 }
 
@@ -960,7 +1057,7 @@ a:hover {
 
 .panel-block-title {
   margin: 0 0 0.85rem;
-  font-size: 0.6875rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -1013,27 +1110,20 @@ a:hover {
   box-shadow: 0 0 0 2px var(--accent-soft);
 }
 
-.journal-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem 1.5rem;
+/* Journal uses PageHeader with .page-header-shell--journal */
+.journal-page .page-header-shell--journal {
   margin-bottom: 1.35rem;
   padding: 0.85rem 0 1rem;
-  border: none;
-  border-bottom: 1px solid var(--line);
-  border-radius: 0;
-  background: transparent;
 }
 
 .journal-title {
-  font-family: var(--font-sans);
-  font-size: clamp(1.5rem, 3.2vw, 1.85rem);
-  font-weight: 600;
+  /* Deprecated — use .page-title on Journal; kept if any stray markup */
+  font-family: var(--font-display);
+  font-size: var(--heading-page);
+  font-weight: var(--weight-page);
   margin: 0;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
+  letter-spacing: 0.02em;
+  line-height: var(--leading-snug);
   color: var(--text);
 }
 
@@ -1245,22 +1335,35 @@ a:hover {
 }
 
 .memory-card-title {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   margin: 0;
-  font-size: 1.2rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: var(--heading-card);
+  font-weight: var(--weight-card);
+  letter-spacing: 0.01em;
+  line-height: var(--leading-snug);
+  color: var(--text);
 }
 
 .memory-date {
-  margin: 0.2rem 0 0;
-  font-size: 0.8rem;
+  margin: 0.35rem 0 0;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--muted);
+}
+
+.memory-card .memory-meta {
+  margin: 0.15rem 0 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .memory-place {
   margin: 0.35rem 0 0;
-  font-size: 0.86rem;
+  font-size: var(--text-md);
   color: var(--accent-hover);
 }
 
@@ -1454,6 +1557,7 @@ a:hover {
   align-self: flex-start;
 }
 
+/* Legacy .page-header — prefer PageHeader + .page-header-shell--form */
 .page-header {
   display: flex;
   flex-wrap: wrap;
@@ -1465,15 +1569,18 @@ a:hover {
 
 .page-header h1 {
   margin: 0;
-  font-size: 1.65rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: var(--heading-page);
+  font-weight: var(--weight-page);
+  letter-spacing: 0.02em;
 }
 
 .lede {
   margin: 0.35rem 0 0;
   color: var(--muted);
-  font-size: 0.95rem;
-  max-width: 36rem;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  max-width: min(40rem, 100%);
 }
 
 .trip-filter {
@@ -1544,13 +1651,25 @@ a:hover {
 
 .memory-meta {
   margin: 0.25rem 0 0;
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
   color: var(--muted);
+}
+
+.memory-card .memory-body {
+  margin-top: 0.45rem;
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  color: var(--text-secondary);
+  opacity: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
 .memory-body {
   margin: 0.5rem 0 0;
-  font-size: 0.92rem;
+  font-size: var(--text-body);
   color: var(--text);
   opacity: 0.92;
 }
@@ -1563,13 +1682,21 @@ a:hover {
 }
 
 .memory-tag {
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 500;
   padding: 0.2rem 0.55rem;
   border-radius: 0.5rem;
   background: var(--panel-muted);
   color: var(--text-secondary);
   border: 1px solid var(--line);
+}
+
+.memory-tag--overflow {
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--panel);
+  border-style: dashed;
+  cursor: default;
 }
 
 .memory-friends {
@@ -3185,10 +3312,10 @@ a:hover {
   text-decoration: underline;
 }
 
-.friend-detail-title-row {
-  display: flex;
-  align-items: stretch;
-  gap: 0.85rem;
+.friend-detail-title-flex {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .friend-detail-accent-bar {
@@ -3793,18 +3920,21 @@ a:hover {
 }
 
 .friend-detail-back,
+.destination-detail-back,
 .moment-detail-back {
   margin: 0 0 0.35rem;
   font-size: 0.88rem;
 }
 
 .friend-detail-back a,
+.destination-detail-back a,
 .moment-detail-back a {
   color: var(--muted);
   text-decoration: none;
 }
 
 .friend-detail-back a:hover,
+.destination-detail-back a:hover,
 .moment-detail-back a:hover {
   color: var(--accent);
 }

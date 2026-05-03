@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { PageHeader } from '../components/PageHeader'
 import { KIND_EMOJI, KIND_LABEL } from '../lib/kindMeta'
 import { TRIPLESS_TRIP_ID } from '../lib/tripless'
 import { useTravel } from '../store/travelStore'
@@ -33,29 +34,33 @@ export function DestinationDetailPage() {
 
   return (
     <div className="page destination-detail-page">
-      <header className="destination-detail-head">
-        <p className="destination-detail-back">
-          <Link to="/places">Places</Link>
-        </p>
-        <h1 className="page-title">{dest.name}</h1>
-        <p className="destination-detail-trip">
-          <Link to={`/places?trip=${encodeURIComponent(dest.tripId)}`}>
-            {trip?.name ?? 'Trip'}
-          </Link>
-          {dest.tripId !== TRIPLESS_TRIP_ID ? (
-            <>
-              {' · '}
-              <Link
-                to={`/storybook?trip=${encodeURIComponent(dest.tripId)}&replay=1`}
-              >
-                Replay this trip
-              </Link>
-            </>
-          ) : null}
-          {' · '}
-          {memories.length} moment{memories.length === 1 ? '' : 's'}
-        </p>
-      </header>
+      <PageHeader
+        preTitle={
+          <p className="destination-detail-back">
+            <Link to="/places">Places</Link>
+          </p>
+        }
+        title={dest.name}
+        subtitle={
+          <p className="page-subtitle destination-detail-trip">
+            <Link to={`/places?trip=${encodeURIComponent(dest.tripId)}`}>
+              {trip?.name ?? 'Trip'}
+            </Link>
+            {dest.tripId !== TRIPLESS_TRIP_ID ? (
+              <>
+                {' · '}
+                <Link
+                  to={`/storybook?trip=${encodeURIComponent(dest.tripId)}&replay=1`}
+                >
+                  Replay this trip
+                </Link>
+              </>
+            ) : null}
+            {' · '}
+            {memories.length} moment{memories.length === 1 ? '' : 's'}
+          </p>
+        }
+      />
 
       {memories.length === 0 ? (
         <p className="form-hint">

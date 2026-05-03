@@ -1,4 +1,5 @@
 import { Link, Navigate, useSearchParams } from 'react-router-dom'
+import { PageHeader } from '../components/PageHeader'
 
 export function AddHubPage() {
   const [params] = useSearchParams()
@@ -13,9 +14,7 @@ export function AddHubPage() {
 
   return (
     <div className="page add-hub-page">
-      <header className="page-hero">
-        <h1 className="page-title">Add</h1>
-      </header>
+      <PageHeader title="Add" />
       <div className="add-hub-grid">
         <Link to="/add/moment" className="add-hub-tile">
           <span className="add-hub-tile-title">Moment</span>

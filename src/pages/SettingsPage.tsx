@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { PageHeader } from '../components/PageHeader'
 import type { SelectionList, TagCategory } from '../types'
 import { parseHex } from '../lib/colorAccent'
 import { tagChipStyle } from '../lib/chipStyles'
@@ -171,9 +172,7 @@ export function SettingsPage() {
 
   return (
     <div className="page settings-page">
-      <header className="page-hero">
-        <h1 className="page-title">Settings</h1>
-      </header>
+      <PageHeader title="Settings" />
 
       <section className="panel-block">
         <h2 className="panel-block-title">Demo data</h2>
