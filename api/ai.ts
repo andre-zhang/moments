@@ -1,4 +1,3 @@
-import { text } from 'node:stream/consumers'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { requireAuth } from './lib/syncAuth'
 
@@ -80,16 +79,18 @@ function applyCors(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
 }
 
-async function readJsonRequestBody(req: VercelRequest): Promise<unknown> {
+/**
+ * Vercel parses JSON POST bodies into `req.body`. Do not read `req` as a stream here:
+ * a second read can hang or break the invocation (HTML 500 / FUNCTION_INVOCATION_FAILED).
+ */
+function readJsonRequestBody(req: VercelRequest): unknown {
   const raw = req.body
-  if (raw !== undefined && raw !== null && raw !== '') {
-    if (typeof raw === 'string') return JSON.parse(raw) as unknown
-    if (Buffer.isBuffer(raw)) return JSON.parse(raw.toString('utf8')) as unknown
-    return raw as unknown
+  if (raw === undefined || raw === null || raw === '') {
+    throw new Error('Missing JSON body')
   }
-  const t = await text(req)
-  if (!t.trim()) throw new Error('Missing JSON body')
-  return JSON.parse(t) as unknown
+  if (typeof raw === 'string') return JSON.parse(raw) as unknown
+  if (Buffer.isBuffer(raw)) return JSON.parse(raw.toString('utf8')) as unknown
+  return raw as unknown
 }
 
 async function callClaude(
@@ -149,11 +150,11 @@ async function callClaude(
     )
   }
   const block = data.content?.[0]
-  const text = block?.type === 'text' ? block.text : undefined
-  if (typeof text !== 'string' || !text.trim()) {
+  const assistantText = block?.type === 'text' ? block.text : undefined
+  if (typeof assistantText !== 'string' || !assistantText.trim()) {
     throw new Error('Unexpected response from model')
   }
-  return text.trim()
+  return assistantText.trim()
 }
 
 function buildPlaceTipsUserPrompt(payload: {
@@ -232,15 +233,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return sendJson(req, res, 401, { error: 'Unauthorized' })
     }
 
-    if (!process.env.ANTHROPIC_API_KEY?.trim()) {
-      return sendJson(req, res, 503, {
-        error: 'AI is not configured (ANTHROPIC_API_KEY)',
-      })
-    }
-
     let body: unknown
     try {
-      body = await readJsonRequestBody(req)
+      body = readJsonRequestBody(req)
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Invalid body'
       if (msg === 'Missing JSON body') {
@@ -254,6 +249,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const b = body as { action?: string }
+
+    /** Smoke-test JSON + auth without calling Anthropic (for debugging deploys). */
+    if (b.action === 'ping') {
+      return sendJson(req, res, 200, { ok: true })
+    }
+
+    if (!process.env.ANTHROPIC_API_KEY?.trim()) {
+      return sendJson(req, res, 503, {
+        error: 'AI is not configured (ANTHROPIC_API_KEY)',
+      })
+    }
 
     if (b.action === 'place_tips') {
       const p = b as {
@@ -297,8 +303,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             ? (p.sight as { venueType?: string; highlights?: string })
             : undefined,
       })
-      const text = await callClaude(TONE_SYSTEM, user, 280)
-      return sendJson(req, res, 200, { text })
+      const tipsText = await callClaude(TONE_SYSTEM, user, 280)
+      return sendJson(req, res, 200, { text: tipsText })
     }
 
     if (b.action === 'passport_curate') {

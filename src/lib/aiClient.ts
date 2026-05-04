@@ -20,7 +20,7 @@ async function readJsonBody(r: Response): Promise<unknown> {
   } catch {
     if (looksLikeHtmlErrorPage(trimmed)) {
       throw new Error(
-        `Server error (HTTP ${r.status}): the /api/ai function did not return JSON (often a crash or timeout on Vercel). Check the deployment function logs. On the project, set ANTHROPIC_API_KEY, optional ANTHROPIC_MODEL (e.g. claude-haiku-4-5-20251001), and ensure server MOMENTS_SYNC_SECRET matches your VITE_MOMENTS_SYNC_SECRET.`
+        `Server error (HTTP ${r.status}): /api/ai returned an HTML error page (Vercel crash or timeout). Check Vercel → this deployment → Logs → filter /api/ai. Confirm ANTHROPIC_API_KEY, MOMENTS_SYNC_SECRET (server) = VITE_MOMENTS_SYNC_SECRET (build), redeploy after env changes. Optional: POST /api/ai with JSON {"action":"ping"} and header x-moments-sync-secret — expect {"ok":true} if auth + JSON work.`
       )
     }
     const preview = trimmed.slice(0, 180).replace(/\s+/g, ' ')
