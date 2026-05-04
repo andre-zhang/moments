@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { PageHeader } from '../components/PageHeader'
 import { KIND_EMOJI, KIND_LABEL } from '../lib/kindMeta'
 import {
   readPassportViewMode,
@@ -83,40 +84,69 @@ export function PassportKindPage() {
   const destName = (id: string) =>
     state.destinations.find((d) => d.id === id)?.name ?? id
 
+  const kindHeaderBook = (
+    <header className="page-hero passport-kind-hero passport-kind-hero--book">
+      <p className="friend-detail-back">
+        <Link to="/passport">Passport</Link>
+      </p>
+      <p className="passport-kind-kicker">
+        <span className="passport-kind-kicker-emoji" aria-hidden>
+          {KIND_EMOJI[kind]}
+        </span>{' '}
+        Entry spread
+      </p>
+      <h1 className="page-title passport-title">{KIND_LABEL[kind]}</h1>
+      {state.passportCurations?.kindBlurbs?.[kind]?.trim() ? (
+        <p className="passport-kind-ai-blurb">
+          {state.passportCurations.kindBlurbs[kind]}
+        </p>
+      ) : null}
+      <p className="passport-kind-subtitle">
+        {list.length} moment{list.length === 1 ? '' : 's'}
+      </p>
+      <PassportKindCurateBar
+        kind={kind}
+        momentsNewestFirst={momentsNewestFirst}
+        tripName={tripName}
+        destName={destName}
+      />
+    </header>
+  )
+
+  const kindHeaderSimple = (
+    <PageHeader
+      preTitle={
+        <p className="friend-detail-back">
+          <Link to="/passport">Passport</Link>
+        </p>
+      }
+      title={KIND_LABEL[kind]}
+      subtitle={
+        <>
+          {state.passportCurations?.kindBlurbs?.[kind]?.trim() ? (
+            <p className="passport-kind-ai-blurb">
+              {state.passportCurations.kindBlurbs[kind]}
+            </p>
+          ) : null}
+          <p className="page-subtitle">
+            {list.length} moment{list.length === 1 ? '' : 's'}
+          </p>
+          <PassportKindCurateBar
+            kind={kind}
+            momentsNewestFirst={momentsNewestFirst}
+            tripName={tripName}
+            destName={destName}
+          />
+        </>
+      }
+    />
+  )
+
   return (
     <div
       className={`page passport-kind-page${book ? ' passport-page--book' : ' passport-page--simple'}`}
     >
-      <header className={`page-hero passport-kind-hero${book ? ' passport-kind-hero--book' : ''}`}>
-        <p className="friend-detail-back">
-          <Link to="/passport">Passport</Link>
-        </p>
-        {book ? (
-          <p className="passport-kind-kicker">
-            <span className="passport-kind-kicker-emoji" aria-hidden>
-              {KIND_EMOJI[kind]}
-            </span>{' '}
-            Entry spread
-          </p>
-        ) : null}
-        <h1 className={`page-title${book ? ' passport-title' : ''}`}>
-          {KIND_LABEL[kind]}
-        </h1>
-        {state.passportCurations?.kindBlurbs?.[kind]?.trim() ? (
-          <p className="passport-kind-ai-blurb">
-            {state.passportCurations.kindBlurbs[kind]}
-          </p>
-        ) : null}
-        <p className={book ? 'passport-kind-subtitle' : 'page-subtitle'}>
-          {list.length} moment{list.length === 1 ? '' : 's'}
-        </p>
-        <PassportKindCurateBar
-          kind={kind}
-          momentsNewestFirst={momentsNewestFirst}
-          tripName={tripName}
-          destName={destName}
-        />
-      </header>
+      {book ? kindHeaderBook : kindHeaderSimple}
 
       {insightCards.length > 0 ? (
         <section

@@ -105,7 +105,6 @@ export function StorybookPage() {
   return (
     <div className="page storybook-picker-page">
       <PageHeader
-        className="storybook-picker-head page-header-shell--plain"
         preTitle={
           <Link to="/" className="storybook-back">
             ← Journal

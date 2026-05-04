@@ -311,8 +311,44 @@ a:hover {
 }
 
 .page.map-page {
-  padding: 0;
+  padding: 0 0 var(--page-pad-y-bottom);
   background: transparent;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.map-page-header.page-header-shell {
+  flex-shrink: 0;
+  padding-left: var(--page-pad-x);
+  padding-right: var(--page-pad-x);
+  padding-top: var(--page-pad-y-top);
+  margin-bottom: 0;
+  padding-bottom: 1rem;
+  background: var(--app-canvas);
+}
+
+.map-toolbar {
+  align-items: flex-start;
+}
+
+.map-trip-field {
+  flex: 1 1 auto;
+  min-width: min(100%, 14rem);
+}
+
+.map-trip-field-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.map-trip-field-label .map-trip-controls {
+  margin-top: 0;
 }
 
 .map-page {
@@ -327,7 +363,7 @@ a:hover {
   flex: 1;
   min-width: 0;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: stretch;
   min-height: 0;
 }
@@ -570,16 +606,6 @@ a:hover {
   color: var(--accent);
 }
 
-.passport-page--simple .passport-hero--book {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--line);
-}
-
-.passport-page--simple .passport-hero--book::after {
-  display: none;
-}
-
 .passport-page--simple .passport-stat {
   color: var(--text-secondary);
 }
@@ -817,6 +843,45 @@ a:hover {
   padding-top: 0.15rem;
 }
 
+/** Title block, then toolbar full-width, then shared bottom rule */
+.page-header-shell--toolbar-below.page-header-shell--has-actions {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem;
+}
+
+.page-header-shell--toolbar-below .page-header-shell__primary {
+  width: 100%;
+}
+
+.page-header-shell--toolbar-below .page-header-shell__actions {
+  width: 100%;
+  flex-shrink: 1;
+}
+
+.page-header-shell--toolbar-below.page-header-shell--journal {
+  align-items: stretch;
+}
+
+.passport-view-toggle--toolbar {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.passport-view-toggle--toolbar .passport-view-toggle-label {
+  margin: 0;
+}
+
+.page-header-subtitle .passport-stat--page-header {
+  margin-top: 0;
+}
+
+.page-header-subtitle .passport-stat--page-header:not(:last-child) {
+  margin-bottom: 0.65rem;
+}
+
 .page-header-pretitle {
   margin: 0 0 0.45rem;
 }
@@ -898,7 +963,7 @@ a:hover {
 
 /* Places & people — merged panels + edit toggle */
 .places-page .places-hero {
-  margin-bottom: 1.1rem;
+  margin-bottom: 1.5rem;
 }
 
 .places-page-lede {
@@ -1174,10 +1239,10 @@ a:hover {
   box-shadow: 0 0 0 2px var(--accent-soft);
 }
 
-/* Journal uses PageHeader with .page-header-shell--journal */
+/* Journal — shell spacing only (page `.page` supplies horizontal + top pad) */
 .journal-page .page-header-shell--journal {
-  margin-bottom: 1.35rem;
-  padding: 0.85rem 0 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
 }
 
 .journal-title {
@@ -1570,21 +1635,6 @@ a:hover {
   box-shadow: 0 0 0 2px var(--accent-soft);
 }
 
-.map-rail-kicker {
-  display: none;
-}
-
-.map-rail-title {
-  font-family: var(--font-sans);
-  margin: 0 0 0.35rem;
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.map-rail .btn-secondary {
-  align-self: flex-start;
-}
-
 /* Legacy .page-header — prefer PageHeader + .page-header-shell--form */
 .page-header {
   display: flex;
@@ -1777,31 +1827,19 @@ a:hover {
   text-decoration: none;
 }
 
-/* Map page */
-.map-rail {
-  width: min(280px, 32vw);
-  flex-shrink: 0;
-  padding: 1.1rem 1.15rem 1.25rem;
-  background: var(--panel-muted);
-  border-right: 1px solid var(--line);
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-}
-
-.map-trip-row .map-trip-controls {
+/* Map page — filters in PageHeader toolbar; stage is full-width below */
+.map-trip-controls {
   display: flex;
   gap: 0.35rem;
   align-items: stretch;
-  margin-top: 0.35rem;
 }
 
-.map-trip-row .select-with-add {
+.map-trip-controls .select-with-add {
   flex: 1;
   min-width: 0;
 }
 
-.map-trip-row select {
+.map-trip-controls select {
   flex: 1;
   min-width: 0;
 }
@@ -1826,11 +1864,6 @@ a:hover {
   background: var(--accent-soft);
 }
 
-.map-rail h2 {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
 .map-kind-filters {
   display: flex;
   flex-wrap: wrap;
@@ -1853,45 +1886,6 @@ a:hover {
   color: var(--accent);
   background: var(--accent-soft);
   font-weight: 600;
-}
-
-.map-rail-hint {
-  margin: 0;
-  font-size: 0.82rem;
-  color: var(--muted);
-  line-height: 1.4;
-}
-
-.map-rail label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.78rem;
-  color: var(--muted);
-}
-
-.map-rail select {
-  padding: 0.5rem 0.55rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--line);
-  background: var(--panel);
-  color: var(--text);
-  font: inherit;
-  font-size: 0.875rem;
-  line-height: 1.4;
-  transition:
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
-}
-
-.map-rail select:hover {
-  border-color: var(--line-strong);
-}
-
-.map-rail select:focus-visible {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--accent-soft);
 }
 
 .map-stage {
@@ -4628,12 +4622,6 @@ a:hover {
     border-top: 1px solid var(--line);
   }
 
-  .map-rail {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--line);
-  }
-
   .map-main {
     min-height: 42vh;
   }
@@ -4687,10 +4675,6 @@ a:hover {
 
 .storybook-picker-page .storybook-picker-card {
   max-width: min(40rem, 100%);
-}
-
-.storybook-picker-head {
-  margin-bottom: 1.25rem;
 }
 
 .storybook-back {

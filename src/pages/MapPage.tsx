@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { IconReplay } from '../components/Icons'
 import { MemoryMap } from '../components/MemoryMap'
+import { PageHeader } from '../components/PageHeader'
 import { SelectWithPlus } from '../components/SelectWithPlus'
 import { KIND_LABEL } from '../lib/kindMeta'
 import { sortTripsForDisplay } from '../lib/tripless'
@@ -61,54 +62,61 @@ export function MapPage() {
 
   return (
     <div className="page map-page">
+      <PageHeader
+        className="map-page-header"
+        title="Map"
+        toolbarBelow
+        actions={
+          <div className="map-toolbar journal-toolbar">
+            <div className="map-kind-filters" role="group" aria-label="Moment types">
+              {ALL_KINDS.map((k) => (
+                <button
+                  key={k}
+                  type="button"
+                  className={`map-kind-chip${kindSet.has(k) ? ' map-kind-chip--on' : ''}`}
+                  onClick={() => toggleKind(k)}
+                >
+                  {KIND_LABEL[k]}
+                </button>
+              ))}
+            </div>
+            <div className="map-trip-field">
+              <label className="map-trip-field-label">
+                <span>Trip line</span>
+                <div className="map-trip-controls">
+                  <SelectWithPlus plusAlign="left">
+                    <select
+                      value={state.selectedTripId ?? ''}
+                      onChange={(e) =>
+                        selectTrip(e.target.value ? e.target.value : null)
+                      }
+                      aria-label="Filter map by trip"
+                    >
+                      <option value="">All trips</option>
+                      {tripsSorted.map((t) => (
+                        <option key={t.id} value={t.id}>
+                          {t.name}
+                        </option>
+                      ))}
+                    </select>
+                  </SelectWithPlus>
+                  {state.selectedTripId ? (
+                    <button
+                      type="button"
+                      className="btn-icon-square"
+                      onClick={replayTripLines}
+                      title="Replay route"
+                    >
+                      <IconReplay className="btn-icon-svg" />
+                    </button>
+                  ) : null}
+                </div>
+              </label>
+            </div>
+          </div>
+        }
+      />
       <div className="map-main">
-        <aside className="map-rail">
-          <h2 className="map-rail-title">Map</h2>
-          <div className="map-kind-filters" role="group" aria-label="Moment types">
-            {ALL_KINDS.map((k) => (
-              <button
-                key={k}
-                type="button"
-                className={`map-kind-chip${kindSet.has(k) ? ' map-kind-chip--on' : ''}`}
-                onClick={() => toggleKind(k)}
-              >
-                {KIND_LABEL[k]}
-              </button>
-            ))}
-          </div>
-          <div className="map-trip-row">
-            <label>
-              Trip line
-              <div className="map-trip-controls">
-                <SelectWithPlus plusAlign="left">
-                  <select
-                    value={state.selectedTripId ?? ''}
-                    onChange={(e) =>
-                      selectTrip(e.target.value ? e.target.value : null)
-                    }
-                  >
-                    <option value="">All trips</option>
-                    {tripsSorted.map((t) => (
-                      <option key={t.id} value={t.id}>
-                        {t.name}
-                      </option>
-                    ))}
-                  </select>
-                </SelectWithPlus>
-                {state.selectedTripId ? (
-                  <button
-                    type="button"
-                    className="btn-icon-square"
-                    onClick={replayTripLines}
-                    title="Replay route"
-                  >
-                    <IconReplay className="btn-icon-svg" />
-                  </button>
-                ) : null}
-              </div>
-            </label>
-          </div>
-        </aside>
         <div className="map-stage">
           <MemoryMap
             memories={filteredMemories}

@@ -134,6 +134,7 @@ export function JournalPage() {
       <PageHeader
         className="page-header-shell--journal"
         title="Journal"
+        toolbarBelow
         actions={
           <div className="journal-toolbar">
             <SelectWithPlus>

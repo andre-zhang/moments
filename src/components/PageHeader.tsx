@@ -9,6 +9,11 @@ export type PageHeaderProps = {
   subtitle?: ReactNode
   /** Toolbar / filters — aligns to the title row on wide layouts. */
   actions?: ReactNode
+  /**
+   * When true (and `actions` is set), title + subtitle sit in a block, then the toolbar,
+   * then the bottom border — same rhythm as Journal / Map / Passport (simple).
+   */
+  toolbarBelow?: boolean
   /** Extra classes on `<header>` (e.g. `places-hero`). */
   className?: string
 }
@@ -22,11 +27,13 @@ export function PageHeader({
   preTitle,
   subtitle,
   actions,
+  toolbarBelow,
   className,
 }: PageHeaderProps) {
   const mods = [
     'page-header-shell',
     actions ? 'page-header-shell--has-actions' : '',
+    actions && toolbarBelow ? 'page-header-shell--toolbar-below' : '',
     className ?? '',
   ]
     .filter(Boolean)
