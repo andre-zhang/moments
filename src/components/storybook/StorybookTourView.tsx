@@ -345,11 +345,13 @@ export function StorybookTourView({
 
       {phase === 'intro' ? (
         <div className="storybook-intro">
-          <p className="storybook-intro-sigil" aria-hidden>
-            ✦
-          </p>
-          <h1 className="storybook-intro-title">Storybook</h1>
-          <p className="storybook-intro-epigraph">Once upon your travels…</p>
+          <div className="storybook-intro-card">
+            <p className="storybook-intro-sigil" aria-hidden>
+              ✦
+            </p>
+            <h1 className="storybook-intro-title">Storybook</h1>
+            <p className="storybook-intro-epigraph">Once upon your travels…</p>
+          </div>
         </div>
       ) : (
         <div className="storybook-slides storybook-slides--split">

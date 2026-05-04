@@ -91,8 +91,16 @@ async function callClaude(
     throw new Error(`Anthropic error ${res.status}: ${t.slice(0, 500)}`)
   }
 
-  const data = (await res.json()) as {
-    content?: Array<{ type: string; text?: string }>
+  const rawBody = await res.text()
+  let data: { content?: Array<{ type: string; text?: string }> }
+  try {
+    data = JSON.parse(rawBody) as {
+      content?: Array<{ type: string; text?: string }>
+    }
+  } catch {
+    throw new Error(
+      `Anthropic returned non-JSON (HTTP ${res.status}): ${rawBody.slice(0, 280)}`
+    )
   }
   const block = data.content?.[0]
   const text = block?.type === 'text' ? block.text : undefined
@@ -151,28 +159,47 @@ ${extras.length ? `Other details from the user:\n${extras.map((e) => `- ${e}`).j
 Write exactly 2 or 3 lines. Each line must start with "- " (hyphen and space). Sound like a quick text to a friend with casual ideas — not hype, not a review article. These are guesses and tips, not facts; keep wording humble (e.g. "might be worth", "if you like…"). No intro line before the bullets. No closing line after. Plain text only.`
 }
 
+function sendJson(res: VercelResponse, status: number, payload: unknown) {
+  if (res.headersSent) return
+  res.status(status)
+  res.setHeader('Content-Type', 'application/json; charset=utf-8')
+  res.end(JSON.stringify(payload))
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     if (req.method !== 'POST') {
       res.setHeader('Allow', 'POST')
-      return res.status(405).json({ error: 'Method not allowed' })
+      return sendJson(res, 405, { error: 'Method not allowed' })
     }
 
     if (!requireAuth(req)) {
-      return res.status(401).json({ error: 'Unauthorized' })
+      return sendJson(res, 401, { error: 'Unauthorized' })
     }
 
     if (!process.env.ANTHROPIC_API_KEY?.trim()) {
-      return res
-        .status(503)
-        .json({ error: 'AI is not configured (ANTHROPIC_API_KEY)' })
+      return sendJson(res, 503, {
+        error: 'AI is not configured (ANTHROPIC_API_KEY)',
+      })
     }
 
     let body: unknown
     try {
-      body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+      const raw = req.body
+      if (raw == null) {
+        return sendJson(res, 400, { error: 'Missing JSON body' })
+      }
+      if (typeof raw === 'string') {
+        body = JSON.parse(raw) as unknown
+      } else {
+        body = raw
+      }
     } catch {
-      return res.status(400).json({ error: 'Invalid JSON body' })
+      return sendJson(res, 400, { error: 'Invalid JSON body' })
+    }
+
+    if (typeof body !== 'object' || body === null || Array.isArray(body)) {
+      return sendJson(res, 400, { error: 'JSON body must be an object' })
     }
 
     const b = body as { action?: string }
@@ -193,9 +220,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const title = p.title?.trim()
       const destinationName = p.destinationName?.trim()
       if (!kind || !title || !destinationName) {
-        return res
-          .status(400)
-          .json({ error: 'kind, title, destinationName required' })
+        return sendJson(res, 400, {
+          error: 'kind, title, destinationName required',
+        })
       }
       const user = buildPlaceTipsUserPrompt({
         kind,
@@ -220,7 +247,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             : undefined,
       })
       const text = await callClaude(TONE_SYSTEM, user, 280)
-      return res.status(200).json({ text })
+      return sendJson(res, 200, { text })
     }
 
     if (b.action === 'passport_curate') {
@@ -233,7 +260,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const yearCards = p.yearCards
       const digest = p.contextDigest?.trim() ?? ''
       if (!Array.isArray(stamps) || !yearCards || typeof yearCards !== 'object') {
-        return res.status(400).json({ error: 'stamps[] and yearCards required' })
+        return sendJson(res, 400, { error: 'stamps[] and yearCards required' })
       }
 
       const stampLines = stamps
@@ -274,13 +301,13 @@ Return a JSON object with exactly two keys: "stampDetails" and "yearCards".
       try {
         parsed = extractJsonObject(raw)
       } catch {
-        return res.status(502).json({ error: 'Model did not return valid JSON' })
+        return sendJson(res, 502, { error: 'Model did not return valid JSON' })
       }
       const obj = parsed as {
         stampDetails?: Record<string, unknown>
         yearCards?: Record<string, unknown>
       }
-      return res.status(200).json({
+      return sendJson(res, 200, {
         stampDetails: obj.stampDetails ?? {},
         yearCards: obj.yearCards ?? {},
       })
@@ -306,7 +333,7 @@ Return a JSON object with exactly two keys: "stampDetails" and "yearCards".
         !['flight', 'hotel', 'restaurant', 'sight', 'note'].includes(kind) ||
         !Array.isArray(moments)
       ) {
-        return res.status(400).json({ error: 'kind and moments[] required' })
+        return sendJson(res, 400, { error: 'kind and moments[] required' })
       }
 
       const ids = moments.map((m) => m.id)
@@ -343,7 +370,7 @@ Rules:
       try {
         parsed = extractJsonObject(raw)
       } catch {
-        return res.status(502).json({ error: 'Model did not return valid JSON' })
+        return sendJson(res, 502, { error: 'Model did not return valid JSON' })
       }
       const obj = parsed as {
         momentLines?: Record<string, unknown>
@@ -374,19 +401,17 @@ Rules:
       const kindBlurb =
         typeof obj.kindBlurb === 'string' ? obj.kindBlurb.trim().slice(0, 160) : ''
 
-      return res.status(200).json({
+      return sendJson(res, 200, {
         momentLines: linesOut,
         orderedIds: orderedIds ?? ids,
         kindBlurb: kindBlurb || undefined,
       })
     }
 
-    return res.status(400).json({ error: 'Unknown action' })
+    return sendJson(res, 400, { error: 'Unknown action' })
   } catch (e) {
     console.error(e)
     const msg = e instanceof Error ? e.message : 'AI request failed'
-    if (!res.headersSent) {
-      return res.status(500).json({ error: msg })
-    }
+    sendJson(res, 500, { error: msg })
   }
 }
