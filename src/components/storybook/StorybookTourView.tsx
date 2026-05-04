@@ -379,7 +379,7 @@ export function StorybookTourView({
                 <Polyline
                   positions={linePositions}
                   pathOptions={{
-                    color: '#22626e',
+                    color: '#2d6fad',
                     weight: 3,
                     opacity: 0.72,
                     dashArray: '10 12',

@@ -27,35 +27,36 @@
   --space-block: 1.25rem;
   --space-tight: 0.65rem;
   /**
-   * App shell — one neutral “studio” everywhere except Passport stamp book + Storybook tour.
-   * Surfaces sit on a warm canvas so cards read as one family.
+   * Light blue studio — cool canvas + sky accent.
+   * Passport stamp book + Storybook tour keep their own paper / narrative colors.
    */
-  --app-canvas: #e8e6e2;
-  --app-surface: #faf9f6;
-  --app-surface-muted: #f0eeeb;
-  --app-line: #d4d1cb;
-  --app-line-strong: #a8a49d;
+  --app-canvas: #e2ebf5;
+  --app-surface: #f5f9fc;
+  --app-surface-muted: #e8f1fa;
+  --app-line: #c5d3e3;
+  --app-line-strong: #8fa6bd;
   --bg: var(--app-canvas);
   --bg-elevated: var(--app-surface-muted);
   --panel: var(--app-surface);
   --panel-muted: var(--app-surface-muted);
-  --text: #171717;
-  --text-secondary: #3c3a37;
-  --muted: #5c5a56;
-  /** Editorial teal — calm travel-journal tone (avoid default “AI purple”) */
-  --accent: #22626e;
-  --accent-hover: #1a4e58;
-  --accent-soft: rgb(34 98 110 / 12%);
-  --accent-2: #0f766e;
-  --accent-2-soft: rgb(15 118 110 / 8%);
+  --text: #13212f;
+  --text-secondary: #2a3f52;
+  --muted: #5a6d82;
+  /** Primary action / links — clear sky blue */
+  --accent: #2d6fad;
+  --accent-hover: #24588c;
+  --accent-soft: rgb(45 111 173 / 14%);
+  /** Secondary stripe (menu, chips) — lighter sky */
+  --accent-2: #4a8fd4;
+  --accent-2-soft: rgb(74 143 212 / 12%);
   --line: var(--app-line);
   --line-strong: var(--app-line-strong);
   --danger: #b91c1c;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 6%);
   --shadow-md: 0 4px 14px rgb(0 0 0 / 8%);
   /** In-page cards — barely lifted (avoid heavy “floating tile” look) */
-  --shadow-card: 0 1px 1px rgb(0 0 0 / 4%);
-  --shadow-card-hover: 0 1px 3px rgb(0 0 0 / 6%);
+  --shadow-card: 0 1px 2px rgb(25 60 100 / 5%);
+  --shadow-card-hover: 0 2px 6px rgb(25 60 100 / 8%);
   /** Floating layers (dropdown, modal) — not for resting “cards” on a page */
   --shadow-modal: 0 10px 28px rgb(0 0 0 / 12%);
   --shadow-sheet: none;
@@ -250,8 +251,8 @@ a:hover {
 
 .dropdown a[href='/places'] {
   border-left-color: var(--accent-2);
-  background: #ecfdf5;
-  color: #134e4a;
+  background: var(--accent-2-soft);
+  color: #164364;
 }
 
 .dropdown a[href='/settings'] {
@@ -1945,7 +1946,7 @@ a:hover {
   min-width: 0;
   min-height: 0;
   position: relative;
-  background: #dbe4ee;
+  background: #d4e2f0;
 }
 
 .map-stage .leaflet-container {
@@ -1954,7 +1955,7 @@ a:hover {
   width: 100% !important;
   height: 100% !important;
   z-index: 1;
-  background: #cdd9e8;
+  background: #c8daf0;
   font-family: var(--font-sans);
 }
 
@@ -2080,7 +2081,7 @@ a:hover {
   color: var(--text);
   border: none;
   border-left: 4px solid var(--accent-2);
-  background: #ecfdf5;
+  background: var(--accent-2-soft);
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -2101,7 +2102,7 @@ a:hover {
 .plus-create__item-title {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #0f766e;
+  color: var(--accent-hover);
 }
 
 .plus-create__item + .plus-create__item .plus-create__item-title {
