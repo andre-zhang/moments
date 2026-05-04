@@ -1,5 +1,15 @@
 import { apiUrl, isNeonSyncEnabled, syncHeaders } from './syncEnv'
 
+function looksLikeHtmlErrorPage(s: string): boolean {
+  const t = s.slice(0, 400).toLowerCase()
+  return (
+    t.includes('<!doctype') ||
+    t.includes('<html') ||
+    t.includes('function_invocation_failed') ||
+    t.includes('an error occurred')
+  )
+}
+
 async function readJsonBody(r: Response): Promise<unknown> {
   const text = await r.text()
   const trimmed = text.trim()
@@ -9,6 +19,11 @@ async function readJsonBody(r: Response): Promise<unknown> {
   try {
     return JSON.parse(trimmed) as unknown
   } catch {
+    if (looksLikeHtmlErrorPage(trimmed)) {
+      throw new Error(
+        `Server error (HTTP ${r.status}). The AI route may have timed out or crashed — try again with fewer years of data, or check deployment logs.`
+      )
+    }
     const preview = trimmed.slice(0, 180).replace(/\s+/g, ' ')
     throw new Error(
       `Bad response (HTTP ${r.status}). Expected JSON: ${preview}${trimmed.length > 180 ? '…' : ''}`

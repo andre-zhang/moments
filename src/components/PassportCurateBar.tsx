@@ -21,6 +21,9 @@ function yearOptions(memories: Memory[]): number[] {
   return list
 }
 
+/** Most recent years sent to the model (avoids huge prompts / timeouts). */
+const CURATE_YEAR_LIMIT = 24
+
 function buildDigest(
   memories: Memory[],
   trips: Trip[],
@@ -60,12 +63,13 @@ export function PassportCurateBar() {
     setLoading(true)
     try {
       const stamps = computeStamps(memories)
-      const years = yearOptions(memories)
+      const allYears = yearOptions(memories)
+      const yearsForCurate = allYears.slice(0, CURATE_YEAR_LIMIT)
       const yearCards: Record<
         number,
         Array<{ id: string; headline: string; sub?: string }>
       > = {}
-      for (const y of years) {
+      for (const y of yearsForCurate) {
         yearCards[y] = computeYearInReview(memories, y)
       }
 
@@ -89,8 +93,8 @@ export function PassportCurateBar() {
       const mergedYear: Record<
         number,
         Array<{ id: string; headline: string; sub?: string }>
-      > = {}
-      for (const y of years) {
+      > = { ...(passportCurations?.yearCards ?? {}) }
+      for (const y of yearsForCurate) {
         const raw = res.yearCards[String(y)]
         if (Array.isArray(raw) && raw.length > 0) {
           mergedYear[y] = raw.filter(
@@ -102,8 +106,6 @@ export function PassportCurateBar() {
                   typeof (row as { headline?: string }).headline === 'string'
               )
           ) as Array<{ id: string; headline: string; sub?: string }>
-        } else if (passportCurations?.yearCards?.[y]) {
-          mergedYear[y] = passportCurations.yearCards[y]!
         }
       }
 

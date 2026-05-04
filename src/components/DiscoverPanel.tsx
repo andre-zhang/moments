@@ -76,10 +76,7 @@ export function DiscoverPanel({
       <div className="passport-spread">
         <section className="discover-section passport-pane passport-pane--year">
           <div className="passport-section-head">
-            <span
-              className={`passport-section-mark${book ? '' : ' passport-section-mark--plain'}`}
-              aria-hidden
-            />
+            <span className="passport-section-mark" aria-hidden />
             <h2>Year in view</h2>
           </div>
           <label className="discover-year passport-year-row">
@@ -116,10 +113,7 @@ export function DiscoverPanel({
 
         <section className="discover-section passport-pane passport-pane--stamps">
           <div className="passport-section-head">
-            <span
-              className={`passport-section-mark passport-section-mark--star${book ? '' : ' passport-section-mark--plain'}`}
-              aria-hidden
-            />
+            <span className="passport-section-mark" aria-hidden />
             <h2>Stamps</h2>
           </div>
           {stamps.length === 0 ? (
@@ -178,10 +172,7 @@ export function DiscoverPanel({
 
       <section className="discover-section passport-pane passport-pane--visas">
         <div className="passport-section-head">
-          <span
-            className={`passport-section-mark passport-section-mark--grid${book ? '' : ' passport-section-mark--plain'}`}
-            aria-hidden
-          />
+          <span className="passport-section-mark" aria-hidden />
           <h2>Entries by kind</h2>
         </div>
         <div

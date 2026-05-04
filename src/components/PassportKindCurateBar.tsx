@@ -22,11 +22,14 @@ export function PassportKindCurateBar({
 
   if (!aiAssistAvailable() || momentsNewestFirst.length === 0) return null
 
+  const KIND_CURATE_MOMENT_CAP = 100
+
   const onCurate = async () => {
     setError(null)
     setLoading(true)
     try {
-      const moments = momentsNewestFirst.map((m) => ({
+      const slice = momentsNewestFirst.slice(0, KIND_CURATE_MOMENT_CAP)
+      const moments = slice.map((m) => ({
         id: m.id,
         title: m.title,
         visitedAt: m.visitedAt,
@@ -38,7 +41,7 @@ export function PassportKindCurateBar({
       const res = await requestPassportKindCurate({ kind, moments })
       const { passportCurations } = state
       const nextLines = { ...passportCurations?.momentPassportLines }
-      for (const m of momentsNewestFirst) {
+      for (const m of slice) {
         const line = res.momentLines[m.id]
         if (line) nextLines[m.id] = line
       }
@@ -48,6 +51,11 @@ export function PassportKindCurateBar({
         else delete nextBlurbs[kind]
       }
 
+      const tailIds = momentsNewestFirst
+        .slice(KIND_CURATE_MOMENT_CAP)
+        .map((m) => m.id)
+      const mergedOrder = [...res.orderedIds, ...tailIds]
+
       const next: PassportAiCurations = {
         ...passportCurations,
         updatedAt: new Date().toISOString(),
@@ -55,7 +63,7 @@ export function PassportKindCurateBar({
           Object.keys(nextLines).length > 0 ? nextLines : undefined,
         kindMomentOrder: {
           ...passportCurations?.kindMomentOrder,
-          [kind]: res.orderedIds,
+          [kind]: mergedOrder,
         },
         kindBlurbs:
           Object.keys(nextBlurbs).length > 0 ? nextBlurbs : undefined,

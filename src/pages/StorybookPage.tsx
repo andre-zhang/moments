@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useLocation, useSearchParams } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import { PageHeader } from '../components/PageHeader'
 import { StorybookTourView } from '../components/storybook/StorybookTourView'
 import {
@@ -104,14 +104,7 @@ export function StorybookPage() {
 
   return (
     <div className="page storybook-picker-page">
-      <PageHeader
-        preTitle={
-          <Link to="/" className="storybook-back">
-            ← Journal
-          </Link>
-        }
-        title="Storybook"
-      />
+      <PageHeader title="Storybook" />
 
       <div className="storybook-picker-card">
         <div className="storybook-mode-row">
@@ -174,7 +167,7 @@ export function StorybookPage() {
 
         <button
           type="button"
-          className="btn-primary storybook-start"
+          className="btn-secondary storybook-start"
           onClick={start}
           disabled={
             mode === 'trip'

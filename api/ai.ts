@@ -59,6 +59,8 @@ function extractJsonObject(text: string): unknown {
   }
 }
 
+const CLAUDE_FETCH_MS = 52_000
+
 async function callClaude(
   system: string,
   user: string,
@@ -71,20 +73,33 @@ async function callClaude(
   const model =
     process.env.ANTHROPIC_MODEL?.trim() || 'claude-3-5-haiku-20241022'
 
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'x-api-key': key,
-      'anthropic-version': ANTHROPIC_VERSION,
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      model,
-      max_tokens: maxTokens,
-      system,
-      messages: [{ role: 'user', content: user }],
-    }),
-  })
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), CLAUDE_FETCH_MS)
+  let res: Response
+  try {
+    res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      signal: controller.signal,
+      headers: {
+        'x-api-key': key,
+        'anthropic-version': ANTHROPIC_VERSION,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: maxTokens,
+        system,
+        messages: [{ role: 'user', content: user }],
+      }),
+    })
+  } catch (e) {
+    if (e instanceof Error && e.name === 'AbortError') {
+      throw new Error('Anthropic request timed out')
+    }
+    throw e
+  } finally {
+    clearTimeout(timeout)
+  }
 
   if (!res.ok) {
     const t = await res.text()
@@ -295,7 +310,7 @@ Return a JSON object with exactly two keys: "stampDetails" and "yearCards".
       const raw = await callClaude(
         `${TONE_SYSTEM}\n\n${JSON_OUTPUT_RULES}`,
         user,
-        1800
+        1400
       )
       let parsed: unknown
       try {
