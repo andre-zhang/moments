@@ -1,10 +1,13 @@
 @import 'leaflet/dist/leaflet.css';
 @import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
 :root {
   --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   /** Reserved for Storybook hero titles only */
   --font-storybook: Marcellus, Georgia, 'Times New Roman', serif;
+  /** Passport stamp-book headings only (not Storybook) */
+  --font-passport-stamp: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
   font-family: var(--font-sans);
   /* Type scale — use for hierarchy across neutral pages */
   --text-xs: 0.72rem;
@@ -17,20 +20,29 @@
   --heading-card: 1.28rem;
   --weight-page: 600;
   --weight-card: 600;
-  --bg: #d9d9d9;
-  --bg-elevated: #f5f5f5;
-  --panel: #ffffff;
-  --panel-muted: #efefef;
-  --text: #111111;
-  --text-secondary: #3a3a3a;
-  --muted: #5c5c5c;
+  /**
+   * App shell — one neutral “studio” everywhere except Passport stamp book + Storybook.
+   * Surfaces sit on a warm canvas so cards read as one family.
+   */
+  --app-canvas: #e8e6e2;
+  --app-surface: #faf9f6;
+  --app-surface-muted: #f0eeeb;
+  --app-line: #d4d1cb;
+  --app-line-strong: #a8a49d;
+  --bg: var(--app-canvas);
+  --bg-elevated: var(--app-surface-muted);
+  --panel: var(--app-surface);
+  --panel-muted: var(--app-surface-muted);
+  --text: #171717;
+  --text-secondary: #3c3a37;
+  --muted: #5c5a56;
   --accent: #6d28d9;
   --accent-hover: #5b21b6;
   --accent-soft: rgb(109 40 217 / 11%);
   --accent-2: #0f766e;
   --accent-2-soft: rgb(15 118 110 / 8%);
-  --line: #c2c2c2;
-  --line-strong: #949494;
+  --line: var(--app-line);
+  --line-strong: var(--app-line-strong);
   --danger: #b91c1c;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 6%);
   --shadow-md: 0 4px 14px rgb(0 0 0 / 8%);
@@ -63,7 +75,7 @@ body,
 }
 
 body {
-  background: var(--panel);
+  background: var(--app-canvas);
   color: var(--text);
   line-height: 1.55;
   font-size: 1rem;
@@ -261,7 +273,7 @@ a:hover {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  background: var(--panel);
+  background: var(--app-canvas);
 }
 
 .shell-body > * {
@@ -291,7 +303,7 @@ a:hover {
   flex: 1 1 auto;
   min-height: 0;
   padding: var(--page-pad-y-top) var(--page-pad-x) var(--page-pad-y-bottom);
-  background: var(--panel);
+  background: var(--app-canvas);
   border-radius: 0;
   border: none;
   box-shadow: none;
@@ -352,9 +364,23 @@ a:hover {
   position: relative;
   padding: var(--page-pad-y-top) var(--page-pad-x) var(--page-pad-y-bottom);
   padding-left: calc(var(--page-pad-x) + 0.55rem);
-  background: #f0e8dc;
+  color: #1f2933;
+  background-color: #e4d5c0;
+  background-image:
+    radial-gradient(ellipse 100% 55% at 50% -8%, rgb(255 252 245 / 0.55), transparent 52%),
+    linear-gradient(165deg, rgb(255 250 240 / 0.4) 0%, transparent 42%),
+    repeating-linear-gradient(
+      0deg,
+      rgb(44 61 92 / 0.04),
+      rgb(44 61 92 / 0.04) 1px,
+      transparent 1px,
+      transparent 2px
+    );
   border-color: #2c3d5c;
-  box-shadow: none;
+  box-shadow:
+    inset 0 0 0 1px rgb(184 134 11 / 0.45),
+    inset 0 0 0 5px rgb(44 61 92 / 0.06),
+    inset 0 0 120px rgb(101 67 33 / 0.07);
 }
 
 .passport-page--book.page::before {
@@ -369,7 +395,7 @@ a:hover {
 }
 
 .passport-page--simple.page {
-  background: var(--panel);
+  background: var(--app-canvas);
   border-color: var(--line);
   box-shadow: var(--shadow-sheet);
   padding: var(--page-pad-y-top) var(--page-pad-x) var(--page-pad-y-bottom);
@@ -419,6 +445,17 @@ a:hover {
 
 .passport-page--book .passport-view-toggle-label {
   color: #5c4a32;
+}
+
+.passport-page--book .passport-view-toggle-seg {
+  border: 2px double rgb(44 61 92 / 0.32);
+  background: rgb(255 252 245 / 0.88);
+}
+
+.passport-page--book .passport-stat-num {
+  font-family: var(--font-passport-stamp);
+  font-weight: 700;
+  color: #1a3052;
 }
 
 .passport-view-toggle-seg {
@@ -3370,6 +3407,20 @@ a:hover {
   border-radius: 2px;
 }
 
+.passport-page--book .passport-hero--book::after {
+  height: 7px;
+  border-radius: 1px;
+  background: linear-gradient(
+    to bottom,
+    #c9a227 0%,
+    #b8860b 38%,
+    transparent 38%,
+    transparent 55%,
+    #8b6914 55%,
+    #5c4812 100%
+  );
+}
+
 .passport-cover {
   background: transparent;
   border: none;
@@ -3397,6 +3448,14 @@ a:hover {
   font-weight: 600;
   letter-spacing: 0.04em;
   color: #1a2744;
+}
+
+.passport-page--book .passport-title {
+  font-family: var(--font-passport-stamp);
+  font-weight: 700;
+  font-size: clamp(2.15rem, 5vw, 2.85rem);
+  letter-spacing: 0.03em;
+  color: #132032;
 }
 
 .passport-stat {
@@ -3461,6 +3520,28 @@ a:hover {
   padding-bottom: 1.35rem;
 }
 
+/* Stamp book only — panels read as pasted ledgers, not app cards */
+.passport-discover--book .passport-pane {
+  border: 2px double rgb(44 61 92 / 0.38);
+  border-radius: 2px;
+  background: linear-gradient(165deg, #fffdf6 0%, #f4ead4 55%, #efe2cc 100%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.55);
+}
+
+.passport-discover--book .passport-section-head {
+  border-bottom-color: rgb(44 61 92 / 0.28);
+}
+
+.passport-discover--book .yir-card {
+  border: 2px double rgb(44 61 92 / 0.32);
+  border-radius: 2px;
+  background: linear-gradient(180deg, #fffdf8 0%, #f6ecd8 100%);
+}
+
+.passport-discover--book .yir-card::before {
+  background: #7a5c1a;
+}
+
 .discover-section.passport-pane {
   border-bottom: none;
   margin-bottom: 0;
@@ -3486,7 +3567,11 @@ a:hover {
 }
 
 .passport-page--book .passport-section-head h2 {
-  font-size: 1.18rem;
+  font-family: var(--font-passport-stamp);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #152638;
 }
 
 /* One rail accent for every Passport subsection (book + simple) */
