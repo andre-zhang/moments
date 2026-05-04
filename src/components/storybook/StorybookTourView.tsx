@@ -152,9 +152,6 @@ function StorybookMemoryVeil({
         onClick={onClose}
       />
       <div className="storybook-veil-panel">
-        <div className="storybook-veil-ornament" aria-hidden>
-          <span className="storybook-veil-sigil">✦</span>
-        </div>
         <button
           type="button"
           className="storybook-veil-close"
@@ -346,11 +343,10 @@ export function StorybookTourView({
       {phase === 'intro' ? (
         <div className="storybook-intro">
           <div className="storybook-intro-card">
-            <p className="storybook-intro-sigil" aria-hidden>
-              ✦
-            </p>
             <h1 className="storybook-intro-title">Storybook</h1>
-            <p className="storybook-intro-epigraph">Once upon your travels…</p>
+            <p className="storybook-intro-epigraph">
+              Flip through the moments you marked along the way.
+            </p>
           </div>
         </div>
       ) : (
@@ -383,9 +379,9 @@ export function StorybookTourView({
                 <Polyline
                   positions={linePositions}
                   pathOptions={{
-                    color: '#c9a227',
+                    color: '#22626e',
                     weight: 3,
-                    opacity: 0.75,
+                    opacity: 0.72,
                     dashArray: '10 12',
                     lineCap: 'round',
                     lineJoin: 'round',
@@ -488,13 +484,7 @@ export function StorybookTourView({
                     </div>
                   ) : (
                     <p className="storybook-chapter-mark" aria-live="polite">
-                      <span className="storybook-chapter-glyph" aria-hidden>
-                        ✧
-                      </span>
                       {slide + 1} / {steps.length}
-                      <span className="storybook-chapter-glyph" aria-hidden>
-                        ✧
-                      </span>
                     </p>
                   )}
                   <button
