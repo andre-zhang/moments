@@ -1,12 +1,11 @@
 import { apiUrl, isNeonSyncEnabled, syncHeaders } from './syncEnv'
 
 function looksLikeHtmlErrorPage(s: string): boolean {
-  const t = s.slice(0, 400).toLowerCase()
+  const t = s.slice(0, 500).toLowerCase()
   return (
     t.includes('<!doctype') ||
     t.includes('<html') ||
-    t.includes('function_invocation_failed') ||
-    t.includes('an error occurred')
+    t.includes('function_invocation_failed')
   )
 }
 
@@ -21,7 +20,7 @@ async function readJsonBody(r: Response): Promise<unknown> {
   } catch {
     if (looksLikeHtmlErrorPage(trimmed)) {
       throw new Error(
-        `Server error (HTTP ${r.status}). The AI route may have timed out or crashed — try again with fewer years of data, or check deployment logs.`
+        `Server error (HTTP ${r.status}): the /api/ai function did not return JSON (often a crash or timeout on Vercel). Check the deployment function logs. On the project, set ANTHROPIC_API_KEY, optional ANTHROPIC_MODEL (e.g. claude-haiku-4-5-20251001), and ensure server MOMENTS_SYNC_SECRET matches your VITE_MOMENTS_SYNC_SECRET.`
       )
     }
     const preview = trimmed.slice(0, 180).replace(/\s+/g, ' ')

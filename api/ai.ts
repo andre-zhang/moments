@@ -1,3 +1,4 @@
+import { text } from 'node:stream/consumers'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { requireAuth } from './lib/syncAuth'
 
@@ -61,6 +62,36 @@ function extractJsonObject(text: string): unknown {
 
 const CLAUDE_FETCH_MS = 52_000
 
+/** Default if ANTHROPIC_MODEL is unset (Haiku 3.5 id may be retired on the API). */
+const DEFAULT_ANTHROPIC_MODEL = 'claude-haiku-4-5-20251001'
+
+function applyCors(req: VercelRequest, res: VercelResponse) {
+  const origin = req.headers.origin
+  if (typeof origin === 'string' && origin.length > 0) {
+    res.setHeader('Access-Control-Allow-Origin', origin)
+    res.setHeader('Vary', 'Origin')
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+  }
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Content-Type, x-moments-sync-secret'
+  )
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
+}
+
+async function readJsonRequestBody(req: VercelRequest): Promise<unknown> {
+  const raw = req.body
+  if (raw !== undefined && raw !== null && raw !== '') {
+    if (typeof raw === 'string') return JSON.parse(raw) as unknown
+    if (Buffer.isBuffer(raw)) return JSON.parse(raw.toString('utf8')) as unknown
+    return raw as unknown
+  }
+  const t = await text(req)
+  if (!t.trim()) throw new Error('Missing JSON body')
+  return JSON.parse(t) as unknown
+}
+
 async function callClaude(
   system: string,
   user: string,
@@ -71,7 +102,7 @@ async function callClaude(
     throw new Error('ANTHROPIC_API_KEY is not configured')
   }
   const model =
-    process.env.ANTHROPIC_MODEL?.trim() || 'claude-3-5-haiku-20241022'
+    process.env.ANTHROPIC_MODEL?.trim() || DEFAULT_ANTHROPIC_MODEL
 
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), CLAUDE_FETCH_MS)
@@ -174,47 +205,52 @@ ${extras.length ? `Other details from the user:\n${extras.map((e) => `- ${e}`).j
 Write exactly 2 or 3 lines. Each line must start with "- " (hyphen and space). Sound like a quick text to a friend with casual ideas — not hype, not a review article. These are guesses and tips, not facts; keep wording humble (e.g. "might be worth", "if you like…"). No intro line before the bullets. No closing line after. Plain text only.`
 }
 
-function sendJson(res: VercelResponse, status: number, payload: unknown) {
+function sendJson(
+  req: VercelRequest,
+  res: VercelResponse,
+  status: number,
+  payload: unknown
+) {
   if (res.headersSent) return
-  res.status(status)
-  res.setHeader('Content-Type', 'application/json; charset=utf-8')
-  res.end(JSON.stringify(payload))
+  applyCors(req, res)
+  res.status(status).json(payload)
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  applyCors(req, res)
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end()
+  }
+
   try {
     if (req.method !== 'POST') {
-      res.setHeader('Allow', 'POST')
-      return sendJson(res, 405, { error: 'Method not allowed' })
+      res.setHeader('Allow', 'POST, OPTIONS')
+      return sendJson(req, res, 405, { error: 'Method not allowed' })
     }
 
     if (!requireAuth(req)) {
-      return sendJson(res, 401, { error: 'Unauthorized' })
+      return sendJson(req, res, 401, { error: 'Unauthorized' })
     }
 
     if (!process.env.ANTHROPIC_API_KEY?.trim()) {
-      return sendJson(res, 503, {
+      return sendJson(req, res, 503, {
         error: 'AI is not configured (ANTHROPIC_API_KEY)',
       })
     }
 
     let body: unknown
     try {
-      const raw = req.body
-      if (raw == null) {
-        return sendJson(res, 400, { error: 'Missing JSON body' })
+      body = await readJsonRequestBody(req)
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Invalid body'
+      if (msg === 'Missing JSON body') {
+        return sendJson(req, res, 400, { error: 'Missing JSON body' })
       }
-      if (typeof raw === 'string') {
-        body = JSON.parse(raw) as unknown
-      } else {
-        body = raw
-      }
-    } catch {
-      return sendJson(res, 400, { error: 'Invalid JSON body' })
+      return sendJson(req, res, 400, { error: 'Invalid JSON body' })
     }
 
     if (typeof body !== 'object' || body === null || Array.isArray(body)) {
-      return sendJson(res, 400, { error: 'JSON body must be an object' })
+      return sendJson(req, res, 400, { error: 'JSON body must be an object' })
     }
 
     const b = body as { action?: string }
@@ -235,7 +271,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const title = p.title?.trim()
       const destinationName = p.destinationName?.trim()
       if (!kind || !title || !destinationName) {
-        return sendJson(res, 400, {
+        return sendJson(req, res, 400, {
           error: 'kind, title, destinationName required',
         })
       }
@@ -262,7 +298,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             : undefined,
       })
       const text = await callClaude(TONE_SYSTEM, user, 280)
-      return sendJson(res, 200, { text })
+      return sendJson(req, res, 200, { text })
     }
 
     if (b.action === 'passport_curate') {
@@ -275,7 +311,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const yearCards = p.yearCards
       const digest = p.contextDigest?.trim() ?? ''
       if (!Array.isArray(stamps) || !yearCards || typeof yearCards !== 'object') {
-        return sendJson(res, 400, { error: 'stamps[] and yearCards required' })
+        return sendJson(req, res, 400, { error: 'stamps[] and yearCards required' })
       }
 
       const stampLines = stamps
@@ -316,13 +352,13 @@ Return a JSON object with exactly two keys: "stampDetails" and "yearCards".
       try {
         parsed = extractJsonObject(raw)
       } catch {
-        return sendJson(res, 502, { error: 'Model did not return valid JSON' })
+        return sendJson(req, res, 502, { error: 'Model did not return valid JSON' })
       }
       const obj = parsed as {
         stampDetails?: Record<string, unknown>
         yearCards?: Record<string, unknown>
       }
-      return sendJson(res, 200, {
+      return sendJson(req, res, 200, {
         stampDetails: obj.stampDetails ?? {},
         yearCards: obj.yearCards ?? {},
       })
@@ -348,7 +384,7 @@ Return a JSON object with exactly two keys: "stampDetails" and "yearCards".
         !['flight', 'hotel', 'restaurant', 'sight', 'note'].includes(kind) ||
         !Array.isArray(moments)
       ) {
-        return sendJson(res, 400, { error: 'kind and moments[] required' })
+        return sendJson(req, res, 400, { error: 'kind and moments[] required' })
       }
 
       const ids = moments.map((m) => m.id)
@@ -385,7 +421,7 @@ Rules:
       try {
         parsed = extractJsonObject(raw)
       } catch {
-        return sendJson(res, 502, { error: 'Model did not return valid JSON' })
+        return sendJson(req, res, 502, { error: 'Model did not return valid JSON' })
       }
       const obj = parsed as {
         momentLines?: Record<string, unknown>
@@ -416,17 +452,32 @@ Rules:
       const kindBlurb =
         typeof obj.kindBlurb === 'string' ? obj.kindBlurb.trim().slice(0, 160) : ''
 
-      return sendJson(res, 200, {
+      return sendJson(req, res, 200, {
         momentLines: linesOut,
         orderedIds: orderedIds ?? ids,
         kindBlurb: kindBlurb || undefined,
       })
     }
 
-    return sendJson(res, 400, { error: 'Unknown action' })
+    return sendJson(req, res, 400, { error: 'Unknown action' })
   } catch (e) {
     console.error(e)
-    const msg = e instanceof Error ? e.message : 'AI request failed'
-    sendJson(res, 500, { error: msg })
+    let msg = e instanceof Error ? e.message : 'AI request failed'
+    if (msg.length > 4000) msg = msg.slice(0, 4000)
+    try {
+      sendJson(req, res, 500, { error: msg })
+    } catch (e2) {
+      console.error(e2)
+      if (!res.headersSent) {
+        try {
+          applyCors(req, res)
+          res.statusCode = 500
+          res.setHeader('Content-Type', 'application/json; charset=utf-8')
+          res.end(JSON.stringify({ error: 'Internal server error' }))
+        } catch {
+          /* ignore */
+        }
+      }
+    }
   }
 }
