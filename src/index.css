@@ -888,6 +888,208 @@ a:hover {
   align-items: stretch;
 }
 
+/* Masthead / title-card photo (bundled sample roll or uploads) */
+.page-header-shell--banner-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border-bottom: none;
+  padding: 0;
+  margin-bottom: var(--space-section);
+  min-height: clamp(10.5rem, 26vw, 15.5rem);
+  box-shadow: var(--shadow-sm);
+}
+
+.page-header-shell--banner-hero.page-header-shell--toolbar-below-banner-split {
+  margin-bottom: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.page-header-banner-stack {
+  margin-bottom: var(--space-section);
+  border-bottom: 1px solid color-mix(in srgb, var(--line-strong) 62%, white);
+  padding-bottom: 1.1rem;
+}
+
+.page-header-shell-toolbar-band {
+  margin-top: 0;
+  padding: 0.72rem 0.95rem;
+  background: color-mix(in srgb, var(--panel-muted) 82%, white 18%);
+  border: 1px solid color-mix(in srgb, var(--line) 92%, white);
+  border-top: none;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.page-header-shell-toolbar-band .passport-view-toggle--toolbar {
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.page-header-banner-bg,
+.page-header-banner-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.page-header-banner-bg {
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.88);
+  transform: scale(1.02);
+}
+
+.page-header-banner-scrim {
+  background: linear-gradient(
+    115deg,
+    rgb(8 18 32 / 0.72) 0%,
+    rgb(8 18 32 / 0.38) 42%,
+    rgb(8 18 32 / 0.2) 100%
+  );
+}
+
+.page-header-shell__layer--banner {
+  position: relative;
+  z-index: 1;
+  max-width: min(40rem, 100%);
+  padding: clamp(1.15rem, 3vw, 1.65rem) clamp(1rem, 2.6vw, 1.35rem) 2.6rem;
+}
+
+.page-header-shell--banner-hero .page-title,
+.page-header-shell--banner-hero .page-header-shell__layer--banner .page-title {
+  margin: 0;
+  color: rgb(252 253 255 / 0.98);
+  text-shadow: 0 2px 18px rgb(6 14 26 / 0.55);
+}
+
+.page-header-shell--banner-hero .page-header-subtitle,
+.page-header-shell--banner-hero .page-subtitle {
+  color: rgb(235 242 252 / 0.9);
+  text-shadow: 0 1px 10px rgb(6 14 26 / 0.45);
+}
+
+.page-header-shell--banner-hero .passport-stat,
+.page-header-shell--banner-hero .passport-stat-label {
+  color: rgb(230 238 248 / 0.92);
+}
+
+.page-header-shell--banner-hero .passport-stat-num {
+  color: rgb(248 252 255 / 0.98);
+}
+
+.page-header-shell--has-actions.page-header-shell--banner-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+}
+
+.page-header-shell__actions--on-banner {
+  position: relative;
+  z-index: 1;
+  align-self: flex-end;
+  padding: 0 clamp(1rem, 2.6vw, 1.35rem) 1.15rem;
+}
+
+.page-header-banner-caption {
+  position: absolute;
+  right: clamp(0.75rem, 2vw, 1rem);
+  bottom: 0.55rem;
+  left: auto;
+  z-index: 1;
+  margin: 0;
+  max-width: 70%;
+  text-align: right;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(245 250 255 / 0.92);
+  text-shadow: 0 1px 3px rgb(6 14 26 / 0.65);
+}
+
+.places-page .page-header-shell--banner-hero .page-header-banner-caption {
+  text-align: left;
+  left: clamp(0.85rem, 2.2vw, 1.15rem);
+  right: auto;
+  max-width: 85%;
+}
+
+/* Journal — empty list title card */
+.journal-empty-banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  margin: 0.5rem 0 var(--space-section);
+  min-height: clamp(12rem, 34vw, 17rem);
+  box-shadow: var(--shadow-sm);
+}
+
+.journal-empty-banner__bg,
+.journal-empty-banner__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.journal-empty-banner__bg {
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.88);
+  transform: scale(1.02);
+}
+
+.journal-empty-banner__scrim {
+  background: linear-gradient(
+    to top,
+    rgb(8 18 32 / 0.82) 0%,
+    rgb(8 18 32 / 0.35) 55%,
+    rgb(8 18 32 / 0.12) 100%
+  );
+}
+
+.journal-empty-banner__content {
+  position: relative;
+  z-index: 1;
+  padding: clamp(1.35rem, 4vw, 2rem) clamp(1.1rem, 3vw, 1.5rem) 3rem;
+  max-width: min(34rem, 100%);
+}
+
+.journal-empty-banner__title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(1.2rem, 2.8vw, 1.45rem);
+  font-weight: 700;
+  color: rgb(252 253 255 / 0.98);
+  text-shadow: 0 2px 14px rgb(6 14 26 / 0.5);
+}
+
+.journal-empty-banner__text {
+  margin: 0.6rem 0 0;
+  font-size: 0.92rem;
+  line-height: var(--leading-body);
+  color: rgb(232 239 248 / 0.92);
+  text-shadow: 0 1px 8px rgb(6 14 26 / 0.4);
+}
+
+.journal-empty-banner__caption {
+  position: absolute;
+  left: clamp(0.85rem, 2.2vw, 1.1rem);
+  bottom: 0.55rem;
+  z-index: 1;
+  margin: 0;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(245 250 255 / 0.88);
+  text-shadow: 0 1px 3px rgb(6 14 26 / 0.65);
+}
+
 .passport-view-toggle--toolbar {
   flex-direction: row;
   align-items: center;
@@ -1448,82 +1650,6 @@ a:hover {
   margin: 0.35rem 0 1rem;
   color: var(--muted);
   font-size: 0.9rem;
-}
-
-.ambient-scenic-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.65rem;
-  margin: -0.55rem 0 1.1rem;
-}
-
-.ambient-scenic {
-  position: relative;
-  margin: 0;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--line) 82%, white);
-  box-shadow: var(--shadow-sm);
-  min-height: 9.5rem;
-  background: color-mix(in srgb, var(--panel-muted) 70%, #d2dee9);
-}
-
-.ambient-scenic__img {
-  width: 100%;
-  height: 100%;
-  min-height: inherit;
-  object-fit: cover;
-  display: block;
-  filter: saturate(0.82) contrast(0.94);
-  transform: scale(1.02);
-}
-
-.ambient-scenic::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgb(13 29 47 / 0.45) 0%,
-    rgb(13 29 47 / 0.14) 38%,
-    rgb(13 29 47 / 0.06) 100%
-  );
-  pointer-events: none;
-}
-
-.ambient-scenic__cap {
-  position: absolute;
-  left: 0.55rem;
-  bottom: 0.5rem;
-  z-index: 1;
-  margin: 0;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgb(245 250 255 / 0.95);
-  text-shadow: 0 1px 2px rgb(9 20 34 / 0.65);
-}
-
-.ambient-scenic--compact {
-  min-height: 8.1rem;
-}
-
-.ambient-scenic--passport {
-  margin-top: 0.75rem;
-  max-width: 18.5rem;
-  min-height: 7.2rem;
-}
-
-.ambient-scenic--empty {
-  max-width: 24rem;
-  min-height: 10rem;
-}
-
-@media (min-width: 780px) {
-  .ambient-scenic-row {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
 .memory-card-layout {
@@ -3590,6 +3716,81 @@ a:hover {
   padding-bottom: 1.25rem;
   border-bottom: none;
   position: relative;
+}
+
+.passport-hero--with-banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  min-height: clamp(11rem, 30vw, 16rem);
+  padding-bottom: 0;
+}
+
+.passport-hero--with-banner.passport-hero--book {
+  padding-bottom: 0;
+}
+
+.passport-hero-banner-bg,
+.passport-hero-banner-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.passport-hero-banner-bg {
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.88);
+  transform: scale(1.03);
+}
+
+.passport-hero-banner-scrim {
+  background: linear-gradient(
+    125deg,
+    rgb(255 252 246 / 0.92) 0%,
+    rgb(255 252 246 / 0.45) 46%,
+    rgb(8 18 32 / 0.18) 100%
+  );
+}
+
+.passport-cover--on-banner {
+  position: relative;
+  z-index: 1;
+  padding: clamp(1rem, 2.4vw, 1.35rem) clamp(0.85rem, 2vw, 1.1rem) 2.75rem;
+}
+
+.passport-page--book .passport-hero--with-banner .passport-kicker {
+  color: rgb(72 60 42 / 0.95);
+  text-shadow: 0 1px 0 rgb(255 252 246 / 0.5);
+}
+
+.passport-page--book .passport-hero--with-banner .passport-title {
+  color: #132032;
+  text-shadow: 0 1px 12px rgb(255 252 246 / 0.55);
+}
+
+.passport-page--book .passport-hero--with-banner .passport-stat,
+.passport-page--book .passport-hero--with-banner .passport-stat-label {
+  color: #3d4a5c;
+}
+
+.passport-page--book .passport-hero--with-banner .passport-stat-num {
+  color: #1e3a5f;
+  text-shadow: none;
+}
+
+.passport-hero-banner-caption {
+  position: absolute;
+  right: clamp(0.65rem, 1.8vw, 0.95rem);
+  bottom: 0.5rem;
+  z-index: 1;
+  margin: 0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: rgb(40 48 58 / 0.85);
 }
 
 .passport-hero--book::after {

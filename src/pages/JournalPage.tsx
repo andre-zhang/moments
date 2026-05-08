@@ -4,7 +4,7 @@ import { PageHeader } from '../components/PageHeader'
 import { PhotoStrip } from '../components/PhotoStrip'
 import { SelectWithPlus } from '../components/SelectWithPlus'
 import { IconDots, IconPencil, IconTrash } from '../components/Icons'
-import { AmbientScenicTile } from '../components/AmbientScenicTile'
+import { getPageDemoBanner } from '../lib/demoSamplePhotos'
 import {
   friendChipStyle,
   selectionListOptionStyle,
@@ -122,6 +122,11 @@ export function JournalPage() {
     })
   }, [filtered])
 
+  const journalEmptyBanner = useMemo(
+    () => getPageDemoBanner('journal-empty'),
+    []
+  )
+
   const surprise = () => {
     if (filtered.length === 0) return
     const m = filtered[Math.floor(Math.random() * filtered.length)]
@@ -218,15 +223,28 @@ export function JournalPage() {
       </details>
 
       {filtered.length === 0 ? (
-        <div className="empty-state">
-          <p className="empty-state-title">Nothing in this view</p>
-          <p className="empty-state-text">
-            {trips.length === 0
-              ? 'Open Places & people to add trips and places, then add a moment from +.'
-              : 'Add a moment or clear the trip filter.'}
-          </p>
-          <AmbientScenicTile seed="journal-empty" className="ambient-scenic--empty" />
-        </div>
+        <section
+          className="journal-empty-banner"
+          aria-labelledby="journal-empty-title"
+        >
+          <div
+            className="journal-empty-banner__bg"
+            style={{ backgroundImage: `url(${journalEmptyBanner.src})` }}
+            aria-hidden
+          />
+          <div className="journal-empty-banner__scrim" aria-hidden />
+          <div className="journal-empty-banner__content">
+            <p id="journal-empty-title" className="journal-empty-banner__title">
+              Nothing in this view
+            </p>
+            <p className="journal-empty-banner__text">
+              {trips.length === 0
+                ? 'Open Places & people to add trips and places, then add a moment from +.'
+                : 'Add a moment or clear the trip filter.'}
+            </p>
+          </div>
+          <p className="journal-empty-banner__caption">{journalEmptyBanner.caption}</p>
+        </section>
       ) : (
         <ul className="memory-list">
           {filtered.map((m) => (

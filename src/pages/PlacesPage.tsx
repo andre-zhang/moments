@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { PageHeader } from '../components/PageHeader'
 import { IconPencil } from '../components/Icons'
-import { AmbientScenicTile } from '../components/AmbientScenicTile'
+import { getPageDemoBanner } from '../lib/demoSamplePhotos'
 import {
   TRIPLESS_DEFAULT_DEST_ID,
   TRIPLESS_TRIP_ID,
@@ -39,6 +39,8 @@ export function PlacesPage() {
   )
 
   const tripsSorted = sortTripsForDisplay(state.trips)
+
+  const placesBanner = useMemo(() => getPageDemoBanner('places-hero'), [])
 
   const destRows = useMemo(() => {
     const order = new Map(tripsSorted.map((t, i) => [t.id, i]))
@@ -94,11 +96,15 @@ export function PlacesPage() {
 
   return (
     <div className="page places-page">
-      <PageHeader className="places-hero" title="Places & people" />
-      <div className="ambient-scenic-row" aria-hidden>
-        <AmbientScenicTile seed="places-a" className="ambient-scenic--compact" />
-        <AmbientScenicTile seed="places-b" className="ambient-scenic--compact" />
-      </div>
+      <PageHeader
+        className="places-hero"
+        title="Places & people"
+        banner={{
+          src: placesBanner.src,
+          caption: placesBanner.caption,
+          alt: placesBanner.alt,
+        }}
+      />
 
       <div className="places-merged-stack">
         <section className="places-merged-panel">

@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useMemo, useEffect, useState } from 'react'
 import { DiscoverPanel } from '../components/DiscoverPanel'
 import { PageHeader } from '../components/PageHeader'
 import { PassportCurateBar } from '../components/PassportCurateBar'
-import { AmbientScenicTile } from '../components/AmbientScenicTile'
+import { getPageDemoBanner } from '../lib/demoSamplePhotos'
 import {
   PASSPORT_VIEW_STORAGE_KEY,
   readPassportViewMode,
@@ -27,6 +27,9 @@ export function PassportPage() {
   }, [viewMode])
 
   const book = viewMode === 'book'
+
+  const bookBanner = useMemo(() => getPageDemoBanner('passport-book'), [])
+  const simpleBanner = useMemo(() => getPageDemoBanner('passport-simple'), [])
 
   const viewToggleInner = (
     <>
@@ -81,8 +84,15 @@ export function PassportPage() {
       className={`page passport-page${book ? ' passport-page--book' : ' passport-page--simple'}`}
     >
       {book ? (
-        <header className="passport-hero page-hero passport-hero--book">
-          <div className="passport-cover">
+        <header className="passport-hero page-hero passport-hero--book passport-hero--with-banner">
+          <div
+            className="passport-hero-banner-bg"
+            style={{ backgroundImage: `url(${bookBanner.src})` }}
+            role="img"
+            aria-label={bookBanner.alt}
+          />
+          <div className="passport-hero-banner-scrim" aria-hidden />
+          <div className="passport-cover passport-cover--on-banner">
             <div className="passport-cover-top">
               <div className="passport-cover-text">
                 <p className="passport-kicker">Official travel record</p>
@@ -100,19 +110,21 @@ export function PassportPage() {
                   </p>
                 )}
                 <PassportCurateBar />
-                <AmbientScenicTile
-                  seed="passport-book"
-                  className="ambient-scenic--passport"
-                />
               </div>
               {viewToggleRail}
             </div>
           </div>
+          <p className="passport-hero-banner-caption">{bookBanner.caption}</p>
         </header>
       ) : (
         <PageHeader
           title="Passport"
           toolbarBelow
+          banner={{
+            src: simpleBanner.src,
+            caption: simpleBanner.caption,
+            alt: simpleBanner.alt,
+          }}
           subtitle={
             <>
               {stampy ? (
@@ -128,10 +140,6 @@ export function PassportPage() {
                 </p>
               )}
               <PassportCurateBar />
-              <AmbientScenicTile
-                seed="passport-simple"
-                className="ambient-scenic--passport"
-              />
             </>
           }
           actions={viewToggleToolbar}

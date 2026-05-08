@@ -45,6 +45,7 @@ import {
   prunePassportCurations,
   type PassportAiCurations,
 } from '../lib/passportCurations'
+import { ensureDemoSamplePhotosImported } from '../lib/ensureDemoSamplePhotos'
 import { isNeonSyncEnabled } from '../lib/syncEnv'
 import { getDemoPersistedState, seedIfEmpty } from './seed'
 
@@ -430,6 +431,9 @@ export function TravelProvider({ children }: { children: ReactNode }) {
       }
       if (!cancelled) {
         persistReady.current = true
+        if (!isNeonSyncEnabled()) {
+          void ensureDemoSamplePhotosImported()
+        }
       }
     }
     void go()
@@ -553,6 +557,9 @@ export function TravelProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'importState', payload: demo })
     if (remotePersistenceActive()) {
       await flushRemoteSaveNow(demo).catch(() => markRemotePersistenceFailed())
+    }
+    if (!isNeonSyncEnabled()) {
+      await ensureDemoSamplePhotosImported()
     }
   }, [])
 
