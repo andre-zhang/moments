@@ -980,17 +980,18 @@ a:hover {
 .page-title {
   font-family: var(--font-sans);
   margin: 0;
-  font-size: var(--heading-page);
-  font-weight: var(--weight-page);
-  letter-spacing: -0.035em;
-  line-height: 1.22;
+  font-size: clamp(1.85rem, 3.9vw, 2.35rem);
+  font-weight: 700;
+  letter-spacing: -0.038em;
+  line-height: 1.15;
   color: var(--text);
+  text-wrap: balance;
 }
 
 .page-subtitle {
-  margin: 0.45rem 0 0;
+  margin: 0.62rem 0 0;
   max-width: min(42rem, 100%);
-  font-size: var(--text-md);
+  font-size: 0.9rem;
   line-height: var(--leading-body);
   color: var(--muted);
   font-weight: 400;
@@ -1244,11 +1245,12 @@ a:hover {
   margin: 0 0 0.85rem;
   padding-bottom: 0.55rem;
   border-bottom: 1px solid color-mix(in srgb, var(--line) 86%, white);
-  font-size: var(--heading-section);
-  font-weight: var(--weight-section);
-  letter-spacing: -0.02em;
-  text-transform: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
   color: var(--text);
+  opacity: 0.9;
 }
 
 .toolbar-row {
@@ -1265,10 +1267,10 @@ a:hover {
 }
 
 .toolbar-label {
-  font-size: 0.8rem;
-  font-weight: 500;
-  text-transform: none;
-  letter-spacing: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
   color: var(--muted);
 }
 
@@ -1718,9 +1720,9 @@ a:hover {
 }
 
 .lede {
-  margin: 0.35rem 0 0;
+  margin: 0.48rem 0 0;
   color: var(--muted);
-  font-size: var(--text-body);
+  font-size: 0.91rem;
   line-height: var(--leading-body);
   max-width: min(40rem, 100%);
 }
@@ -1796,19 +1798,25 @@ a:hover {
 
 .memory-card-main h2 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 700;
+  line-height: 1.24;
+  letter-spacing: -0.015em;
+  color: var(--text);
 }
 
 .memory-meta {
-  margin: 0.25rem 0 0;
-  font-size: var(--text-sm);
+  margin: 0.33rem 0 0;
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   color: var(--muted);
+  text-transform: uppercase;
 }
 
 .memory-card .memory-body {
-  margin-top: 0.45rem;
-  font-size: var(--text-sm);
+  margin-top: 0.62rem;
+  font-size: 0.89rem;
   line-height: var(--leading-body);
   color: var(--text-secondary);
   opacity: 1;
@@ -3998,14 +4006,16 @@ a:hover {
 
 .mode-title {
   font-weight: 700;
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.09em;
   color: #1e293b;
 }
 
 .mode-count {
   font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: #64748b;
 }
 
