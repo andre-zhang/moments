@@ -41,9 +41,6 @@ export function TagChipPicker({
           )
         })}
       </div>
-      <span className="tag-picker-hint">
-        {selected.length}/{MAX_PER_CAT} selected
-      </span>
     </div>
   )
 }

@@ -5,8 +5,7 @@ import { friendChipStyle, tagChipStyle } from '../lib/chipStyles'
 import { formatDurationMinutes } from '../lib/flightDuration'
 import { KIND_EMOJI, KIND_LABEL } from '../lib/kindMeta'
 import { IconDots, IconMapPin, IconPencil, IconTrash } from './Icons'
-import { MemoryPlaceTips } from './MemoryPlaceTips'
-import { PhotoStrip } from './PhotoStrip'
+import { MemoryPhotoHero, PhotoStrip } from './PhotoStrip'
 
 function KindExtras({ memory }: { memory: Memory }) {
   if (memory.kind === 'flight' && memory.flightDetails) {
@@ -163,6 +162,7 @@ export function MemoryDetailRead({
 
   return (
     <div className={`memory-detail-read${stamp ? ' memory-detail-read--passport-stamp' : ''}`}>
+      <MemoryPhotoHero memoryId={memory.id} />
       <div className="memory-detail-read-head">
         {stamp ? (
           <div className="memory-kind-seal">
@@ -207,11 +207,7 @@ export function MemoryDetailRead({
 
       <KindExtras memory={memory} />
 
-      {variant !== 'passport-stamp' ? (
-        <MemoryPlaceTips memory={memory} destinationName={destName} />
-      ) : null}
-
-      <PhotoStrip memoryId={memory.id} />
+      <PhotoStrip memoryId={memory.id} skip={1} />
       {memory.body ? <p className="memory-detail-body">{memory.body}</p> : null}
       {memory.categoryTags &&
       Object.values(memory.categoryTags).some((a) => a?.length) ? (
@@ -258,7 +254,11 @@ export function MemoryDetailRead({
         </p>
       ) : null}
       <div className="memory-detail-actions">
-        <Link to={editHref} className="btn-primary btn-with-icon" title="Edit">
+        <Link
+          to={editHref}
+          className="btn-surface-ghost btn-with-icon"
+          title="Edit moment"
+        >
           <IconPencil className="btn-icon-svg" />
           <span>Edit</span>
         </Link>

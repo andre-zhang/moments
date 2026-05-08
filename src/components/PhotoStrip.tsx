@@ -13,21 +13,46 @@ function Thumb({ row }: { row: PhotoRow }) {
   return <img src={src} alt="" />
 }
 
+/** First photo as a title-card style masthead (sortIndex order = upload order). */
+export function MemoryPhotoHero({ memoryId }: { memoryId: string }) {
+  const [row, setRow] = useState<PhotoRow | null>(null)
+
+  useEffect(() => {
+    void listPhotosForMemory(memoryId).then((r) => setRow(r[0] ?? null))
+  }, [memoryId])
+
+  if (!row) return null
+
+  return (
+    <div className="memory-photo-hero" aria-hidden>
+      <div className="memory-photo-hero__bg">
+        <Thumb row={row} />
+      </div>
+      <div className="memory-photo-hero__scrim" />
+    </div>
+  )
+}
+
 /** Horizontal strip for detail / journal */
 export function PhotoStrip({
   memoryId,
   max = 6,
+  skip = 0,
   className,
 }: {
   memoryId: string
   max?: number
+  /** Skip first N photos (e.g. 1 when first is shown as hero). */
+  skip?: number
   className?: string
 }) {
   const [rows, setRows] = useState<PhotoRow[]>([])
 
   useEffect(() => {
-    void listPhotosForMemory(memoryId).then((r) => setRows(r.slice(0, max)))
-  }, [memoryId, max])
+    void listPhotosForMemory(memoryId).then((r) =>
+      setRows(r.slice(skip, skip + max))
+    )
+  }, [memoryId, max, skip])
 
   if (rows.length === 0) return null
 

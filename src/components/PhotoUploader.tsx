@@ -73,9 +73,6 @@ export function PhotoUploader({ memoryId }: { memoryId: string }) {
           <span className="photo-uploader-btn" aria-hidden>
             Choose files
           </span>
-          <span className="photo-uploader-hint">
-            Stored on this device only · JPG, PNG, or WebP
-          </span>
         </span>
       </label>
       {rows.length > 0 ? (
@@ -84,9 +81,7 @@ export function PhotoUploader({ memoryId }: { memoryId: string }) {
             <PhotoTile key={r.id} row={r} onRemove={() => remove(r.id)} />
           ))}
         </ul>
-      ) : (
-        <p className="photo-uploader-empty form-hint">No images attached yet.</p>
-      )}
+      ) : null}
     </div>
   )
 }

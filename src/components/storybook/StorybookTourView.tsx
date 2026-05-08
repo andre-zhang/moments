@@ -272,7 +272,6 @@ export function StorybookTourView({
   steps: StorybookTourStep[]
   onDone: () => void
 }) {
-  const [phase, setPhase] = useState<'intro' | 'slides'>('intro')
   const [slide, setSlide] = useState(0)
   const [mapFollow, setMapFollow] = useState(true)
   const [detailMemory, setDetailMemory] = useState<Memory | null>(null)
@@ -290,11 +289,6 @@ export function StorybookTourView({
     return [lat, lng]
   }, [steps])
 
-  useEffect(() => {
-    const t = window.setTimeout(() => setPhase('slides'), 2800)
-    return () => window.clearTimeout(t)
-  }, [])
-
   const go = useCallback(
     (d: number) => {
       setSlide((s) => Math.max(0, Math.min(steps.length - 1, s + d)))
@@ -303,7 +297,6 @@ export function StorybookTourView({
   )
 
   useEffect(() => {
-    if (phase !== 'slides') return
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         if (detailMemory) {
@@ -319,7 +312,7 @@ export function StorybookTourView({
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [phase, go, onDone, detailMemory])
+  }, [go, onDone, detailMemory])
 
   const step = steps[slide]
   const memoryIds = step ? [step.memory.id] : []
@@ -340,17 +333,7 @@ export function StorybookTourView({
         <div className="storybook-moon" />
       </div>
 
-      {phase === 'intro' ? (
-        <div className="storybook-intro">
-          <div className="storybook-intro-card">
-            <h1 className="storybook-intro-title">Storybook</h1>
-            <p className="storybook-intro-epigraph">
-              Flip through the moments you marked along the way.
-            </p>
-          </div>
-        </div>
-      ) : (
-        <div className="storybook-slides storybook-slides--split">
+      <div className="storybook-slides storybook-slides--split">
           <button
             type="button"
             className="storybook-exit"
@@ -500,7 +483,6 @@ export function StorybookTourView({
             ) : null}
           </div>
         </div>
-      )}
 
       {detailMemory ? (
         <StorybookMemoryVeil

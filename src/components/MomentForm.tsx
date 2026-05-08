@@ -413,12 +413,6 @@ export function MomentForm({
         }
       />
 
-      {state.trips.length === 0 ? (
-        <p className="form-hint">
-          Add a trip under <Link to="/places">Places</Link> first.
-        </p>
-      ) : null}
-
       <section className="form-section">
         <label>
           Trip
@@ -433,6 +427,11 @@ export function MomentForm({
                 setDestinationId(first?.id ?? '')
               }}
               disabled={state.trips.length === 0}
+              title={
+                state.trips.length === 0
+                  ? 'Create a trip under Places first'
+                  : undefined
+              }
             >
               {sortedTrips.map((t) => (
                 <option key={t.id} value={t.id}>
@@ -518,9 +517,6 @@ export function MomentForm({
 
       <section className="form-section">
         <h2 className="form-section-title">Location on map</h2>
-        <p className="form-hint location-map-hint">
-          Drag the pin or click the map. Search above moves the pin.
-        </p>
         <LocationMapPicker
           lat={pinLat}
           lng={pinLng}
@@ -822,11 +818,7 @@ export function MomentForm({
 
           <fieldset className="tags-fieldset moment-form-more-section moment-form-more-section--people">
             <legend className="moment-form-more-fieldset-legend">People on this moment</legend>
-            {state.friends.length === 0 ? (
-              <p className="form-hint">
-                Add people under <Link to="/places">Places</Link>.
-              </p>
-            ) : (
+            {state.friends.length === 0 ? null : (
               <div
                 className="friend-chip-row"
                 role="group"

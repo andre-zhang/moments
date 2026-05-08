@@ -202,12 +202,7 @@ export function PassportKindPage() {
         </section>
       ) : null}
 
-      {list.length === 0 ? (
-        <p className="form-hint">
-          Nothing here yet. Add a <Link to="/add/moment">moment</Link> or{' '}
-          <Link to="/places">places &amp; people</Link>.
-        </p>
-      ) : (
+      {list.length === 0 ? null : (
         <ul
           className={`passport-kind-list${book ? ' passport-kind-list--book' : ''}`}
         >

@@ -305,18 +305,6 @@ a:hover {
   flex-direction: column;
 }
 
-.site-footer {
-  padding: 0.55rem var(--page-pad-x);
-  font-size: 0.75rem;
-  color: var(--muted);
-  border-top: 1px solid var(--line);
-  background: var(--panel);
-}
-
-.site-footer p {
-  margin: 0;
-}
-
 /* Pages — full-width column inside shell-body; map is full-bleed */
 .page {
   width: 100%;
@@ -1343,6 +1331,10 @@ a:hover {
   background: var(--panel);
   color: var(--muted);
   cursor: pointer;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
   transition:
     border-color 0.15s ease,
     color 0.15s ease,
@@ -1692,10 +1684,6 @@ a:hover {
 .time-machine-link span {
   font-size: 0.78rem;
   color: var(--muted);
-}
-
-.whimsy-empty {
-  margin: 0.5rem 0 0;
 }
 
 .empty-state {
@@ -2163,9 +2151,11 @@ a:hover {
   grid-row: 1 / span 2;
   grid-column: 3;
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  align-items: flex-end;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  justify-content: flex-end;
   align-self: start;
 }
 
@@ -2243,6 +2233,10 @@ a:hover {
   background: var(--panel-muted);
   color: var(--text-secondary);
   cursor: pointer;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-icon-square:hover {
@@ -2297,11 +2291,6 @@ a:hover {
   width: 100%;
   height: 100%;
   min-height: 100%;
-}
-
-.location-map-hint {
-  margin: 0 0 0.65rem;
-  max-width: 40rem;
 }
 
 .location-map-picker {
@@ -2671,17 +2660,6 @@ a:hover {
   box-shadow: 0 0 0 2px var(--accent-soft);
 }
 
-.photo-uploader-hint {
-  font-size: 0.78rem;
-  color: var(--muted);
-  line-height: 1.4;
-  max-width: 28rem;
-}
-
-.photo-uploader-empty {
-  margin-top: 0.5rem;
-}
-
 .photo-grid {
   list-style: none;
   margin: 0.65rem 0 0;
@@ -2746,6 +2724,54 @@ a:hover {
   height: 3.5rem;
 }
 
+/* Moment detail — first photo as masthead (upload order = sortIndex) */
+.memory-photo-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  min-height: clamp(9rem, 22vw, 13rem);
+  margin: 0 calc(-1 * var(--page-pad-x)) 0.85rem;
+  width: calc(100% + 2 * var(--page-pad-x));
+  box-shadow: var(--shadow-sm);
+}
+
+.memory-photo-hero__bg {
+  position: absolute;
+  inset: 0;
+}
+
+.memory-photo-hero__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.92);
+  transform: scale(1.02);
+}
+
+.memory-photo-hero__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    120deg,
+    rgb(8 18 32 / 0.35) 0%,
+    rgb(8 18 32 / 0.08) 55%,
+    rgb(8 18 32 / 0.02) 100%
+  );
+}
+
+.passport-moment-stamp-sheet .memory-photo-hero,
+.passport-moment-simple-sheet .memory-photo-hero {
+  margin-left: calc(-1 * var(--card-pad-x));
+  margin-right: calc(-1 * var(--card-pad-x));
+  width: calc(100% + 2 * var(--card-pad-x));
+}
+
+.passport-moment-stamp-sheet .memory-photo-hero {
+  border-radius: var(--radius-sm);
+}
+
 .memory-detail-read {
   display: flex;
   flex-direction: column;
@@ -2786,46 +2812,6 @@ a:hover {
   font-weight: 500;
 }
 
-.memory-place-tips {
-  padding: 0.85rem 0.95rem;
-  border: 1px dashed var(--line);
-  border-radius: var(--radius-sm);
-  background: rgb(0 0 0 / 3%);
-}
-
-.memory-place-tips-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.memory-place-tips-title {
-  margin: 0;
-  font-size: 0.8125rem;
-  font-weight: 650;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--muted);
-}
-
-.memory-place-tips-hint {
-  margin: 0.35rem 0 0;
-}
-
-.memory-place-tips-error {
-  margin-top: 0.45rem;
-}
-
-.memory-place-tips-body {
-  margin: 0.65rem 0 0;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  white-space: pre-line;
-  color: var(--text);
-}
-
 .memory-detail-body {
   margin: 0;
   font-size: 0.92rem;
@@ -2855,6 +2841,8 @@ a:hover {
   display: none;
 }
 
+/* Shared neutral control surface (edit, more, icon actions) */
+.btn-surface-ghost,
 .details-menu-trigger {
   display: inline-flex;
   align-items: center;
@@ -2866,13 +2854,34 @@ a:hover {
   border: 1px solid var(--line);
   background: var(--panel);
   color: var(--text-secondary);
+  font: inherit;
   font-size: 0.875rem;
   font-weight: 600;
+  line-height: 1.2;
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  cursor: pointer;
 }
 
+a.btn-surface-ghost {
+  color: var(--text-secondary);
+}
+
+.btn-surface-ghost:hover,
 .details-menu-trigger:hover {
   border-color: var(--line-strong);
   color: var(--text);
+}
+
+.btn-surface-ghost--icon,
+.details-menu-trigger--icon {
+  min-width: 2.35rem;
+  padding: 0;
+}
+
+.btn-surface-ghost:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-soft), var(--shadow-sm);
 }
 
 .details-menu-panel {
@@ -2923,11 +2932,6 @@ a:hover {
 
 .details-menu-panel .details-menu-danger:hover {
   filter: brightness(0.96);
-}
-
-.details-menu-trigger--icon {
-  min-width: 2.35rem;
-  padding: 0;
 }
 
 .dropdown-section-label {
@@ -3353,13 +3357,6 @@ a:hover {
 .tag-chip--on {
   box-shadow: 0 0 0 2px var(--accent);
   font-weight: 600;
-}
-
-.tag-picker-hint {
-  display: block;
-  font-size: 0.72rem;
-  color: var(--muted);
-  margin-top: 0.25rem;
 }
 
 .friend-chip-row {
@@ -5007,11 +5004,10 @@ a:hover {
   border-top-color: rgb(44 61 92 / 0.18);
 }
 
-.passport-moment-stamp-sheet .memory-detail-actions .btn-primary {
+.passport-moment-stamp-sheet .memory-detail-actions .btn-surface-ghost {
   border: 2px double rgb(44 61 92 / 0.35);
-  font-family: var(--font-sans);
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  box-shadow: none;
+  background: rgb(255 252 245 / 0.85);
 }
 
 @media (max-width: 520px) {

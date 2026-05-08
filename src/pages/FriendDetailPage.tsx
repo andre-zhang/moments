@@ -81,11 +81,7 @@ export function FriendDetailPage() {
         }
       />
 
-      {total === 0 ? (
-        <p className="form-hint">
-          Tag them when you <Link to="/add/moment">add a moment</Link>.
-        </p>
-      ) : (
+      {total === 0 ? null : (
         <div className="friend-trip-sections">
           {sortedTrips.map((trip) => {
             const list = byTrip.get(trip.id) ?? []

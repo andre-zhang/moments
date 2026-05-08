@@ -69,11 +69,7 @@ export function DestinationDetailPage() {
         }
       />
 
-      {memories.length === 0 ? (
-        <p className="form-hint">
-          <Link to="/add/moment">Add a moment</Link> for this place.
-        </p>
-      ) : (
+      {memories.length === 0 ? null : (
         <ul className="destination-moment-list">
           {memories.map((m) => (
             <li key={m.id}>

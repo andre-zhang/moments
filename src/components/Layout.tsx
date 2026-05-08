@@ -88,10 +88,6 @@ export function Layout() {
       <div className="shell-body">
         <Outlet />
       </div>
-
-      <footer className="site-footer">
-        <p>Synced in the cloud.</p>
-      </footer>
     </div>
   )
 }

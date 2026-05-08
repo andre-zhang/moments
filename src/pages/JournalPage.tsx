@@ -222,9 +222,7 @@ export function JournalPage() {
                 ))}
               </ul>
             </div>
-          ) : (
-            <p className="form-hint whimsy-empty">None yet.</p>
-          )}
+          ) : null}
         </div>
       </details>
 
@@ -404,6 +402,15 @@ export function JournalPage() {
                   </div>
                 ) : null}
                 <div className="memory-card-actions">
+                  <Link
+                    to={`/add/moment?edit=${encodeURIComponent(m.id)}`}
+                    className="btn-surface-ghost btn-surface-ghost--icon"
+                    title="Edit moment"
+                    aria-label="Edit moment"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <IconPencil className="btn-icon-svg" />
+                  </Link>
                   <details className="details-menu">
                     <summary
                       className="details-menu-trigger details-menu-trigger--icon"

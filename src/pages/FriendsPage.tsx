@@ -55,9 +55,7 @@ export function FriendsPage() {
         </form>
       </section>
 
-      {state.friends.length === 0 ? (
-        <p className="form-hint">No friends yet. Add a few names above.</p>
-      ) : (
+      {state.friends.length === 0 ? null : (
         <ul className="friend-list">
           {state.friends.map((f) => {
             const hasHex = Boolean(f.color && parseHex(f.color))
