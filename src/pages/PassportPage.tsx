@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { DiscoverPanel } from '../components/DiscoverPanel'
 import { PageHeader } from '../components/PageHeader'
 import { PassportCurateBar } from '../components/PassportCurateBar'
+import { AmbientScenicTile } from '../components/AmbientScenicTile'
 import {
   PASSPORT_VIEW_STORAGE_KEY,
   readPassportViewMode,
@@ -99,6 +100,10 @@ export function PassportPage() {
                   </p>
                 )}
                 <PassportCurateBar />
+                <AmbientScenicTile
+                  seed="passport-book"
+                  className="ambient-scenic--passport"
+                />
               </div>
               {viewToggleRail}
             </div>
@@ -123,6 +128,10 @@ export function PassportPage() {
                 </p>
               )}
               <PassportCurateBar />
+              <AmbientScenicTile
+                seed="passport-simple"
+                className="ambient-scenic--passport"
+              />
             </>
           }
           actions={viewToggleToolbar}

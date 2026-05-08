@@ -4,6 +4,7 @@ import { PageHeader } from '../components/PageHeader'
 import { PhotoStrip } from '../components/PhotoStrip'
 import { SelectWithPlus } from '../components/SelectWithPlus'
 import { IconDots, IconPencil, IconTrash } from '../components/Icons'
+import { AmbientScenicTile } from '../components/AmbientScenicTile'
 import {
   friendChipStyle,
   selectionListOptionStyle,
@@ -224,6 +225,7 @@ export function JournalPage() {
               ? 'Open Places & people to add trips and places, then add a moment from +.'
               : 'Add a moment or clear the trip filter.'}
           </p>
+          <AmbientScenicTile seed="journal-empty" className="ambient-scenic--empty" />
         </div>
       ) : (
         <ul className="memory-list">
