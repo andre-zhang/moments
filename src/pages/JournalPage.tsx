@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { PageHeader } from '../components/PageHeader'
 import { PhotoStrip } from '../components/PhotoStrip'
 import { SelectWithPlus } from '../components/SelectWithPlus'
 import { IconDots, IconPencil, IconTrash } from '../components/Icons'
-import { getPageDemoBanner } from '../lib/demoSamplePhotos'
+import { getPageMasthead } from '../lib/demoSamplePhotos'
 import {
   friendChipStyle,
   selectionListOptionStyle,
@@ -51,6 +51,7 @@ function momentRating(m: Memory): number | null {
 }
 
 export function JournalPage() {
+  const navigate = useNavigate()
   const { state, selectTrip, deleteMemory } = useTravel()
   const {
     memories,
@@ -122,9 +123,12 @@ export function JournalPage() {
     })
   }, [filtered])
 
-  const journalHeroBanner = useMemo(() => getPageDemoBanner('journal-hero'), [])
+  const journalHeroBanner = useMemo(
+    () => getPageMasthead('journal-hero', 'journal'),
+    []
+  )
   const journalEmptyBanner = useMemo(
-    () => getPageDemoBanner('journal-empty'),
+    () => getPageMasthead('journal-empty', 'journal'),
     []
   )
 
@@ -142,11 +146,7 @@ export function JournalPage() {
         className="page-header-shell--journal"
         title="Journal"
         toolbarBelow
-        banner={{
-          src: journalHeroBanner.src,
-          caption: journalHeroBanner.caption,
-          alt: journalHeroBanner.alt,
-        }}
+        banner={journalHeroBanner}
         actions={
           <div className="journal-toolbar">
             <SelectWithPlus>
@@ -249,16 +249,42 @@ export function JournalPage() {
                 : 'Add a moment or clear the trip filter.'}
             </p>
           </div>
-          <p className="journal-empty-banner__caption">{journalEmptyBanner.caption}</p>
+          <p className="journal-empty-banner__caption">
+            {journalEmptyBanner.captionTo ? (
+              <Link
+                className="journal-empty-banner__caption-link"
+                to={journalEmptyBanner.captionTo}
+              >
+                {journalEmptyBanner.caption}
+              </Link>
+            ) : (
+              journalEmptyBanner.caption
+            )}
+          </p>
         </section>
       ) : (
         <ul className="memory-list">
           {filtered.map((m) => (
             <li key={m.id} id={`memory-${m.id}`} className="memory-card">
               <div className="memory-card-layout">
-                <Link
-                  to={`/moment/${encodeURIComponent(m.id)}?from=journal`}
+                <div
                   className="memory-card-hit"
+                  role="link"
+                  tabIndex={0}
+                  aria-label={`Open moment: ${m.title}`}
+                  onClick={() =>
+                    navigate(
+                      `/moment/${encodeURIComponent(m.id)}?from=journal`
+                    )
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      navigate(
+                        `/moment/${encodeURIComponent(m.id)}?from=journal`
+                      )
+                    }
+                  }}
                 >
                   <div className="memory-card-visual">
                     <span className="memory-kind" title={KIND_LABEL[m.kind]}>
@@ -273,7 +299,19 @@ export function JournalPage() {
                   <div className="memory-card-body">
                     <h2 className="memory-card-title">{m.title}</h2>
                     <p className="memory-meta">
-                      {destName(m.destinationId)} · {tripName(m.tripId)}
+                      <Link
+                        to={`/places/${encodeURIComponent(m.destinationId)}`}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {destName(m.destinationId)}
+                      </Link>
+                      {' · '}
+                      <Link
+                        to={`/places?trip=${encodeURIComponent(m.tripId)}`}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {tripName(m.tripId)}
+                      </Link>
                     </p>
                     <p className="memory-date">
                       {new Date(m.visitedAt).toLocaleDateString(undefined, {
@@ -343,7 +381,7 @@ export function JournalPage() {
                       </div>
                     ) : null}
                   </div>
-                </Link>
+                </div>
                 {m.friendIds?.length ? (
                   <div className="memory-card-friends-slot">
                     <p className="memory-friends">

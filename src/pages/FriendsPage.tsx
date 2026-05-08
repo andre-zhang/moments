@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PageHeader } from '../components/PageHeader'
-import { getPageDemoBanner } from '../lib/demoSamplePhotos'
+import { getPageMasthead } from '../lib/demoSamplePhotos'
 import { parseHex } from '../lib/colorAccent'
 import { friendChipStyle } from '../lib/chipStyles'
 import { useTravel } from '../store/travelStore'
@@ -11,7 +11,7 @@ export function FriendsPage() {
   const [name, setName] = useState('')
   const [newColor, setNewColor] = useState('')
 
-  const friendsBanner = useMemo(() => getPageDemoBanner('friends-hero'), [])
+  const friendsBanner = useMemo(() => getPageMasthead('friends-hero', 'friends'), [])
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -29,14 +29,7 @@ export function FriendsPage() {
 
   return (
     <div className="page friends-page">
-      <PageHeader
-        title="Friends"
-        banner={{
-          src: friendsBanner.src,
-          caption: friendsBanner.caption,
-          alt: friendsBanner.alt,
-        }}
-      />
+      <PageHeader title="Friends" banner={friendsBanner} />
 
       <section className="panel-block">
         <h2 className="panel-block-title">Add</h2>

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { PageHeader } from '../components/PageHeader'
-import { getPageDemoBanner } from '../lib/demoSamplePhotos'
+import { getPageMasthead } from '../lib/demoSamplePhotos'
 import type { SelectionList, TagCategory } from '../types'
 import { parseHex } from '../lib/colorAccent'
 import { tagChipStyle } from '../lib/chipStyles'
@@ -171,18 +171,11 @@ export function SettingsPage() {
     alert('Choice lists saved.')
   }
 
-  const settingsBanner = useMemo(() => getPageDemoBanner('settings-hero'), [])
+  const settingsBanner = useMemo(() => getPageMasthead('settings-hero', 'settings'), [])
 
   return (
     <div className="page settings-page">
-      <PageHeader
-        title="Settings"
-        banner={{
-          src: settingsBanner.src,
-          caption: settingsBanner.caption,
-          alt: settingsBanner.alt,
-        }}
-      />
+      <PageHeader title="Settings" banner={settingsBanner} />
 
       <section className="panel-block">
         <h2 className="panel-block-title">Demo data</h2>

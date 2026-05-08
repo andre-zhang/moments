@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 
 export type PageHeaderProps = {
   /** Main heading (string or fragment for rich titles, e.g. friend color bar + name). */
@@ -23,6 +24,8 @@ export type PageHeaderProps = {
     src: string
     caption?: string
     alt?: string
+    /** Opens a related moment (e.g. seed story for the masthead photo). */
+    captionTo?: string
   }
 }
 
@@ -84,7 +87,15 @@ export function PageHeader({
 
   const caption =
     banner?.caption != null && banner.caption !== '' ? (
-      <p className="page-header-banner-caption">{banner.caption}</p>
+      <p className="page-header-banner-caption">
+        {banner.captionTo ? (
+          <Link className="page-header-banner-caption-link" to={banner.captionTo}>
+            {banner.caption}
+          </Link>
+        ) : (
+          banner.caption
+        )}
+      </p>
     ) : null
 
   const bannerLayers =

@@ -50,28 +50,72 @@ export function pickDemoSamplePhoto(seed: string): DemoSamplePhoto {
 
 /**
  * Curated masthead / title-card picks (not hash-random) so each screen reads intentionally.
+ * Intentionally **varied** images — `demo-city.jpg` is reserved for one hero only.
  */
 export const PAGE_DEMO_BANNERS = {
   'places-hero': DEMO_SAMPLE_PHOTOS[2]!, // Cinque Terre — “places”
   'journal-hero': DEMO_SAMPLE_PHOTOS[0]!, // coast — diary / timeline
   'journal-empty': DEMO_SAMPLE_PHOTOS[1]!, // Alps — quiet, open
-  'map-hero': DEMO_SAMPLE_PHOTOS[3]!, // city — routes & pins
-  'storybook-hero': DEMO_SAMPLE_PHOTOS[2]!, // coastal color — narrative
-  'friends-hero': DEMO_SAMPLE_PHOTOS[1]!, // Alps — together
-  'friend-detail-hero': DEMO_SAMPLE_PHOTOS[1]!, // match Friends tonal family
-  'destination-detail-hero': DEMO_SAMPLE_PHOTOS[3]!, // arrival / place pin
+  'map-hero': DEMO_SAMPLE_PHOTOS[1]!, // Alps — routes & pins (card inset like other tabs)
+  'storybook-hero': DEMO_SAMPLE_PHOTOS[0]!, // coast — narrative journey
+  'friends-hero': DEMO_SAMPLE_PHOTOS[2]!, // coastal town — people
+  'friend-detail-hero': DEMO_SAMPLE_PHOTOS[0]!, // coast
+  'destination-detail-hero': DEMO_SAMPLE_PHOTOS[2]!, // colorful place
   'settings-hero': DEMO_SAMPLE_PHOTOS[1]!, // calm alpine — prefs
-  'add-trip-hero': DEMO_SAMPLE_PHOTOS[0]!, // coast — journey begins
-  'add-hub-hero': DEMO_SAMPLE_PHOTOS[2]!, // inviting color — entry
-  'moment-form-hero': DEMO_SAMPLE_PHOTOS[2]!, // capture moment
-  'passport-simple': DEMO_SAMPLE_PHOTOS[3]!, // skyline — stamp energy
+  'add-trip-hero': DEMO_SAMPLE_PHOTOS[2]!, // inviting — new trip
+  'add-hub-hero': DEMO_SAMPLE_PHOTOS[0]!, // coast — doorway in
+  'moment-form-hero': DEMO_SAMPLE_PHOTOS[1]!, // alpine — drafting
+  'passport-simple': DEMO_SAMPLE_PHOTOS[3]!, // **only** city skyline hero
   'passport-book': DEMO_SAMPLE_PHOTOS[0]!, // coast — spread / journey
 } as const satisfies Record<string, DemoSamplePhoto>
+
+/** Seed moment — caption tap opens this memory (bundled photo lines up with story). */
+export const PAGE_BANNER_RELATED_MEMORY: Partial<
+  Record<keyof typeof PAGE_DEMO_BANNERS, string>
+> = {
+  'places-hero': 'm-ptl-porto',
+  'journal-hero': 'm-pch-bixby',
+  'journal-empty': 'm-hok-niseko',
+  'map-hero': 'm-hok-niseko',
+  'storybook-hero': 'm-pch-bixby',
+  'friends-hero': 'm-ptl-porto',
+  'friend-detail-hero': 'm-pch-bixby',
+  'destination-detail-hero': 'm-ptl-porto',
+  'settings-hero': 'm-hok-niseko',
+  'add-trip-hero': 'm-ptl-porto',
+  'add-hub-hero': 'm-pch-bixby',
+  'moment-form-hero': 'm-hok-niseko',
+  'passport-simple': 'm-nyc-met',
+  'passport-book': 'm-pch-bixby',
+}
+
+export type MastheadBanner = DemoSamplePhoto & {
+  /** Route (path + query) for caption link */
+  captionTo?: string
+}
 
 export function getPageDemoBanner(
   key: keyof typeof PAGE_DEMO_BANNERS
 ): DemoSamplePhoto {
   return PAGE_DEMO_BANNERS[key]
+}
+
+export function getPageMasthead(
+  key: keyof typeof PAGE_DEMO_BANNERS,
+  from: string
+): MastheadBanner {
+  const b = getPageDemoBanner(key)
+  const mem = PAGE_BANNER_RELATED_MEMORY[key]
+  return {
+    src: b.src,
+    caption: b.caption,
+    alt: b.alt,
+    ...(mem != null
+      ? {
+          captionTo: `/moment/${encodeURIComponent(mem)}?from=${encodeURIComponent(from)}`,
+        }
+      : {}),
+  }
 }
 
 /** Seed demo moments → sample file on disk (injected as uploads in local mode). */

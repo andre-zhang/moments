@@ -7,7 +7,7 @@ import {
   type StorybookFilter,
   type StorybookTourStep,
 } from '../lib/buildStorybookTour'
-import { getPageDemoBanner } from '../lib/demoSamplePhotos'
+import { getPageMasthead } from '../lib/demoSamplePhotos'
 import { sortTripsForDisplay, TRIPLESS_TRIP_ID } from '../lib/tripless'
 import { useTravel } from '../store/travelStore'
 
@@ -30,7 +30,10 @@ export function StorybookPage() {
     [state.trips]
   )
 
-  const storybookBanner = useMemo(() => getPageDemoBanner('storybook-hero'), [])
+  const storybookBanner = useMemo(
+    () => getPageMasthead('storybook-hero', 'storybook'),
+    []
+  )
 
   useEffect(() => {
     replayOpened.current = false
@@ -107,14 +110,7 @@ export function StorybookPage() {
 
   return (
     <div className="page storybook-picker-page">
-      <PageHeader
-        title="Storybook"
-        banner={{
-          src: storybookBanner.src,
-          caption: storybookBanner.caption,
-          alt: storybookBanner.alt,
-        }}
-      />
+      <PageHeader title="Storybook" banner={storybookBanner} />
 
       <div className="storybook-picker-card">
         <div className="storybook-mode-row">

@@ -2,7 +2,7 @@ import { useMemo, useEffect, useState } from 'react'
 import { DiscoverPanel } from '../components/DiscoverPanel'
 import { PageHeader } from '../components/PageHeader'
 import { PassportCurateBar } from '../components/PassportCurateBar'
-import { getPageDemoBanner } from '../lib/demoSamplePhotos'
+import { getPageMasthead } from '../lib/demoSamplePhotos'
 import {
   PASSPORT_VIEW_STORAGE_KEY,
   readPassportViewMode,
@@ -28,8 +28,8 @@ export function PassportPage() {
 
   const book = viewMode === 'book'
 
-  const bookBanner = useMemo(() => getPageDemoBanner('passport-book'), [])
-  const simpleBanner = useMemo(() => getPageDemoBanner('passport-simple'), [])
+  const bookBanner = useMemo(() => getPageMasthead('passport-book', 'passport'), [])
+  const simpleBanner = useMemo(() => getPageMasthead('passport-simple', 'passport'), [])
 
   const viewToggleInner = (
     <>
@@ -124,11 +124,7 @@ export function PassportPage() {
         <PageHeader
           title="Passport"
           toolbarBelow
-          banner={{
-            src: simpleBanner.src,
-            caption: simpleBanner.caption,
-            alt: simpleBanner.alt,
-          }}
+          banner={simpleBanner}
           subtitle={
             <>
               {stampy ? (

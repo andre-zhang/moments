@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { PageHeader } from '../components/PageHeader'
 import { IconPencil } from '../components/Icons'
-import { getPageDemoBanner } from '../lib/demoSamplePhotos'
+import { getPageMasthead } from '../lib/demoSamplePhotos'
 import {
   TRIPLESS_DEFAULT_DEST_ID,
   TRIPLESS_TRIP_ID,
@@ -40,7 +40,7 @@ export function PlacesPage() {
 
   const tripsSorted = sortTripsForDisplay(state.trips)
 
-  const placesBanner = useMemo(() => getPageDemoBanner('places-hero'), [])
+  const placesBanner = useMemo(() => getPageMasthead('places-hero', 'places'), [])
 
   const destRows = useMemo(() => {
     const order = new Map(tripsSorted.map((t, i) => [t.id, i]))
@@ -99,11 +99,7 @@ export function PlacesPage() {
       <PageHeader
         className="places-hero"
         title="Places & people"
-        banner={{
-          src: placesBanner.src,
-          caption: placesBanner.caption,
-          alt: placesBanner.alt,
-        }}
+        banner={placesBanner}
       />
 
       <div className="places-merged-stack">

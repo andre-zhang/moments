@@ -12,7 +12,7 @@ import {
 import { friendChipStyle } from '../lib/chipStyles'
 import { playSaveChirp } from '../lib/saveSound'
 import { photonReverse } from '../lib/photon'
-import { getPageDemoBanner } from '../lib/demoSamplePhotos'
+import { getPageMasthead } from '../lib/demoSamplePhotos'
 import { sortTripsForDisplay } from '../lib/tripless'
 import { PageHeader } from './PageHeader'
 import { EmojiPicker } from './EmojiPicker'
@@ -48,7 +48,10 @@ export function MomentForm({
 }) {
   const draftMemoryId = useMemo(() => `m-${crypto.randomUUID()}`, [])
   const photoMemoryId = editId ?? draftMemoryId
-  const formBanner = useMemo(() => getPageDemoBanner('moment-form-hero'), [])
+  const formBanner = useMemo(
+    () => getPageMasthead('moment-form-hero', 'add-moment'),
+    []
+  )
 
   const { state, addMemory, updateMemory } = useTravel()
 
@@ -396,11 +399,7 @@ export function MomentForm({
       <PageHeader
         className="page-header-shell--form"
         title={editId ? 'Edit moment' : 'New moment'}
-        banner={{
-          src: formBanner.src,
-          caption: formBanner.caption,
-          alt: formBanner.alt,
-        }}
+        banner={formBanner}
         actions={
           onCancel ? (
             <button type="button" className="link-quiet" onClick={handleCancel}>
