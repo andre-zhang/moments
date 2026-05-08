@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { requireAuth } from './lib/syncAuth'
+import { requireAuth } from './lib/syncAuth.js'
 
 const ANTHROPIC_VERSION = '2023-06-01'
 

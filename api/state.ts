@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { ensureSchema, getPool, requireAuth, STATE_ROW_ID } from './lib/momentsDb'
+import { ensureSchema, getPool, requireAuth, STATE_ROW_ID } from './lib/momentsDb.js'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!process.env.DATABASE_URL) {
