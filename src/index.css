@@ -354,6 +354,11 @@ a:hover {
   background: var(--app-canvas);
 }
 
+.map-page-header.page-header-shell--banner-hero {
+  background: transparent;
+  padding-top: var(--page-pad-y-top);
+}
+
 .map-toolbar {
   align-items: flex-start;
 }
@@ -1129,6 +1134,22 @@ a:hover {
   color: var(--accent);
 }
 
+.page-header-shell--banner-hero .friend-detail-back,
+.page-header-shell--banner-hero .destination-detail-back {
+  margin-bottom: 0.4rem;
+}
+
+.page-header-shell--banner-hero .friend-detail-back a,
+.page-header-shell--banner-hero .destination-detail-back a {
+  color: rgb(222 234 252 / 0.92);
+  text-shadow: 0 1px 10px rgb(6 14 26 / 0.45);
+}
+
+.page-header-shell--banner-hero .friend-detail-back a:hover,
+.page-header-shell--banner-hero .destination-detail-back a:hover {
+  color: rgb(255 255 255 / 0.98);
+}
+
 .page-header-pretitle .storybook-back {
   display: inline-block;
   margin-bottom: 0.35rem;
@@ -1167,6 +1188,26 @@ a:hover {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
+}
+
+/* Moment form — Cancel stays top-right; title block fills remaining width */
+.page-header-shell--form.page-header-shell--banner-hero {
+  align-items: flex-start;
+}
+
+.page-header-shell--form.page-header-shell--banner-hero .page-header-shell__layer--banner {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: none;
+  padding-right: 0.35rem;
+}
+
+.page-header-shell--form.page-header-shell--banner-hero .page-header-shell__actions--on-banner {
+  flex-shrink: 0;
+  align-self: flex-start;
+  padding-top: clamp(1.05rem, 2.8vw, 1.55rem);
+  padding-right: clamp(0.65rem, 1.8vw, 1.15rem);
+  padding-bottom: 0.35rem;
 }
 
 .page-header-shell--plain {
@@ -3728,7 +3769,20 @@ a:hover {
 }
 
 .passport-hero--with-banner.passport-hero--book {
+  display: flex;
+  flex-direction: column;
   padding-bottom: 0;
+}
+
+.passport-hero__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  padding-bottom: 0.2rem;
 }
 
 .passport-hero-banner-bg,
@@ -3757,7 +3811,13 @@ a:hover {
 .passport-cover--on-banner {
   position: relative;
   z-index: 1;
-  padding: clamp(1rem, 2.4vw, 1.35rem) clamp(0.85rem, 2vw, 1.1rem) 2.75rem;
+  padding: clamp(1rem, 2.4vw, 1.35rem) clamp(0.85rem, 2vw, 1.1rem) 0.35rem;
+}
+
+.passport-page--book .passport-cover--on-banner {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
 }
 
 .passport-page--book .passport-hero--with-banner .passport-kicker {
@@ -3780,17 +3840,46 @@ a:hover {
   text-shadow: none;
 }
 
-.passport-hero-banner-caption {
-  position: absolute;
-  right: clamp(0.65rem, 1.8vw, 0.95rem);
-  bottom: 0.5rem;
-  z-index: 1;
+.passport-hero-banner-caption--book {
+  position: static;
+  flex-shrink: 0;
+  align-self: flex-end;
+  order: 2;
+  max-width: min(100%, 20rem);
   margin: 0;
+  margin-top: 0.2rem;
+  padding: 0.45rem 1rem 0.15rem;
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: rgb(40 48 58 / 0.85);
+  color: rgb(46 56 68 / 0.88);
+  text-align: right;
+  border-top: 1px solid rgb(44 61 92 / 0.12);
+}
+
+.passport-cover-top--book-hero {
+  flex: 1 1 auto;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.passport-page--book .passport-cover-top--book-hero .passport-view-toggle {
+  align-self: flex-start;
+  margin-top: 0.1rem;
+}
+
+@media (max-width: 520px) {
+  .passport-cover-top--book-hero {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem 0;
+  }
+
+  .passport-page--book .passport-cover-top--book-hero .passport-view-toggle {
+    align-self: stretch;
+    align-items: flex-start;
+  }
 }
 
 .passport-hero--book::after {
@@ -4519,6 +4608,33 @@ a:hover {
   position: relative;
   padding-bottom: 1.15rem;
   border-bottom: none;
+}
+
+.passport-kind-hero--book.passport-hero--with-banner {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
+  margin-bottom: 1.75rem;
+  min-height: clamp(10rem, 28vw, 15rem);
+}
+
+.passport-kind-hero-sheet {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+  padding: clamp(0.95rem, 2.2vw, 1.2rem) clamp(0.85rem, 2vw, 1.05rem) 0.35rem;
+}
+
+.passport-page--book .passport-kind-hero.passport-hero--with-banner .friend-detail-back a {
+  color: rgb(64 76 98 / 0.95);
+}
+
+.passport-page--book .passport-kind-hero.passport-hero--with-banner .friend-detail-back a:hover {
+  color: #1e3a5f;
 }
 
 .passport-kind-hero--book::after {

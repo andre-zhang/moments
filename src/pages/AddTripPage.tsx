@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { PageHeader } from '../components/PageHeader'
+import { getPageDemoBanner } from '../lib/demoSamplePhotos'
 import { useTravel } from '../store/travelStore'
 
 export function AddTripPage() {
@@ -8,6 +9,8 @@ export function AddTripPage() {
   const navigate = useNavigate()
   const [tripName, setTripName] = useState('')
   const [firstPlace, setFirstPlace] = useState('')
+
+  const tripBanner = useMemo(() => getPageDemoBanner('add-trip-hero'), [])
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -24,7 +27,14 @@ export function AddTripPage() {
 
   return (
     <div className="page add-trip-page">
-      <PageHeader title="New trip" />
+      <PageHeader
+        title="New trip"
+        banner={{
+          src: tripBanner.src,
+          caption: tripBanner.caption,
+          alt: tripBanner.alt,
+        }}
+      />
       <form className="panel-block" onSubmit={submit}>
         <label>
           Trip name

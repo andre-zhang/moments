@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { PageHeader } from '../components/PageHeader'
+import { getPageDemoBanner } from '../lib/demoSamplePhotos'
 import { KIND_EMOJI, KIND_LABEL } from '../lib/kindMeta'
 import { TRIPLESS_TRIP_ID } from '../lib/tripless'
 import { useTravel } from '../store/travelStore'
@@ -20,6 +21,8 @@ export function DestinationDetailPage() {
       .filter((m) => m.destinationId === destinationId)
       .sort((a, b) => Date.parse(b.visitedAt) - Date.parse(a.visitedAt))
   }, [state.memories, destinationId])
+
+  const placeBanner = useMemo(() => getPageDemoBanner('destination-detail-hero'), [])
 
   if (!destinationId || !dest) {
     return (
@@ -41,6 +44,11 @@ export function DestinationDetailPage() {
           </p>
         }
         title={dest.name}
+        banner={{
+          src: placeBanner.src,
+          caption: placeBanner.caption,
+          alt: placeBanner.alt,
+        }}
         subtitle={
           <p className="page-subtitle destination-detail-trip">
             <Link to={`/places?trip=${encodeURIComponent(dest.tripId)}`}>

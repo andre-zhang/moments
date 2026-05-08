@@ -122,6 +122,7 @@ export function JournalPage() {
     })
   }, [filtered])
 
+  const journalHeroBanner = useMemo(() => getPageDemoBanner('journal-hero'), [])
   const journalEmptyBanner = useMemo(
     () => getPageDemoBanner('journal-empty'),
     []
@@ -141,6 +142,11 @@ export function JournalPage() {
         className="page-header-shell--journal"
         title="Journal"
         toolbarBelow
+        banner={{
+          src: journalHeroBanner.src,
+          caption: journalHeroBanner.caption,
+          alt: journalHeroBanner.alt,
+        }}
         actions={
           <div className="journal-toolbar">
             <SelectWithPlus>

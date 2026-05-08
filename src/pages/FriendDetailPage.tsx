@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { PageHeader } from '../components/PageHeader'
+import { getPageDemoBanner } from '../lib/demoSamplePhotos'
 import { fallbackFriendColor } from '../lib/colorAccent'
 import { KIND_EMOJI, KIND_LABEL } from '../lib/kindMeta'
 import { sortTripsForDisplay } from '../lib/tripless'
@@ -52,6 +53,8 @@ export function FriendDetailPage() {
 
   const total = [...byTrip.values()].reduce((n, arr) => n + arr.length, 0)
 
+  const friendBanner = useMemo(() => getPageDemoBanner('friend-detail-hero'), [])
+
   return (
     <div className="page friend-detail-page">
       <PageHeader
@@ -60,6 +63,11 @@ export function FriendDetailPage() {
             <Link to="/friends">Friends</Link>
           </p>
         }
+        banner={{
+          src: friendBanner.src,
+          caption: friendBanner.caption,
+          alt: friendBanner.alt,
+        }}
         title={
           <span className="friend-detail-title-flex">
             <span

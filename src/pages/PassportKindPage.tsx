@@ -7,6 +7,7 @@ import {
   type PassportViewMode,
 } from '../lib/passportViewMode'
 import { PassportKindCurateBar } from '../components/PassportKindCurateBar'
+import { pickDemoSamplePhoto } from '../lib/demoSamplePhotos'
 import { computeInsightsForKind } from '../lib/passportKindInsights'
 import { passportMomentSummary } from '../lib/passportSummary'
 import type { MemoryKind } from '../types'
@@ -31,6 +32,16 @@ export function PassportKindPage() {
 
   const [viewMode] = useState<PassportViewMode>(() => readPassportViewMode())
   const book = viewMode === 'book'
+
+  const kindBookBanner = useMemo(
+    () => pickDemoSamplePhoto(`passport-kind-book-${kind ?? 'note'}`),
+    [kind]
+  )
+
+  const kindSimpleBanner = useMemo(
+    () => pickDemoSamplePhoto(`passport-kind-simple-${kind ?? 'note'}`),
+    [kind]
+  )
 
   const rawFiltered = useMemo(() => {
     if (!kind) return []
@@ -85,31 +96,45 @@ export function PassportKindPage() {
     state.destinations.find((d) => d.id === id)?.name ?? id
 
   const kindHeaderBook = (
-    <header className="page-hero passport-kind-hero passport-kind-hero--book">
-      <p className="friend-detail-back">
-        <Link to="/passport">Passport</Link>
-      </p>
-      <p className="passport-kind-kicker">
-        <span className="passport-kind-kicker-emoji" aria-hidden>
-          {KIND_EMOJI[kind]}
-        </span>{' '}
-        Entry spread
-      </p>
-      <h1 className="page-title passport-title">{KIND_LABEL[kind]}</h1>
-      {state.passportCurations?.kindBlurbs?.[kind]?.trim() ? (
-        <p className="passport-kind-ai-blurb">
-          {state.passportCurations.kindBlurbs[kind]}
-        </p>
-      ) : null}
-      <p className="passport-kind-subtitle">
-        {list.length} moment{list.length === 1 ? '' : 's'}
-      </p>
-      <PassportKindCurateBar
-        kind={kind}
-        momentsNewestFirst={momentsNewestFirst}
-        tripName={tripName}
-        destName={destName}
+    <header className="page-hero passport-kind-hero passport-kind-hero--book passport-hero--with-banner">
+      <div
+        className="passport-hero-banner-bg"
+        style={{ backgroundImage: `url(${kindBookBanner.src})` }}
+        role="img"
+        aria-label={kindBookBanner.alt}
       />
+      <div className="passport-hero-banner-scrim" aria-hidden />
+      <div className="passport-hero__inner">
+        <div className="passport-kind-hero-sheet">
+          <p className="friend-detail-back">
+            <Link to="/passport">Passport</Link>
+          </p>
+          <p className="passport-kind-kicker">
+            <span className="passport-kind-kicker-emoji" aria-hidden>
+              {KIND_EMOJI[kind]}
+            </span>{' '}
+            Entry spread
+          </p>
+          <h1 className="page-title passport-title">{KIND_LABEL[kind]}</h1>
+          {state.passportCurations?.kindBlurbs?.[kind]?.trim() ? (
+            <p className="passport-kind-ai-blurb">
+              {state.passportCurations.kindBlurbs[kind]}
+            </p>
+          ) : null}
+          <p className="passport-kind-subtitle">
+            {list.length} moment{list.length === 1 ? '' : 's'}
+          </p>
+          <PassportKindCurateBar
+            kind={kind}
+            momentsNewestFirst={momentsNewestFirst}
+            tripName={tripName}
+            destName={destName}
+          />
+        </div>
+        <p className="passport-hero-banner-caption passport-hero-banner-caption--book">
+          {kindBookBanner.caption}
+        </p>
+      </div>
     </header>
   )
 
@@ -121,6 +146,11 @@ export function PassportKindPage() {
         </p>
       }
       title={KIND_LABEL[kind]}
+      banner={{
+        src: kindSimpleBanner.src,
+        caption: kindSimpleBanner.caption,
+        alt: kindSimpleBanner.alt,
+      }}
       subtitle={
         <>
           {state.passportCurations?.kindBlurbs?.[kind]?.trim() ? (

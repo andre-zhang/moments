@@ -53,7 +53,17 @@ export function pickDemoSamplePhoto(seed: string): DemoSamplePhoto {
  */
 export const PAGE_DEMO_BANNERS = {
   'places-hero': DEMO_SAMPLE_PHOTOS[2]!, // Cinque Terre — “places”
+  'journal-hero': DEMO_SAMPLE_PHOTOS[0]!, // coast — diary / timeline
   'journal-empty': DEMO_SAMPLE_PHOTOS[1]!, // Alps — quiet, open
+  'map-hero': DEMO_SAMPLE_PHOTOS[3]!, // city — routes & pins
+  'storybook-hero': DEMO_SAMPLE_PHOTOS[2]!, // coastal color — narrative
+  'friends-hero': DEMO_SAMPLE_PHOTOS[1]!, // Alps — together
+  'friend-detail-hero': DEMO_SAMPLE_PHOTOS[1]!, // match Friends tonal family
+  'destination-detail-hero': DEMO_SAMPLE_PHOTOS[3]!, // arrival / place pin
+  'settings-hero': DEMO_SAMPLE_PHOTOS[1]!, // calm alpine — prefs
+  'add-trip-hero': DEMO_SAMPLE_PHOTOS[0]!, // coast — journey begins
+  'add-hub-hero': DEMO_SAMPLE_PHOTOS[2]!, // inviting color — entry
+  'moment-form-hero': DEMO_SAMPLE_PHOTOS[2]!, // capture moment
   'passport-simple': DEMO_SAMPLE_PHOTOS[3]!, // skyline — stamp energy
   'passport-book': DEMO_SAMPLE_PHOTOS[0]!, // coast — spread / journey
 } as const satisfies Record<string, DemoSamplePhoto>

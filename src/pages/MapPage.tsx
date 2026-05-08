@@ -4,6 +4,7 @@ import { IconReplay } from '../components/Icons'
 import { MemoryMap } from '../components/MemoryMap'
 import { PageHeader } from '../components/PageHeader'
 import { SelectWithPlus } from '../components/SelectWithPlus'
+import { getPageDemoBanner } from '../lib/demoSamplePhotos'
 import { KIND_LABEL } from '../lib/kindMeta'
 import { sortTripsForDisplay } from '../lib/tripless'
 import type { MemoryKind } from '../types'
@@ -58,6 +59,8 @@ export function MapPage() {
     [state.trips]
   )
 
+  const mapHeroBanner = useMemo(() => getPageDemoBanner('map-hero'), [])
+
   const showFlightRoutes = kindSet.has('flight')
 
   return (
@@ -66,6 +69,11 @@ export function MapPage() {
         className="map-page-header"
         title="Map"
         toolbarBelow
+        banner={{
+          src: mapHeroBanner.src,
+          caption: mapHeroBanner.caption,
+          alt: mapHeroBanner.alt,
+        }}
         actions={
           <div className="map-toolbar journal-toolbar">
             <div className="map-kind-filters" role="group" aria-label="Moment types">

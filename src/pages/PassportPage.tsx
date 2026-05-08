@@ -92,29 +92,33 @@ export function PassportPage() {
             aria-label={bookBanner.alt}
           />
           <div className="passport-hero-banner-scrim" aria-hidden />
-          <div className="passport-cover passport-cover--on-banner">
-            <div className="passport-cover-top">
-              <div className="passport-cover-text">
-                <p className="passport-kicker">Official travel record</p>
-                <h1 className="page-title passport-title">Passport</h1>
-                {stampy ? (
-                  <p className="passport-stat">
-                    <span className="passport-stat-num">{state.memories.length}</span>
-                    <span className="passport-stat-label">
-                      moment{state.memories.length === 1 ? '' : 's'} documented
-                    </span>
-                  </p>
-                ) : (
-                  <p className="passport-stat passport-stat--empty">
-                    Your story begins with the first moment.
-                  </p>
-                )}
-                <PassportCurateBar />
+          <div className="passport-hero__inner">
+            <div className="passport-cover passport-cover--on-banner">
+              <div className="passport-cover-top passport-cover-top--book-hero">
+                <div className="passport-cover-text">
+                  <p className="passport-kicker">Official travel record</p>
+                  <h1 className="page-title passport-title">Passport</h1>
+                  {stampy ? (
+                    <p className="passport-stat">
+                      <span className="passport-stat-num">{state.memories.length}</span>
+                      <span className="passport-stat-label">
+                        moment{state.memories.length === 1 ? '' : 's'} documented
+                      </span>
+                    </p>
+                  ) : (
+                    <p className="passport-stat passport-stat--empty">
+                      Your story begins with the first moment.
+                    </p>
+                  )}
+                  <PassportCurateBar />
+                </div>
+                {viewToggleRail}
               </div>
-              {viewToggleRail}
             </div>
+            <p className="passport-hero-banner-caption passport-hero-banner-caption--book">
+              {bookBanner.caption}
+            </p>
           </div>
-          <p className="passport-hero-banner-caption">{bookBanner.caption}</p>
         </header>
       ) : (
         <PageHeader
