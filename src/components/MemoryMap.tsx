@@ -13,6 +13,12 @@ import {
   flightLineColor,
   flightRoutePolyline,
 } from '../lib/flightRouteGeo'
+import {
+  MAP_TILE_ATTRIBUTION,
+  MAP_TILE_SUBDOMAINS,
+  MAP_TILE_URL,
+} from '../lib/mapBasemap'
+import { smoothLatLngPath } from '../lib/smoothPath'
 import { KIND_EMOJI } from '../lib/kindMeta'
 import { AnimatedTripPolyline } from './AnimatedTripPolyline'
 import {
@@ -55,7 +61,7 @@ function FitBounds({
     const pts = [...pinPts, ...extraPoints]
     if (pts.length === 0) return
     const b = L.latLngBounds(pts)
-    map.fitBounds(b, { padding: [48, 48], maxZoom: 12 })
+    map.fitBounds(b, { padding: [48, 48], maxZoom: 12, animate: false })
   }, [map, pinMemories, extraPoints])
   return null
 }
@@ -70,6 +76,10 @@ function MapReadyInvalidate() {
 
 export function MemoryMap({
   memories,
+  /** Used only for framing the map (stable when filtering by moment type). */
+  memoriesForBounds,
+  /** Trip line geometry when a trip is selected; defaults to `memories`. */
+  lineMemories,
   showTripLine,
   linePlayKey,
   landedIds,
@@ -77,16 +87,35 @@ export function MemoryMap({
   onSelectMemory,
 }: {
   memories: Memory[]
+  memoriesForBounds?: Memory[]
+  lineMemories?: Memory[]
   showTripLine: boolean
   linePlayKey: number
   landedIds: Set<string>
   showFlightRoutes: boolean
   onSelectMemory?: (m: Memory) => void
 }) {
+  const boundsSource = memoriesForBounds ?? memories
+
   const pinMemories = useMemo(
     () => memories.filter(usePinAtSavedLocation),
     [memories]
   )
+
+  const boundsPinMemories = useMemo(
+    () => boundsSource.filter(usePinAtSavedLocation),
+    [boundsSource]
+  )
+
+  const boundsRouteCorners = useMemo(() => {
+    const out: [number, number][] = []
+    for (const m of boundsSource) {
+      if (m.kind !== 'flight') continue
+      const positions = flightRoutePolyline(m)
+      if (positions && positions.length >= 2) out.push(...positions)
+    }
+    return out
+  }, [boundsSource])
 
   const center = useMemo((): [number, number] => {
     if (memories.length === 0) return [20, 0]
@@ -96,11 +125,13 @@ export function MemoryMap({
   }, [memories])
 
   const linePositions = useMemo(() => {
-    const sorted = [...memories]
+    const src = lineMemories ?? memories
+    const sorted = [...src]
       .filter((m) => m.kind !== 'flight')
       .sort((a, b) => Date.parse(a.visitedAt) - Date.parse(b.visitedAt))
-    return sorted.map((m) => [m.lat, m.lng] as [number, number])
-  }, [memories])
+    const raw = sorted.map((m) => [m.lat, m.lng] as [number, number])
+    return raw.length >= 3 ? smoothLatLngPath(raw, 10) : raw
+  }, [lineMemories, memories])
 
   const flightArcs = useMemo(() => {
     if (!showFlightRoutes) return []
@@ -124,11 +155,6 @@ export function MemoryMap({
     return out
   }, [memories, showFlightRoutes])
 
-  const routeCornerPoints = useMemo(
-    () => flightArcs.flatMap((a) => a.positions),
-    [flightArcs]
-  )
-
   return (
     <MapContainer
       center={center}
@@ -141,14 +167,15 @@ export function MemoryMap({
       <MapInvalidateOnResize />
       <MapReadyInvalidate />
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-        maxZoom={19}
+        attribution={MAP_TILE_ATTRIBUTION}
+        url={MAP_TILE_URL}
+        subdomains={MAP_TILE_SUBDOMAINS}
+        maxZoom={20}
       />
-      {pinMemories.length > 0 || routeCornerPoints.length > 0 ? (
+      {boundsPinMemories.length > 0 || boundsRouteCorners.length > 0 ? (
         <FitBounds
-          pinMemories={pinMemories}
-          extraPoints={routeCornerPoints}
+          pinMemories={boundsPinMemories}
+          extraPoints={boundsRouteCorners}
         />
       ) : null}
       {flightArcs.map((arc) => (

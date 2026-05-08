@@ -124,6 +124,8 @@ export function MapPage() {
         <div className="map-stage">
           <MemoryMap
             memories={filteredMemories}
+            memoriesForBounds={tripMemories}
+            lineMemories={tripMemories}
             showTripLine={Boolean(state.selectedTripId)}
             linePlayKey={state.tripLinePlayKey}
             landedIds={landedSet}

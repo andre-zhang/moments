@@ -13,6 +13,12 @@ import { KIND_EMOJI, KIND_LABEL } from '../../lib/kindMeta'
 import type { Memory, TagCategory } from '../../types'
 import type { StorybookTourStep } from '../../lib/buildStorybookTour'
 import {
+  MAP_TILE_ATTRIBUTION,
+  MAP_TILE_SUBDOMAINS,
+  MAP_TILE_URL,
+} from '../../lib/mapBasemap'
+import { smoothLatLngPath } from '../../lib/smoothPath'
+import {
   MapInvalidateAfterPaint,
   MapInvalidateOnResize,
 } from '../mapLeafletHelpers'
@@ -277,10 +283,10 @@ export function StorybookTourView({
   const [detailMemory, setDetailMemory] = useState<Memory | null>(null)
   const [detailPlace, setDetailPlace] = useState('')
 
-  const linePositions = useMemo(
-    () => steps.map((s) => [s.lat, s.lng] as [number, number]),
-    [steps]
-  )
+  const linePositions = useMemo(() => {
+    const raw = steps.map((s) => [s.lat, s.lng] as [number, number])
+    return raw.length >= 3 ? smoothLatLngPath(raw, 10) : raw
+  }, [steps])
 
   const mapCenter = useMemo((): [number, number] => {
     if (steps.length === 0) return [20, 0]
@@ -353,9 +359,9 @@ export function StorybookTourView({
             >
               <ZoomControl position="bottomright" />
               <TileLayer
-                attribution='&copy; <a href="https://carto.com/">CARTO</a>'
-                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-                subdomains="abcd"
+                attribution={MAP_TILE_ATTRIBUTION}
+                url={MAP_TILE_URL}
+                subdomains={MAP_TILE_SUBDOMAINS}
                 maxZoom={20}
               />
               {linePositions.length >= 2 ? (

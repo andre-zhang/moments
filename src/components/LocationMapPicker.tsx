@@ -7,6 +7,11 @@ import {
   useMapEvents,
 } from 'react-leaflet'
 import {
+  MAP_TILE_ATTRIBUTION,
+  MAP_TILE_SUBDOMAINS,
+  MAP_TILE_URL,
+} from '../lib/mapBasemap'
+import {
   MapInvalidateAfterPaint,
   MapInvalidateOnResize,
 } from './mapLeafletHelpers'
@@ -70,9 +75,10 @@ export function LocationMapPicker({
         <MapInvalidateOnResize />
         <RecenterOnFocus lat={lat} lng={lng} focusKey={focusKey} />
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-          maxZoom={19}
+          attribution={MAP_TILE_ATTRIBUTION}
+          url={MAP_TILE_URL}
+          subdomains={MAP_TILE_SUBDOMAINS}
+          maxZoom={20}
         />
         <Marker
           position={[lat, lng]}
