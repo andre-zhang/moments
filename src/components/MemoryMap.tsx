@@ -33,11 +33,12 @@ function pinIcon(
 ) {
   const emoji = pinEmoji?.trim() || KIND_EMOJI[kind]
   const cls = `memory-pin${landed ? ' memory-pin--landed' : ''}`
+  // iconSize/iconAnchor must match .memory-pin (32×32) so the trip line meets the pin tip.
   return L.divIcon({
     className: 'memory-pin-anchor',
     html: `<div class="${cls}" data-kind="${kind}">${emoji}</div>`,
-    iconSize: [36, 40],
-    iconAnchor: [18, 38],
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
   })
 }
 

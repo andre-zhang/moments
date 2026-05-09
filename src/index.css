@@ -3931,7 +3931,6 @@ a.btn-surface-ghost {
   text-transform: uppercase;
   color: rgb(46 56 68 / 0.88);
   text-align: right;
-  border-top: 1px solid rgb(44 61 92 / 0.12);
 }
 
 .passport-cover-top--book-hero {
@@ -3939,17 +3938,19 @@ a.btn-surface-ghost {
   width: 100%;
   align-items: start;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: 1fr auto 1fr;
   gap: 0.75rem 1rem;
 }
 
 .passport-page--book .passport-cover-text {
   min-width: 0;
+  grid-column: 1;
 }
 
 .passport-page--book .passport-cover-top--book-hero .passport-view-toggle {
+  grid-column: 2;
   align-self: start;
-  justify-self: end;
+  justify-self: center;
   margin-top: 0;
 }
 
@@ -3960,8 +3961,13 @@ a.btn-surface-ghost {
     gap: 0.85rem 0;
   }
 
+  .passport-page--book .passport-cover-text {
+    grid-column: auto;
+  }
+
   .passport-page--book .passport-cover-top--book-hero .passport-view-toggle {
-    justify-self: stretch;
+    grid-column: auto;
+    justify-self: center;
     align-items: flex-start;
   }
 }
@@ -3975,11 +3981,15 @@ a.btn-surface-ghost {
   height: 3px;
   background: #b8860b;
   border-radius: 2px;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .passport-page--book .passport-hero--book::after {
   height: 7px;
   border-radius: 1px;
+  z-index: 2;
+  pointer-events: none;
   background: linear-gradient(
     to bottom,
     #c9a227 0%,

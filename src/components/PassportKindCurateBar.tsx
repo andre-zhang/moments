@@ -80,7 +80,7 @@ export function PassportKindCurateBar({
     <div className="passport-kind-curate-bar">
       <button
         type="button"
-        className="btn-secondary"
+        className="btn-primary"
         disabled={loading}
         onClick={() => void onCurate()}
       >

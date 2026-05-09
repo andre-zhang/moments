@@ -35,7 +35,11 @@ export function AnimatedTripPolyline({
           ? n
           : Math.min(n, Math.max(2, 2 + Math.floor(t * extra)))
       setSegment(positions.slice(0, count))
-      if (t < 1) raf = requestAnimationFrame(tick)
+      if (t < 1) {
+        raf = requestAnimationFrame(tick)
+      } else {
+        setSegment(positions)
+      }
     }
 
     setSegment([positions[0], positions[1]])

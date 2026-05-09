@@ -129,7 +129,7 @@ export function PassportCurateBar() {
     <div className="passport-curate-bar">
       <button
         type="button"
-        className="btn-secondary"
+        className="btn-primary"
         disabled={loading || memories.length === 0}
         onClick={() => void onCurate()}
       >
