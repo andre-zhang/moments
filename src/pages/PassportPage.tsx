@@ -63,12 +63,6 @@ export function PassportPage() {
     </>
   )
 
-  const viewToggleRail = (
-    <div className="passport-view-toggle" role="group" aria-label="Passport display">
-      {viewToggleInner}
-    </div>
-  )
-
   const viewToggleToolbar = (
     <div
       className="passport-view-toggle passport-view-toggle--toolbar"
@@ -79,72 +73,46 @@ export function PassportPage() {
     </div>
   )
 
+  const subtitle = (
+    <>
+      {stampy ? (
+        <p className="passport-stat passport-stat--page-header">
+          <span className="passport-stat-num">{state.memories.length}</span>
+          <span className="passport-stat-label">
+            moment{state.memories.length === 1 ? '' : 's'} documented
+          </span>
+        </p>
+      ) : (
+        <p className="passport-stat passport-stat--empty passport-stat--page-header">
+          Your story begins with the first moment.
+        </p>
+      )}
+      <PassportCurateBar />
+    </>
+  )
+
   return (
     <div
       className={`page passport-page${book ? ' passport-page--book' : ' passport-page--simple'}`}
     >
-      {book ? (
-        <header className="passport-hero page-hero passport-hero--book passport-hero--with-banner">
-          <div
-            className="passport-hero-banner-bg"
-            style={{ backgroundImage: `url(${bookBanner.src})` }}
-            role="img"
-            aria-label={bookBanner.alt}
-          />
-          <div className="passport-hero-banner-scrim" aria-hidden />
-          <div className="passport-hero__inner">
-            <div className="passport-cover passport-cover--on-banner">
-              <div className="passport-cover-top passport-cover-top--book-hero">
-                <div className="passport-cover-text">
-                  <p className="passport-kicker">Official travel record</p>
-                  <h1 className="page-title passport-title">Passport</h1>
-                  {stampy ? (
-                    <p className="passport-stat">
-                      <span className="passport-stat-num">{state.memories.length}</span>
-                      <span className="passport-stat-label">
-                        moment{state.memories.length === 1 ? '' : 's'} documented
-                      </span>
-                    </p>
-                  ) : (
-                    <p className="passport-stat passport-stat--empty">
-                      Your story begins with the first moment.
-                    </p>
-                  )}
-                  <PassportCurateBar />
-                </div>
-                {viewToggleRail}
-              </div>
-            </div>
-            <p className="passport-hero-banner-caption passport-hero-banner-caption--book">
-              {bookBanner.caption}
-            </p>
-          </div>
-        </header>
-      ) : (
-        <PageHeader
-          title="Passport"
-          toolbarBelow
-          banner={simpleBanner}
-          subtitle={
-            <>
-              {stampy ? (
-                <p className="passport-stat passport-stat--page-header">
-                  <span className="passport-stat-num">{state.memories.length}</span>
-                  <span className="passport-stat-label">
-                    moment{state.memories.length === 1 ? '' : 's'} documented
-                  </span>
-                </p>
-              ) : (
-                <p className="passport-stat passport-stat--empty passport-stat--page-header">
-                  Your story begins with the first moment.
-                </p>
-              )}
-              <PassportCurateBar />
-            </>
-          }
-          actions={viewToggleToolbar}
-        />
-      )}
+      <PageHeader
+        title={
+          book ? (
+            <span className="passport-title passport-title--banner">Passport</span>
+          ) : (
+            'Passport'
+          )
+        }
+        preTitle={
+          book ? (
+            <p className="passport-kicker passport-kicker--banner">Official travel record</p>
+          ) : undefined
+        }
+        toolbarBelow
+        banner={book ? bookBanner : simpleBanner}
+        subtitle={subtitle}
+        actions={viewToggleToolbar}
+      />
       <DiscoverPanel memories={state.memories} viewMode={viewMode} />
     </div>
   )
