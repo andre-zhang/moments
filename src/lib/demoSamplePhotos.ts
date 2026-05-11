@@ -118,30 +118,67 @@ export function getPageMasthead(
   }
 }
 
-/** Seed demo moments → sample file on disk (injected as uploads in local mode). */
-export const DEMO_MEMORY_PHOTO_BINDINGS: readonly {
+/**
+ * Demo moments get bundled uploads (local/offline). Multiple rows per memory add extra shots;
+ * `ensureDemoSamplePhotosImported` appends until each plan is satisfied.
+ */
+export const DEMO_MEMORY_PHOTO_PLANS: readonly {
   memoryId: string
-  src: string
-  fileName: string
+  photos: readonly { src: string; fileName: string }[]
 }[] = [
   {
-    memoryId: 'm-pch-bixby',
-    src: '/sample-photos/demo-coast.jpg',
-    fileName: 'big-sur-coast.jpg',
+    memoryId: 'm-pch-sf',
+    photos: [
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'pch-coffee-1.jpg' },
+      { src: '/sample-photos/demo-city.jpg', fileName: 'pch-coffee-2.jpg' },
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'pch-coffee-3.jpg' },
+    ],
   },
   {
-    memoryId: 'm-hok-niseko',
-    src: '/sample-photos/demo-alpine.jpg',
-    fileName: 'niseko-alpine.jpg',
+    memoryId: 'm-pch-bixby',
+    photos: [
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'bixby-1.jpg' },
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'bixby-2.jpg' },
+    ],
   },
   {
     memoryId: 'm-ptl-porto',
-    src: '/sample-photos/demo-porto.jpg',
-    fileName: 'porto-coastal.jpg',
+    photos: [
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'porto-ribeira-1.jpg' },
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'porto-ribeira-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-hok-niseko',
+    photos: [
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'niseko-1.jpg' },
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'niseko-2.jpg' },
+    ],
   },
   {
     memoryId: 'm-nyc-met',
-    src: '/sample-photos/demo-city.jpg',
-    fileName: 'nyc-skyline.jpg',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'met-1.jpg' },
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'met-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-spring-bistro',
+    photos: [{ src: '/sample-photos/demo-porto.jpg', fileName: 'paris-bistro-1.jpg' }],
+  },
+  {
+    memoryId: 'm-ptl-tram',
+    photos: [{ src: '/sample-photos/demo-porto.jpg', fileName: 'lisbon-tram-1.jpg' }],
+  },
+  {
+    memoryId: 'm-ptl-pasteis',
+    photos: [{ src: '/sample-photos/demo-porto.jpg', fileName: 'pasteis-1.jpg' }],
+  },
+  {
+    memoryId: 'm-pch-la',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'la-tacos-1.jpg' },
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'la-tacos-2.jpg' },
+    ],
   },
 ]

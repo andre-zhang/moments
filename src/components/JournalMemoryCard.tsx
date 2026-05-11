@@ -133,7 +133,7 @@ export function JournalMemoryCard({
                       {more > 0 ? (
                         <span
                           className="memory-tag memory-tag--overflow"
-                          title={`${more} more tag${more === 1 ? '' : 's'} — open moment to see all`}
+                          title={`${more} more tag${more === 1 ? '' : 's'} (open moment for full list)`}
                         >
                           +{more}
                         </span>
