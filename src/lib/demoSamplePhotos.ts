@@ -149,6 +149,7 @@ export const DEMO_MEMORY_PHOTO_PLANS: readonly {
     photos: [
       { src: '/sample-photos/demo-coast.jpg', fileName: 'bixby-1.jpg' },
       { src: '/sample-photos/demo-porto.jpg', fileName: 'bixby-2.jpg' },
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'bixby-bridge-mist-3.jpg' },
     ],
   },
   {
@@ -156,6 +157,7 @@ export const DEMO_MEMORY_PHOTO_PLANS: readonly {
     photos: [
       { src: '/sample-photos/demo-porto.jpg', fileName: 'porto-ribeira-1.jpg' },
       { src: '/sample-photos/demo-coast.jpg', fileName: 'porto-ribeira-2.jpg' },
+      { src: '/sample-photos/demo-dusk.svg', fileName: 'porto-river-dusk.svg' },
     ],
   },
   {
@@ -163,6 +165,7 @@ export const DEMO_MEMORY_PHOTO_PLANS: readonly {
     photos: [
       { src: '/sample-photos/demo-alpine.jpg', fileName: 'niseko-1.jpg' },
       { src: '/sample-photos/demo-coast.jpg', fileName: 'niseko-2.jpg' },
+      { src: '/sample-photos/demo-meadow.svg', fileName: 'niseko-slope-light.svg' },
     ],
   },
   {
@@ -170,25 +173,39 @@ export const DEMO_MEMORY_PHOTO_PLANS: readonly {
     photos: [
       { src: '/sample-photos/demo-city.jpg', fileName: 'met-1.jpg' },
       { src: '/sample-photos/demo-alpine.jpg', fileName: 'met-2.jpg' },
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'met-sculpture-hall-3.jpg' },
     ],
   },
   {
     memoryId: 'm-spring-bistro',
-    photos: [{ src: '/sample-photos/demo-porto.jpg', fileName: 'paris-bistro-1.jpg' }],
+    photos: [
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'paris-bistro-1.jpg' },
+      { src: '/sample-photos/demo-city.jpg', fileName: 'paris-bistro-wine-2.jpg' },
+      { src: '/sample-photos/demo-dusk.svg', fileName: 'paris-bistro-evening.svg' },
+    ],
   },
   {
     memoryId: 'm-ptl-tram',
-    photos: [{ src: '/sample-photos/demo-porto.jpg', fileName: 'lisbon-tram-1.jpg' }],
+    photos: [
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'lisbon-tram-1.jpg' },
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'lisbon-tram-hill-2.jpg' },
+      { src: '/sample-photos/demo-city.jpg', fileName: 'lisbon-tram-street-3.jpg' },
+    ],
   },
   {
     memoryId: 'm-ptl-pasteis',
-    photos: [{ src: '/sample-photos/demo-porto.jpg', fileName: 'pasteis-1.jpg' }],
+    photos: [
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'pasteis-1.jpg' },
+      { src: '/sample-photos/demo-city.jpg', fileName: 'pasteis-box-2.jpg' },
+      { src: '/sample-photos/demo-meadow.svg', fileName: 'pasteis-queue-outside.svg' },
+    ],
   },
   {
     memoryId: 'm-pch-la',
     photos: [
       { src: '/sample-photos/demo-city.jpg', fileName: 'la-tacos-1.jpg' },
       { src: '/sample-photos/demo-coast.jpg', fileName: 'la-tacos-2.jpg' },
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'la-night-lights-3.jpg' },
     ],
   },
   {
@@ -366,6 +383,53 @@ export const DEMO_MEMORY_PHOTO_PLANS: readonly {
     photos: [
       { src: '/sample-photos/demo-dusk.svg', fileName: 'calton-sunset.svg' },
       { src: '/sample-photos/demo-alpine.jpg', fileName: 'calton-monuments-2.jpg' },
+      { src: '/sample-photos/demo-city.jpg', fileName: 'calton-city-skyline-3.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-spring-cdg',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'cdg-terminal-1.jpg' },
+      { src: '/sample-photos/demo-dusk.svg', fileName: 'cdg-tarmac-dawn.svg' },
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'cdg-window-clouds-3.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-spring-tokyo-flight',
+    photos: [
+      { src: '/sample-photos/demo-dusk.svg', fileName: 'tokyo-flight-night-sky.svg' },
+      { src: '/sample-photos/demo-city.jpg', fileName: 'haneda-approach-2.jpg' },
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'flight-coastline-3.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-spring-ramen',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'shibuya-neon-1.jpg' },
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'ramen-bowl-steam-2.jpg' },
+      { src: '/sample-photos/demo-meadow.svg', fileName: 'counter-glow.svg' },
+    ],
+  },
+  {
+    memoryId: 'm-echo-2024-0330',
+    photos: [
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'lisbon-rain-2024-1.jpg' },
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'lisbon-waterfront-2024-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-echo-2025-0330',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'nyc-coffee-2025-1.jpg' },
+      { src: '/sample-photos/demo-dusk.svg', fileName: 'midtown-grey.svg' },
+    ],
+  },
+  {
+    memoryId: 'm-echo-2026-0330',
+    photos: [
+      { src: '/sample-photos/demo-meadow.svg', fileName: 'tokyo-buds-2026.svg' },
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'ueno-park-2026-2.jpg' },
+      { src: '/sample-photos/demo-city.jpg', fileName: 'tokyo-sky-2026-3.jpg' },
     ],
   },
 ]
