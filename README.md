@@ -50,3 +50,5 @@ Photon search is debounced and runs through the Vite proxy in development to avo
 ### Passport summaries
 
 Aggregating stamps and yearly cards from heterogeneous memories is straightforward; making the page feel like a coherent digest (including optional model generated blurbs merged into curated slots) runs into the usual problem: helpful text should sound like a person, not a brochure. The server side AI route is written around that constraint.
+
+Bundled demo photos are Wikimedia Commons thumbnails; each file’s Commons page lists photographer credit and license.

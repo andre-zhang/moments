@@ -9,7 +9,7 @@ export type EnsureDemoSamplePhotosOptions = {
 }
 
 /**
- * Copies bundled `public/sample-photos/*` into the photo store for demo moments.
+ * Fetches demo moment images (Wikimedia Commons thumbnails from plans) into the photo store.
  * Safe to call repeatedly — skips files already satisfied per memory.
  * By default skipped when Neon sync is enabled (avoid surprise uploads on every load);
  * use `bypassNeonGuard` after an explicit demo reset.
@@ -25,7 +25,11 @@ export async function ensureDemoSamplePhotosImported(
     for (const b of missing) {
       let res: Response
       try {
-        res = await fetch(b.src, { credentials: 'same-origin' })
+        const crossOrigin = /^https?:\/\//i.test(b.src)
+        res = await fetch(b.src, {
+          credentials: 'omit',
+          mode: crossOrigin ? 'cors' : 'same-origin',
+        })
       } catch {
         continue
       }
