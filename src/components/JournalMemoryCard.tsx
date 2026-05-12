@@ -50,16 +50,18 @@ export function JournalMemoryCard({
     <li
       id={`memory-${m.id}`}
       className={`memory-card${hasCover ? ' memory-card--with-cover' : ''}`}
-      style={
-        hasCover && coverUrl
-          ? {
-              backgroundImage: `url(${coverUrl})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }
-          : undefined
-      }
     >
+      {hasCover && coverUrl ? (
+        <div
+          className="memory-card-bg"
+          aria-hidden
+          style={{
+            backgroundImage: `url(${coverUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+      ) : null}
       {hasCover ? <div className="memory-card-cover-scrim" aria-hidden /> : null}
       <div className="memory-card-layout">
         <div
@@ -166,29 +168,32 @@ export function JournalMemoryCard({
                 })}
               </div>
             ) : null}
+            {m.friendIds?.length ? (
+              <div
+                className="memory-card-friends-inline"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <p className="memory-friends">
+                  With{' '}
+                  {m.friendIds.map((id) => {
+                    const fr = friends.find((x) => x.id === id)
+                    const stub = fr ?? { id, name: friendName(id) }
+                    return (
+                      <Link
+                        key={id}
+                        to={`/friends/${encodeURIComponent(id)}`}
+                        className="friend-pill friend-pill--link"
+                        style={friendChipStyle(stub)}
+                      >
+                        {friendName(id)}
+                      </Link>
+                    )
+                  })}
+                </p>
+              </div>
+            ) : null}
           </div>
         </div>
-        {m.friendIds?.length ? (
-          <div className="memory-card-friends-slot">
-            <p className="memory-friends">
-              With{' '}
-              {m.friendIds.map((id) => {
-                const fr = friends.find((x) => x.id === id)
-                const stub = fr ?? { id, name: friendName(id) }
-                return (
-                  <Link
-                    key={id}
-                    to={`/friends/${encodeURIComponent(id)}`}
-                    className="friend-pill friend-pill--link"
-                    style={friendChipStyle(stub)}
-                  >
-                    {friendName(id)}
-                  </Link>
-                )
-              })}
-            </p>
-          </div>
-        ) : null}
         <div className="memory-card-actions">
           <Link
             to={`/add/moment?edit=${encodeURIComponent(m.id)}`}
