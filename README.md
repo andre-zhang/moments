@@ -1,6 +1,6 @@
 # Moments
 
-***___TRY IT:__*** https://moments-virid.vercel.app
+***__TRY IT:__*** https://moments-virid.vercel.app
 
 ## Inspiration
 
