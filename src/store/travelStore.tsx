@@ -422,6 +422,12 @@ export function TravelProvider({ children }: { children: ReactNode }) {
           }
         }
       } else {
+        try {
+          await ensureDemoSamplePhotosImported()
+        } catch {
+          /* bundled photos optional if fetch fails */
+        }
+        if (cancelled) return
         const persisted = loadPersisted()
         if (persisted) {
           dispatch({ type: 'hydrate', payload: persisted })
@@ -431,9 +437,6 @@ export function TravelProvider({ children }: { children: ReactNode }) {
       }
       if (!cancelled) {
         persistReady.current = true
-        if (!isNeonSyncEnabled()) {
-          void ensureDemoSamplePhotosImported()
-        }
       }
     }
     void go()
@@ -558,8 +561,10 @@ export function TravelProvider({ children }: { children: ReactNode }) {
     if (remotePersistenceActive()) {
       await flushRemoteSaveNow(demo).catch(() => markRemotePersistenceFailed())
     }
-    if (!isNeonSyncEnabled()) {
-      await ensureDemoSamplePhotosImported()
+    try {
+      await ensureDemoSamplePhotosImported({ bypassNeonGuard: true })
+    } catch {
+      /* ignore bundled photo failures */
     }
   }, [])
 

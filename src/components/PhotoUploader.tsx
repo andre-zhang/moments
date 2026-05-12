@@ -5,6 +5,7 @@ import {
   listPhotosForMemory,
   type PhotoRow,
 } from '../db/photosDb'
+import { notifyPhotosUpdated } from '../lib/photoDbRefresh'
 
 function PhotoTile({
   row,
@@ -51,11 +52,13 @@ export function PhotoUploader({ memoryId }: { memoryId: string }) {
     }
     e.target.value = ''
     void refresh()
+    notifyPhotosUpdated()
   }
 
   const remove = async (id: string) => {
     await deletePhoto(id)
     void refresh()
+    notifyPhotosUpdated()
   }
 
   return (

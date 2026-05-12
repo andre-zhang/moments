@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { listPhotosForMemory, type PhotoRow } from '../db/photosDb'
+import { subscribePhotosUpdated } from '../lib/photoDbRefresh'
 
 function Thumb({ row }: { row: PhotoRow }) {
   const [src, setSrc] = useState('')
@@ -18,7 +19,13 @@ export function MemoryPhotoHero({ memoryId }: { memoryId: string }) {
   const [row, setRow] = useState<PhotoRow | null>(null)
 
   useEffect(() => {
-    void listPhotosForMemory(memoryId).then((r) => setRow(r[0] ?? null))
+    const load = () => {
+      void listPhotosForMemory(memoryId)
+        .then((r) => setRow(r[0] ?? null))
+        .catch(() => setRow(null))
+    }
+    load()
+    return subscribePhotosUpdated(load)
   }, [memoryId])
 
   if (!row) return null
@@ -49,9 +56,13 @@ export function PhotoStrip({
   const [rows, setRows] = useState<PhotoRow[]>([])
 
   useEffect(() => {
-    void listPhotosForMemory(memoryId).then((r) =>
-      setRows(r.slice(skip, skip + max))
-    )
+    const load = () => {
+      void listPhotosForMemory(memoryId)
+        .then((r) => setRows(r.slice(skip, skip + max)))
+        .catch(() => setRows([]))
+    }
+    load()
+    return subscribePhotosUpdated(load)
   }, [memoryId, max, skip])
 
   if (rows.length === 0) return null
