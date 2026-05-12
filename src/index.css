@@ -1717,12 +1717,14 @@ a:hover {
 
 .memory-card-hit {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: 1rem 1.25rem;
   align-items: start;
   text-decoration: none;
   color: inherit;
   min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
   cursor: pointer;
   padding-right: 2.9rem;
 }
@@ -2184,6 +2186,25 @@ a:hover {
   flex-wrap: wrap;
   gap: 0.35rem;
   margin-top: 0.55rem;
+}
+
+/* Journal cover cards: keep tag chips on one row when they fit; scroll if many */
+.memory-card .memory-tags {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  padding-bottom: 0.15rem;
+  margin-right: -0.15rem;
+}
+
+.memory-card .memory-tags::-webkit-scrollbar {
+  height: 4px;
+}
+
+.memory-card .memory-tags::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--line-strong) 55%, transparent);
+  border-radius: 999px;
 }
 
 .memory-tag {
@@ -2828,6 +2849,14 @@ a:hover {
   box-shadow: var(--shadow-sm);
 }
 
+/* Default moment detail: keep hero + body in the same readable column (no edge-to-edge stretch) */
+.page.moment-detail-page:not(.passport-page--book):not(.passport-page--simple) .memory-photo-hero {
+  margin-left: auto;
+  margin-right: auto;
+  width: min(100%, 42rem);
+  max-width: 100%;
+}
+
 .memory-photo-hero__bg {
   position: absolute;
   inset: 0;
@@ -2876,14 +2905,20 @@ a:hover {
   flex-direction: column;
   gap: 0.75rem;
   padding-top: 0.35rem;
-  padding-left: max(0.55rem, env(safe-area-inset-left, 0px));
-  padding-right: max(0.55rem, env(safe-area-inset-right, 0px));
+  padding-left: max(0.75rem, env(safe-area-inset-left, 0px));
+  padding-right: max(0.75rem, env(safe-area-inset-right, 0px));
+  width: 100%;
+  max-width: min(40rem, 100%);
+  margin-inline: auto;
+  box-sizing: border-box;
 }
 
 .memory-detail-read--passport-stamp .memory-detail-read__inset {
   padding-left: 0;
   padding-right: 0;
   padding-top: 0.15rem;
+  max-width: none;
+  margin-inline: 0;
 }
 
 .memory-detail-read-head {
@@ -5173,9 +5208,15 @@ a.btn-surface-ghost {
 
 .memory-kind-dl-row {
   display: grid;
-  grid-template-columns: 7rem 1fr;
-  gap: 0.5rem;
+  grid-template-columns: max-content max-content;
+  column-gap: 0.75rem;
+  row-gap: 0.35rem;
+  align-items: baseline;
   font-size: 0.88rem;
+}
+
+.passport-moment-stamp-sheet .memory-kind-dl-row {
+  grid-template-columns: 5.75rem 1fr;
 }
 
 .memory-kind-dl dt {

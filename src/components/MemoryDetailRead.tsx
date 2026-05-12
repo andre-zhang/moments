@@ -208,7 +208,8 @@ export function MemoryDetailRead({
 
       <KindExtras memory={memory} />
 
-      <PhotoStrip memoryId={memory.id} skip={1} />
+      {/* Include cover (first) in the strip so it matches the hero and “uploaded photos” list */}
+      <PhotoStrip memoryId={memory.id} skip={0} />
       {memory.body ? <p className="memory-detail-body">{memory.body}</p> : null}
       {memory.categoryTags &&
       Object.values(memory.categoryTags).some((a) => a?.length) ? (
