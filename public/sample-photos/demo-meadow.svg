@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-label="Sample gradient meadow">
+  <defs>
+    <linearGradient id="meadow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1b4332"/>
+      <stop offset="45%" stop-color="#40916c"/>
+      <stop offset="100%" stop-color="#d8f3dc"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#meadow)"/>
+</svg>

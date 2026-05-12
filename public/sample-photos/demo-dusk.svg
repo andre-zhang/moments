@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-label="Sample gradient dusk sky">
+  <defs>
+    <linearGradient id="dusk" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#240046"/>
+      <stop offset="55%" stop-color="#7b2cbf"/>
+      <stop offset="100%" stop-color="#ff9e00"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#dusk)"/>
+</svg>

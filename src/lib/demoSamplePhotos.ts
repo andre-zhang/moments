@@ -33,6 +33,16 @@ export const DEMO_SAMPLE_PHOTOS: readonly DemoSamplePhoto[] = [
     caption: 'New York, NY',
     alt: 'City skyline at dusk',
   },
+  {
+    src: '/sample-photos/demo-meadow.svg',
+    caption: 'Hill country (sample)',
+    alt: 'Soft green gradient placeholder for bundled demo roll',
+  },
+  {
+    src: '/sample-photos/demo-dusk.svg',
+    caption: 'Evening sky (sample)',
+    alt: 'Purple and amber gradient placeholder for bundled demo roll',
+  },
 ] as const
 
 function hash(input: string): number {
@@ -55,7 +65,7 @@ export function pickDemoSamplePhoto(seed: string): DemoSamplePhoto {
 export const PAGE_DEMO_BANNERS = {
   'places-hero': DEMO_SAMPLE_PHOTOS[2]!, // Cinque Terre — “places”
   'journal-hero': DEMO_SAMPLE_PHOTOS[0]!, // coast — diary / timeline
-  'journal-empty': DEMO_SAMPLE_PHOTOS[1]!, // Alps — quiet, open
+  'journal-empty': DEMO_SAMPLE_PHOTOS[4]!, // meadow — quiet, open
   'map-hero': DEMO_SAMPLE_PHOTOS[1]!, // Alps — routes & pins (card inset like other tabs)
   'storybook-hero': DEMO_SAMPLE_PHOTOS[0]!, // coast — narrative journey
   'friends-hero': DEMO_SAMPLE_PHOTOS[2]!, // coastal town — people
@@ -179,6 +189,183 @@ export const DEMO_MEMORY_PHOTO_PLANS: readonly {
     photos: [
       { src: '/sample-photos/demo-city.jpg', fileName: 'la-tacos-1.jpg' },
       { src: '/sample-photos/demo-coast.jpg', fileName: 'la-tacos-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-spring-louvre',
+    photos: [
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'louvre-facade-1.jpg' },
+      { src: '/sample-photos/demo-city.jpg', fileName: 'louvre-pyramid-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-spring-hotel',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'paris-hotel-view-1.jpg' },
+      { src: '/sample-photos/demo-dusk.svg', fileName: 'paris-hotel-window.svg' },
+    ],
+  },
+  {
+    memoryId: 'm-spring-montmartre',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'montmartre-steps-1.jpg' },
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'montmartre-cafe-2.jpg' },
+      { src: '/sample-photos/demo-meadow.svg', fileName: 'montmartre-park.svg' },
+    ],
+  },
+  {
+    memoryId: 'm-spring-shinjuku-hotel',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'shinjuku-hotel-1.jpg' },
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'shinjuku-night-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-spring-yoyogi',
+    photos: [
+      { src: '/sample-photos/demo-meadow.svg', fileName: 'yoyogi-greenery.svg' },
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'yoyogi-walk-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-ptl-cascais',
+    photos: [
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'cascais-water-1.jpg' },
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'cascais-town-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-ptl-fado',
+    photos: [
+      { src: '/sample-photos/demo-dusk.svg', fileName: 'fado-room-light.svg' },
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'lisbon-evening-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-hok-sapporo',
+    photos: [
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'sapporo-bowl-1.jpg' },
+      { src: '/sample-photos/demo-city.jpg', fileName: 'sapporo-street-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-hok-otaru',
+    photos: [
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'otaru-canal-1.jpg' },
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'otaru-harbor-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-hok-onsen-hotel',
+    photos: [
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'onsen-mountain-1.jpg' },
+      { src: '/sample-photos/demo-meadow.svg', fileName: 'ryokan-garden.svg' },
+    ],
+  },
+  {
+    memoryId: 'm-nyc-bagel',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'bagel-bench-1.jpg' },
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'park-trees-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-nyc-hotel',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'manhattan-window-1.jpg' },
+      { src: '/sample-photos/demo-dusk.svg', fileName: 'city-glow.svg' },
+    ],
+  },
+  {
+    memoryId: 'm-nyc-high-line',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'highline-rail-1.jpg' },
+      { src: '/sample-photos/demo-meadow.svg', fileName: 'highline-plants.svg' },
+    ],
+  },
+  {
+    memoryId: 'm-nyc-jazz',
+    photos: [
+      { src: '/sample-photos/demo-dusk.svg', fileName: 'jazz-venue-dim.svg' },
+      { src: '/sample-photos/demo-city.jpg', fileName: 'village-street-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-pch-carmel',
+    photos: [
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'carmel-mist-1.jpg' },
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'carmel-pines-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-pch-santa-barbara',
+    photos: [
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'sb-pier-1.jpg' },
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'sb-breakfast-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-pch-morro',
+    photos: [
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'morro-rock-1.jpg' },
+      { src: '/sample-photos/demo-city.jpg', fileName: 'morro-beach-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-uk-iad-lhr',
+    photos: [
+      { src: '/sample-photos/demo-dusk.svg', fileName: 'red-eye-sky.svg' },
+      { src: '/sample-photos/demo-city.jpg', fileName: 'approach-lights-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-uk-chips-pub',
+    photos: [
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'pub-interior-1.jpg' },
+      { src: '/sample-photos/demo-city.jpg', fileName: 'pub-plate-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-uk-british-museum',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'museum-hall-1.jpg' },
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'museum-light-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-uk-hotel-london',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'marylebone-room-1.jpg' },
+      { src: '/sample-photos/demo-dusk.svg', fileName: 'london-window.svg' },
+    ],
+  },
+  {
+    memoryId: 'm-uk-notes-kings-cross',
+    photos: [
+      { src: '/sample-photos/demo-city.jpg', fileName: 'platform-board-1.jpg' },
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'coffee-cart-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-uk-edinburgh-castle',
+    photos: [
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'castle-rock-1.jpg' },
+      { src: '/sample-photos/demo-coast.jpg', fileName: 'castle-wind-2.jpg' },
+      { src: '/sample-photos/demo-meadow.svg', fileName: 'castle-green.svg' },
+    ],
+  },
+  {
+    memoryId: 'm-uk-whisky-bar',
+    photos: [
+      { src: '/sample-photos/demo-dusk.svg', fileName: 'whisky-bar-dim.svg' },
+      { src: '/sample-photos/demo-porto.jpg', fileName: 'whisky-flight-2.jpg' },
+    ],
+  },
+  {
+    memoryId: 'm-uk-calton-hill',
+    photos: [
+      { src: '/sample-photos/demo-dusk.svg', fileName: 'calton-sunset.svg' },
+      { src: '/sample-photos/demo-alpine.jpg', fileName: 'calton-monuments-2.jpg' },
     ],
   },
 ]
