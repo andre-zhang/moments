@@ -63,7 +63,7 @@ export function JournalMemoryCard({
       {hasCover ? <div className="memory-card-cover-scrim" aria-hidden /> : null}
       <div className="memory-card-layout">
         <div
-          className="memory-card-hit"
+          className={`memory-card-hit${hasCover ? ' memory-card-hit--cover-glass' : ''}`}
           role="link"
           tabIndex={0}
           aria-label={`Open moment: ${m.title}`}

@@ -163,7 +163,8 @@ export function MemoryDetailRead({
   return (
     <div className={`memory-detail-read${stamp ? ' memory-detail-read--passport-stamp' : ''}`}>
       <MemoryPhotoHero memoryId={memory.id} />
-      <div className="memory-detail-read-head">
+      <div className="memory-detail-read__inset">
+        <div className="memory-detail-read-head">
         {stamp ? (
           <div className="memory-kind-seal">
             <span className="memory-kind-seal__ring" aria-hidden>
@@ -286,6 +287,7 @@ export function MemoryDetailRead({
             </button>
           </div>
         </details>
+      </div>
       </div>
     </div>
   )
