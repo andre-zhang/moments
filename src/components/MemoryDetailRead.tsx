@@ -161,7 +161,11 @@ export function MemoryDetailRead({
   const kindGlyph = memory.pinEmoji?.trim() || KIND_EMOJI[memory.kind]
 
   return (
-    <div className={`memory-detail-read${stamp ? ' memory-detail-read--passport-stamp' : ''}`}>
+    <div
+      className={`memory-detail-read${
+        stamp ? ' memory-detail-read--passport-stamp' : ' memory-detail-read--moment-sheet'
+      }`}
+    >
       <MemoryPhotoHero memoryId={memory.id} />
       <div className="memory-detail-read__inset">
         <div className="memory-detail-read-head">

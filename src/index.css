@@ -1729,147 +1729,6 @@ a:hover {
   padding-right: 2.9rem;
 }
 
-/* Journal list: masthead hero per memory (aligns with PageHeader banner hero).
-   Padding / radius / min-height for .memory-card.memory-card--masthead set below
-   after base .memory-card so cascade wins. */
-.memory-card--masthead .memory-card-hit {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0;
-  padding-right: 0;
-}
-
-.memory-card--masthead .memory-card-hero {
-  position: relative;
-  overflow: hidden;
-  min-height: clamp(9.5rem, 24vw, 14rem);
-  flex-shrink: 0;
-}
-
-.memory-card--masthead.memory-card--hero-fallback .memory-card-hero {
-  background: linear-gradient(
-    125deg,
-    rgb(55 65 81) 0%,
-    rgb(38 48 64) 45%,
-    rgb(28 38 54) 100%
-  );
-}
-
-.memory-card--masthead .memory-card-bg {
-  inset: 0;
-  transform: scale(1.02);
-  filter: saturate(0.88);
-}
-
-.memory-card--masthead .memory-card-hero-scrim {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    115deg,
-    rgb(8 18 32 / 0.72) 0%,
-    rgb(8 18 32 / 0.38) 42%,
-    rgb(8 18 32 / 0.2) 100%
-  );
-}
-
-.memory-card--masthead .memory-card-hero-title {
-  position: absolute;
-  z-index: 2;
-  left: clamp(0.85rem, 2.4vw, 1.25rem);
-  top: clamp(0.95rem, 2.8vw, 1.45rem);
-  right: clamp(4.25rem, 14vw, 5.75rem);
-  margin: 0;
-  max-width: min(22rem, 72%);
-  font-family: var(--font-sans);
-  font-size: clamp(1.22rem, 2.75vw, 1.68rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.12;
-  color: rgb(252 253 255 / 0.98);
-  text-shadow: 0 2px 18px rgb(6 14 26 / 0.55);
-  text-wrap: balance;
-}
-
-.memory-card--masthead .memory-card-hero-caption {
-  position: absolute;
-  z-index: 2;
-  right: clamp(0.75rem, 2vw, 1rem);
-  bottom: clamp(0.45rem, 1.5vw, 0.65rem);
-  left: auto;
-  margin: 0;
-  max-width: min(16rem, 62%);
-  text-align: right;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgb(245 250 255 / 0.92);
-  text-shadow: 0 1px 3px rgb(6 14 26 / 0.65);
-  text-decoration: none;
-  line-height: 1.25;
-}
-
-.memory-card--masthead .memory-card-hero-caption:hover {
-  color: rgb(255 255 255 / 0.99);
-  text-decoration: underline;
-}
-
-.memory-card--masthead .memory-card-hero-kind {
-  position: absolute;
-  z-index: 2;
-  top: clamp(0.72rem, 2vw, 1rem);
-  right: clamp(3.45rem, 12vw, 4.65rem);
-  font-size: 1.42rem;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 2.35rem;
-  min-height: 2.35rem;
-  padding: 0.2rem;
-  border-radius: 999px;
-  background: rgb(8 18 32 / 0.38);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgb(255 255 255 / 0.22);
-  box-shadow: 0 2px 12px rgb(6 14 26 / 0.35);
-}
-
-.memory-card--masthead .memory-card-details {
-  position: relative;
-  z-index: 2;
-  padding: 0.72rem var(--card-pad-x) calc(var(--card-pad-y) + 0.12rem);
-  background: color-mix(in srgb, var(--panel) 94%, white 6%);
-  border-top: 1px solid color-mix(in srgb, var(--line) 88%, white);
-}
-
-.memory-card--masthead .memory-card-details .memory-meta {
-  margin-top: 0;
-}
-
-.memory-card--masthead .memory-card-hit:hover .memory-card-hero-title {
-  color: rgb(221 214 254 / 0.98);
-}
-
-.memory-card--masthead .memory-card-actions {
-  top: clamp(0.35rem, 1.2vw, 0.55rem);
-  right: clamp(0.35rem, 1vw, 0.5rem);
-  padding: 0.15rem 0.28rem;
-  border-radius: var(--radius-md);
-  background: rgb(8 18 32 / 0.42);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgb(255 255 255 / 0.12);
-}
-
-.memory-card--masthead .memory-card-layout {
-  position: relative;
-  z-index: 2;
-}
-
 .memory-card-hit:focus-visible {
   outline: 2px solid var(--accent-soft);
   outline-offset: 3px;
@@ -2227,6 +2086,28 @@ a:hover {
   );
 }
 
+.memory-card--with-cover .memory-card-hit--cover-glass {
+  position: relative;
+  z-index: 1;
+  padding: 0.68rem 0.88rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--panel) 62%, transparent);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid color-mix(in srgb, var(--line) 32%, rgb(255 255 255 / 0.45));
+  box-shadow: 0 2px 12px rgb(8 18 32 / 9%);
+}
+
+.memory-card--with-cover .memory-card-hit--cover-glass:hover .memory-card-title {
+  color: var(--accent);
+}
+
+.memory-card--with-cover .memory-card-hit--cover-glass .memory-kind {
+  background: color-mix(in srgb, var(--panel) 72%, transparent);
+  border-color: color-mix(in srgb, var(--line) 36%, transparent);
+  box-shadow: none;
+}
+
 .memory-card--with-cover .memory-card-layout {
   position: relative;
   z-index: 2;
@@ -2235,12 +2116,6 @@ a:hover {
 .memory-card:hover {
   border-color: color-mix(in srgb, var(--accent) 34%, var(--line));
   box-shadow: var(--shadow-card-hover);
-}
-
-.memory-card.memory-card--masthead {
-  padding: 0;
-  min-height: 0;
-  border-radius: var(--radius-lg);
 }
 
 .memory-card-top {
@@ -3006,6 +2881,54 @@ a:hover {
     rgb(8 18 32 / 0.08) 55%,
     rgb(8 18 32 / 0.02) 100%
   );
+}
+
+/* Default moment page: wide rounded cover, then emoji + title row, strip, tags */
+.memory-detail-read--moment-sheet .memory-photo-hero {
+  min-height: clamp(11rem, 30vw, 17rem);
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-md);
+}
+
+.memory-detail-read--moment-sheet .memory-photo-hero__scrim {
+  background: linear-gradient(
+    120deg,
+    rgb(8 18 32 / 0.2) 0%,
+    rgb(8 18 32 / 0.05) 55%,
+    rgb(8 18 32 / 0) 100%
+  );
+}
+
+.memory-detail-read--moment-sheet .memory-detail-read__inset {
+  gap: 0.95rem;
+  padding-top: 0.1rem;
+}
+
+.memory-detail-read--moment-sheet .memory-detail-read-head {
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.memory-detail-read--moment-sheet .memory-kind-lg {
+  font-size: 2.35rem;
+  line-height: 1;
+}
+
+.memory-detail-read--moment-sheet .memory-detail-title {
+  font-size: clamp(1.42rem, 3.35vw, 1.82rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.18;
+}
+
+.memory-detail-read--moment-sheet .photo-strip li {
+  border-radius: var(--radius-md);
+  width: 4.75rem;
+  height: 4.75rem;
+}
+
+.memory-detail-read--moment-sheet .memory-tags {
+  margin-top: 0.1rem;
 }
 
 .passport-moment-stamp-sheet .memory-photo-hero,
@@ -5399,16 +5322,6 @@ a.btn-surface-ghost {
 @media (max-width: 720px) {
   .memory-card-hit {
     padding-right: 0;
-  }
-
-  .memory-card--masthead .memory-card-hero-title {
-    right: clamp(3.1rem, 16vw, 3.85rem);
-    max-width: none;
-  }
-
-  .memory-card--masthead .memory-card-hero-kind {
-    right: clamp(0.45rem, 1.5vw, 0.65rem);
-    top: clamp(0.5rem, 1.6vw, 0.78rem);
   }
 
   .memory-card-actions {

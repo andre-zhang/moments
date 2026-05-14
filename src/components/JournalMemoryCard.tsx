@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { IconDots, IconPencil, IconTrash } from './Icons'
 import {
@@ -11,14 +10,6 @@ import type { Friend, Memory, SelectionList, TagCategory } from '../types'
 import { useMemoryCoverUrl } from '../hooks/useMemoryCoverUrl'
 
 const MAX_JOURNAL_CATEGORY_TAGS = 5
-
-function heroLocationLabel(m: Memory, destName: (id: string) => string): string {
-  const place = m.placeLabel?.trim()
-  if (place) return place
-  const d = destName(m.destinationId)
-  if (m.countryCode) return `${d}, ${m.countryCode}`
-  return d
-}
 
 function categoryTagPicks(m: Memory, categories: TagCategory[]) {
   const out: { catId: string; tag: string }[] = []
@@ -54,21 +45,27 @@ export function JournalMemoryCard({
   const navigate = useNavigate()
   const coverUrl = useMemoryCoverUrl(m.id)
   const hasCover = Boolean(coverUrl)
-  const heroCaption = useMemo(
-    () => heroLocationLabel(m, destName),
-    [m.destinationId, m.placeLabel, m.countryCode, destName]
-  )
 
   return (
     <li
       id={`memory-${m.id}`}
-      className={`memory-card memory-card--masthead${
-        hasCover ? ' memory-card--with-cover' : ' memory-card--hero-fallback'
-      }`}
+      className={`memory-card${hasCover ? ' memory-card--with-cover' : ''}`}
     >
+      {hasCover && coverUrl ? (
+        <div
+          className="memory-card-bg"
+          aria-hidden
+          style={{
+            backgroundImage: `url(${coverUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+      ) : null}
+      {hasCover ? <div className="memory-card-cover-scrim" aria-hidden /> : null}
       <div className="memory-card-layout">
         <div
-          className="memory-card-hit"
+          className={`memory-card-hit${hasCover ? ' memory-card-hit--cover-glass' : ''}`}
           role="link"
           tabIndex={0}
           aria-label={`Open moment: ${m.title}`}
@@ -82,36 +79,13 @@ export function JournalMemoryCard({
             }
           }}
         >
-          <div className="memory-card-hero">
-            {hasCover && coverUrl ? (
-              <div
-                className="memory-card-bg"
-                aria-hidden
-                style={{
-                  backgroundImage: `url(${coverUrl})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                }}
-              />
-            ) : null}
-            <div className="memory-card-hero-scrim" aria-hidden />
-            <span
-              className="memory-card-hero-kind"
-              title={KIND_LABEL[m.kind]}
-              aria-hidden
-            >
+          <div className="memory-card-visual">
+            <span className="memory-kind" title={KIND_LABEL[m.kind]}>
               {m.pinEmoji?.trim() || KIND_EMOJI[m.kind]}
             </span>
-            <h2 className="memory-card-hero-title">{m.title}</h2>
-            <Link
-              className="memory-card-hero-caption"
-              to={`/places/${encodeURIComponent(m.destinationId)}`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {heroCaption}
-            </Link>
           </div>
-          <div className="memory-card-details">
+          <div className="memory-card-body">
+            <h2 className="memory-card-title">{m.title}</h2>
             <p className="memory-meta">
               <Link
                 to={`/places/${encodeURIComponent(m.destinationId)}`}
@@ -132,6 +106,9 @@ export function JournalMemoryCard({
                 dateStyle: 'medium',
               })}
             </p>
+            {m.placeLabel ? (
+              <p className="memory-place">{m.placeLabel}</p>
+            ) : null}
             {m.body ? <p className="memory-body">{m.body}</p> : null}
             {m.categoryTags &&
             Object.values(m.categoryTags).some((a) => a?.length) ? (
