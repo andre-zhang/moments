@@ -2849,12 +2849,12 @@ a:hover {
   box-shadow: var(--shadow-sm);
 }
 
-/* Default moment detail: keep hero + body in the same readable column (no edge-to-edge stretch) */
+/* Default moment detail: hero uses full page column (nav is the way back to Journal) */
 .page.moment-detail-page:not(.passport-page--book):not(.passport-page--simple) .memory-photo-hero {
-  margin-left: auto;
-  margin-right: auto;
-  width: min(100%, 42rem);
-  max-width: 100%;
+  margin-left: calc(-1 * var(--page-pad-x));
+  margin-right: calc(-1 * var(--page-pad-x));
+  width: calc(100% + 2 * var(--page-pad-x));
+  max-width: none;
 }
 
 .memory-photo-hero__bg {
@@ -2890,21 +2890,13 @@ a:hover {
   box-shadow: var(--shadow-md);
 }
 
-.memory-detail-read--moment-sheet .memory-photo-hero__scrim {
-  background: linear-gradient(
-    120deg,
-    rgb(8 18 32 / 0.2) 0%,
-    rgb(8 18 32 / 0.05) 55%,
-    rgb(8 18 32 / 0) 100%
-  );
-}
-
 .memory-detail-read--moment-sheet .memory-detail-read__inset {
+  max-width: min(72rem, 100%);
   gap: 0.95rem;
   padding-top: 0.1rem;
 }
 
-.memory-detail-read--moment-sheet .memory-detail-read-head {
+.memory-detail-read--moment-sheet .memory-photo-hero__scrim {
   align-items: center;
   gap: 0.85rem;
 }

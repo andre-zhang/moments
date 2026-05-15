@@ -37,9 +37,16 @@ function backTarget(
       return { to: '/passport', label: 'Passport' }
     case 'friends':
       return { to: '/friends', label: 'Friends' }
+    case 'places':
+      return { to: '/places', label: 'Places' }
     default:
       return { to: '/', label: 'Journal' }
   }
+}
+
+/** Top nav already links to Journal; hide duplicate "← Journal" on this page. */
+function showMomentBackBar(back: { to: string; label: string }): boolean {
+  return !(back.to === '/' && back.label === 'Journal')
 }
 
 export function MomentDetailPage() {
@@ -99,12 +106,14 @@ export function MomentDetailPage() {
 
   return (
     <div className={pageClass}>
-      <p className="moment-detail-back">
-        <Link to={back.to} className="moment-detail-back-link">
-          <IconChevronLeft className="moment-detail-back-icon" />
-          {back.label}
-        </Link>
-      </p>
+      {showMomentBackBar(back) ? (
+        <p className="moment-detail-back">
+          <Link to={back.to} className="moment-detail-back-link">
+            <IconChevronLeft className="moment-detail-back-icon" />
+            {back.label}
+          </Link>
+        </p>
+      ) : null}
       {passportBook ? (
         <>
           <p className="passport-moment-kicker">
