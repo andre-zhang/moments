@@ -1,6 +1,6 @@
 # Moments
 
-***__TRY IT:__*** https://moments-virid.vercel.app (loaded with demo data)
+**__Try It:__** https://moments-virid.vercel.app (loaded with demo data)
 
 ## Inspiration
 
