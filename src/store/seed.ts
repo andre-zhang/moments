@@ -154,6 +154,7 @@ const memories: Memory[] = [
       nights: 3,
       brand: 'Boutique Left Bank',
     },
+    body: 'Small elevator. Big windows onto the courtyard.',
   },
   {
     id: 'm-spring-louvre',
@@ -183,6 +184,7 @@ const memories: Memory[] = [
     countryCode: 'JP',
     adminRegion: 'Tokyo',
     categoryTags: { vibe: ['big city buzz'], activity: ['transit'] },
+    body: 'Slept badly. Landed into gray sky anyway.',
     flightDetails: {
       fromCode: 'CDG',
       toCode: 'HND',
@@ -207,6 +209,7 @@ const memories: Memory[] = [
     countryCode: 'JP',
     categoryTags: { vibe: ['locals only'], mood: ['giddy'], activity: ['food'] },
     restaurantDetails: { wouldEatAgain: true },
+    body: 'Counter seat. Broth too hot to sip at first.',
   },
   /* Same calendar day other years (time machine / "this time last year") */
   {
@@ -247,6 +250,7 @@ const memories: Memory[] = [
     countryCode: 'JP',
     pinEmoji: '🌸',
     categoryTags: { moment: ['tiny joy'], vibe: ['golden hour'] },
+    body: 'Buds only. Still a crowd on the path.',
   },
   /* Portugal */
   {
@@ -278,6 +282,7 @@ const memories: Memory[] = [
     countryCode: 'PT',
     categoryTags: { activity: ['food', 'coffee'], mood: ['giddy'] },
     restaurantDetails: { wouldEatAgain: true, rating: 5 },
+    body: 'Still warm. Cinnamon on my sleeve.',
   },
   {
     id: 'm-ptl-porto',
@@ -309,6 +314,7 @@ const memories: Memory[] = [
     categoryTags: { activity: ['food'], mood: ['cozy'] },
     restaurantDetails: { wouldEatAgain: true },
     friendIds: ['f-jules', 'f-sam'],
+    body: 'Steam on my glasses the whole meal.',
   },
   {
     id: 'm-hok-niseko',
@@ -354,6 +360,7 @@ const memories: Memory[] = [
     adminRegion: 'New York',
     categoryTags: { activity: ['museum'] },
     friendIds: ['f-alex'],
+    body: 'Greek wing was empty. Rooftop closed for wind.',
   },
   {
     id: 'm-nyc-hotel',
@@ -398,6 +405,7 @@ const memories: Memory[] = [
     adminRegion: 'California',
     pinEmoji: '🌊',
     categoryTags: { vibe: ['off the map'], moment: ['no plan, best plan'] },
+    body: 'Cold wind. Everyone had the same pullout shot.',
   },
   {
     id: 'm-pch-la',
@@ -412,6 +420,7 @@ const memories: Memory[] = [
     countryCode: 'US',
     adminRegion: 'California',
     categoryTags: { activity: ['food'], mood: ['electric'] },
+    body: 'Two hours on the 405. Tacos were worth it.',
   },
   /* Spring — extra Paris / Tokyo beats */
   {
@@ -429,6 +438,7 @@ const memories: Memory[] = [
     categoryTags: { vibe: ['locals only'], activity: ['hike'] },
     friendIds: ['f-sam'],
     sightDetails: { venueType: 'Neighborhood' },
+    body: 'Paint ran in the rain on the steps.',
   },
   {
     id: 'm-spring-shinjuku-hotel',
@@ -448,6 +458,7 @@ const memories: Memory[] = [
       brand: 'City tower',
       stars: 4,
     },
+    body: 'High floor. Could hear the trains until 1.',
   },
   {
     id: 'm-spring-yoyogi',
@@ -676,7 +687,7 @@ const memories: Memory[] = [
     tripId: T.uk,
     destinationId: D.london,
     kind: 'sight',
-    title: 'British Museum — half a day',
+    title: 'British Museum, half a day',
     placeLabel: 'Bloomsbury, London',
     lat: 51.5194,
     lng: -0.127,
@@ -686,6 +697,7 @@ const memories: Memory[] = [
     categoryTags: { activity: ['museum'] },
     friendIds: ['f-nina', 'f-riley'],
     sightDetails: { venueType: 'Museum' },
+    body: 'Rosetta was busy. Great Court was not.',
   },
   {
     id: 'm-uk-hotel-london',
@@ -711,7 +723,7 @@ const memories: Memory[] = [
     tripId: T.uk,
     destinationId: D.london,
     kind: 'note',
-    title: 'Train north — notes on the seat tray',
+    title: 'Train north, notes on the seat tray',
     placeLabel: "King's Cross, London",
     lat: 51.532,
     lng: -0.1233,
@@ -735,6 +747,7 @@ const memories: Memory[] = [
     pinEmoji: '🏰',
     categoryTags: { activity: ['museum'], moment: ['first time'] },
     sightDetails: { venueType: 'Historic site' },
+    body: 'Wind on the esplanade. Hard to hold the phone steady.',
   },
   {
     id: 'm-uk-whisky-bar',
