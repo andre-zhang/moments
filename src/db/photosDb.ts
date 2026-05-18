@@ -4,40 +4,80 @@ import * as remote from './photosRemote'
 
 export type PhotoRow = local.PhotoRow
 
-const impl = () => (remotePersistenceActive() ? remote : local)
-
 export async function migratePhotosDbFromLegacy(): Promise<void> {
-  if (remotePersistenceActive()) return
   return local.migratePhotosDbFromLegacy()
 }
 
 export async function listPhotosForMemory(memoryId: string): Promise<PhotoRow[]> {
-  return impl().listPhotosForMemory(memoryId)
+  const localRows = await local.listPhotosForMemory(memoryId)
+  if (localRows.length > 0) return localRows
+  if (remotePersistenceActive()) {
+    try {
+      return await remote.listPhotosForMemory(memoryId)
+    } catch {
+      return []
+    }
+  }
+  return localRows
 }
 
 export async function listPhotosForMemoryIds(
   memoryIds: string[],
   maxPerMemory = 20
 ): Promise<PhotoRow[]> {
-  return impl().listPhotosForMemoryIds(memoryIds, maxPerMemory)
+  const out: PhotoRow[] = []
+  for (const id of memoryIds) {
+    const rows = await listPhotosForMemory(id)
+    out.push(...rows.slice(0, maxPerMemory))
+  }
+  return out
 }
 
 export async function addPhotoToMemory(memoryId: string, file: File): Promise<PhotoRow> {
-  return impl().addPhotoToMemory(memoryId, file)
+  const row = await local.addPhotoToMemory(memoryId, file)
+  if (remotePersistenceActive()) {
+    try {
+      await remote.addPhotoToMemory(memoryId, file)
+    } catch {
+      /* local copy is enough for UI */
+    }
+  }
+  return row
 }
 
 export async function deletePhoto(id: string): Promise<void> {
-  return impl().deletePhoto(id)
+  await local.deletePhoto(id)
+  if (remotePersistenceActive()) {
+    try {
+      await remote.deletePhoto(id)
+    } catch {
+      /* ignore */
+    }
+  }
 }
 
 export async function deleteAllPhotosForMemory(memoryId: string): Promise<void> {
-  return impl().deleteAllPhotosForMemory(memoryId)
+  await local.deleteAllPhotosForMemory(memoryId)
+  if (remotePersistenceActive()) {
+    try {
+      await remote.deleteAllPhotosForMemory(memoryId)
+    } catch {
+      /* ignore */
+    }
+  }
 }
 
 export async function deleteAllPhotosForMemories(memoryIds: string[]): Promise<void> {
-  return impl().deleteAllPhotosForMemories(memoryIds)
+  await Promise.all(memoryIds.map((id) => deleteAllPhotosForMemory(id)))
 }
 
 export async function clearAllPhotos(): Promise<void> {
-  return impl().clearAllPhotos()
+  await local.clearAllPhotos()
+  if (remotePersistenceActive()) {
+    try {
+      await remote.clearAllPhotos()
+    } catch {
+      /* ignore */
+    }
+  }
 }

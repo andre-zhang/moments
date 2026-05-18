@@ -422,17 +422,19 @@ export function TravelProvider({ children }: { children: ReactNode }) {
           }
         }
       } else {
-        try {
-          await ensureDemoSamplePhotosImported()
-        } catch {
-          /* bundled photos optional if fetch fails */
-        }
         if (cancelled) return
         const persisted = loadPersisted()
         if (persisted) {
           dispatch({ type: 'hydrate', payload: persisted })
         } else {
           dispatch({ type: 'hydrate', payload: seedIfEmpty() })
+        }
+      }
+      if (!cancelled) {
+        try {
+          await ensureDemoSamplePhotosImported()
+        } catch {
+          /* bundled photos optional if fetch fails */
         }
       }
       if (!cancelled) {
@@ -562,7 +564,7 @@ export function TravelProvider({ children }: { children: ReactNode }) {
       await flushRemoteSaveNow(demo).catch(() => markRemotePersistenceFailed())
     }
     try {
-      await ensureDemoSamplePhotosImported({ bypassNeonGuard: true })
+      await ensureDemoSamplePhotosImported()
     } catch {
       /* ignore bundled photo failures */
     }
