@@ -85,6 +85,10 @@ body,
   margin: 0;
 }
 
+html {
+  overflow-x: clip;
+}
+
 body {
   background: var(--app-canvas);
   color: var(--text);
@@ -110,12 +114,16 @@ a:hover {
   flex-direction: column;
 }
 
+/* Shared horizontal frame — top nav + page chrome stay aligned when zooming/resizing */
+.app-chrome {
+  box-sizing: border-box;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--page-pad-x);
+}
+
 .top-nav {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem 1.25rem;
-  padding: 0.55rem var(--page-pad-x);
+  padding: 0.55rem 0;
   background: color-mix(in srgb, var(--panel) 84%, #ffffff);
   border-bottom: 1px solid color-mix(in srgb, var(--line-strong) 78%, white);
   box-shadow: var(--shadow-sm);
@@ -123,6 +131,13 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 1000;
+}
+
+.top-nav__chrome {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
 }
 
 .logo {
@@ -298,7 +313,19 @@ a:hover {
   background: var(--app-canvas);
 }
 
-.shell-body > * {
+.app-chrome--main {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding-inline: var(--page-pad-x);
+}
+
+.app-chrome--main:has(> .map-page) {
+  padding-inline: 0;
+}
+
+.app-chrome--main > * {
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
@@ -312,7 +339,7 @@ a:hover {
   margin: 0;
   flex: 1 1 auto;
   min-height: 0;
-  padding: var(--page-pad-y-top) var(--page-pad-x) var(--page-pad-y-bottom);
+  padding: var(--page-pad-y-top) 0 var(--page-pad-y-bottom);
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--app-canvas) 84%, white 16%) 0%,
@@ -425,8 +452,8 @@ a:hover {
 
 .passport-page--book.page {
   position: relative;
-  padding: var(--page-pad-y-top) var(--page-pad-x) var(--page-pad-y-bottom);
-  padding-left: calc(var(--page-pad-x) + 0.55rem);
+  padding: var(--page-pad-y-top) 0 var(--page-pad-y-bottom);
+  padding-left: 0.55rem;
   color: #1f2933;
   background-color: #e4d5c0;
   background-image:
@@ -461,7 +488,7 @@ a:hover {
   background: var(--app-canvas);
   border-color: var(--line);
   box-shadow: var(--shadow-sheet);
-  padding: var(--page-pad-y-top) var(--page-pad-x) var(--page-pad-y-bottom);
+  padding: var(--page-pad-y-top) 0 var(--page-pad-y-bottom);
 }
 
 .passport-page--simple.page::before {
@@ -5340,7 +5367,7 @@ a.btn-surface-ghost {
   max-width: none;
   width: 100%;
   min-height: 0;
-  padding: var(--page-pad-y-top) var(--page-pad-x) var(--page-pad-y-bottom);
+  padding: var(--page-pad-y-top) 0 var(--page-pad-y-bottom);
   background: var(--app-canvas);
 }
 
