@@ -4,9 +4,9 @@
 
 ## Inspiration
 
-Recently, I've been getting into an app known as Flighty. It's essentially a flight tracker, showing you where you've flown, what you've flown on, and who you've flown with. A memory capsule for flights, if you will. But no such tool exists for the rest of life's moments. Vacations to exotic destinations, a night out in your hometown with friends, hotel bookings on work trips, or even just serene walks in the park across the street. 
+Recently, I've been getting into an app known as Flighty. It's essentially a flight tracker, showing you where you've flown, what you've flown on, who you've flown with, and how late your flight has been. A memory capsule for flights, if you will. But no such tool exists for the rest of life's moments. Vacations to exotic destinations, a night out in your hometown with friends, hotel bookings on work trips, or even just serene walks in the park across the street. 
 
-Moments is the app shaped for that wider arc. It still takes flights seriously, but treats them as one of several kinds of memory alongside hotels, restaurants, sights, and plain notes.
+Moments is the app for that wider arc: a digital journal of all of life's best moments, big or small.
 
 ## What it does
 
@@ -51,4 +51,4 @@ Photon search is debounced and runs through the Vite proxy in development to avo
 
 Aggregating stamps and yearly cards from heterogeneous memories is straightforward; making the page feel like a coherent digest (including optional model generated blurbs merged into curated slots) runs into the usual problem: helpful text should sound like a person, not a brochure. The server side AI route is written around that constraint.
 
-Bundled demo photos are Wikimedia Commons thumbnails; each file’s Commons page lists photographer credit and license.
+Credit: Bundled demo photos are Wikimedia Commons thumbnails; each file’s Commons page lists photographer credit and license.
