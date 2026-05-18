@@ -2844,17 +2844,9 @@ a:hover {
   overflow: hidden;
   border-radius: var(--radius-lg);
   min-height: clamp(9rem, 22vw, 13rem);
-  margin: 0 calc(-1 * var(--page-pad-x)) 0.85rem;
-  width: calc(100% + 2 * var(--page-pad-x));
+  width: 100%;
+  margin: 0 0 0.85rem;
   box-shadow: var(--shadow-sm);
-}
-
-/* Default moment detail: hero uses full page column (nav is the way back to Journal) */
-.page.moment-detail-page:not(.passport-page--book):not(.passport-page--simple) .memory-photo-hero {
-  margin-left: calc(-1 * var(--page-pad-x));
-  margin-right: calc(-1 * var(--page-pad-x));
-  width: calc(100% + 2 * var(--page-pad-x));
-  max-width: none;
 }
 
 .memory-photo-hero__bg {
@@ -2883,22 +2875,33 @@ a:hover {
   );
 }
 
-/* Default moment page: wide rounded cover, then emoji + title row, strip, tags */
+/* Default moment page — same inset title-card frame as Journal masthead */
+.memory-detail-read--moment-sheet {
+  width: 100%;
+  max-width: min(72rem, 100%);
+  margin-inline: auto;
+}
+
 .memory-detail-read--moment-sheet .memory-photo-hero {
-  min-height: clamp(11rem, 30vw, 17rem);
-  margin-bottom: 1rem;
-  box-shadow: var(--shadow-md);
+  min-height: clamp(10.5rem, 26vw, 15.5rem);
+  margin-bottom: var(--space-section);
+  box-shadow: var(--shadow-sm);
 }
 
 .memory-detail-read--moment-sheet .memory-detail-read__inset {
-  max-width: min(72rem, 100%);
+  max-width: none;
+  margin-inline: 0;
   gap: 0.95rem;
   padding-top: 0.1rem;
 }
 
 .memory-detail-read--moment-sheet .memory-photo-hero__scrim {
-  align-items: center;
-  gap: 0.85rem;
+  background: linear-gradient(
+    115deg,
+    rgb(8 18 32 / 0.72) 0%,
+    rgb(8 18 32 / 0.38) 42%,
+    rgb(8 18 32 / 0.2) 100%
+  );
 }
 
 .memory-detail-read--moment-sheet .memory-kind-lg {
