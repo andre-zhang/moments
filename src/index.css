@@ -670,10 +670,6 @@ a:hover {
   box-shadow: none;
 }
 
-.passport-discover--simple .yir-card::before {
-  display: none;
-}
-
 .passport-discover--simple .passport-muted-box {
   border-style: solid;
   border-color: var(--line);
@@ -713,11 +709,7 @@ a:hover {
   display: none;
 }
 
-.passport-discover--simple .mode-card {
-  border-top: 3px solid var(--mode-stripe, var(--accent));
-}
-
-.passport-discover--simple .mode-card::before {
+.passport-discover .mode-card::before {
   display: none;
 }
 
@@ -4250,8 +4242,12 @@ a.btn-surface-ghost {
   background: linear-gradient(180deg, #fffdf8 0%, #f6ecd8 100%);
 }
 
-.passport-discover--book .yir-card::before {
-  background: color-mix(in srgb, var(--accent) 42%, rgb(44 61 92 / 0.65));
+.passport-discover .yir-card {
+  padding-left: var(--card-pad-x);
+}
+
+.passport-discover .yir-card::before {
+  display: none;
 }
 
 .discover-section.passport-pane {
@@ -4284,22 +4280,6 @@ a.btn-surface-ghost {
   font-weight: 700;
   letter-spacing: 0.02em;
   color: #152638;
-}
-
-/* Subsection rail — same mark for every Passport heading (book + simple) */
-.passport-section-mark {
-  flex-shrink: 0;
-  align-self: center;
-  width: 3px;
-  height: 1.05rem;
-  border: none;
-  border-radius: 2px;
-  background: color-mix(in srgb, var(--accent) 58%, var(--muted));
-  box-shadow: none;
-}
-
-.passport-discover--book .passport-section-mark {
-  background: color-mix(in srgb, var(--accent) 45%, rgb(44 61 92 / 0.55));
 }
 
 .passport-pane-lede {
