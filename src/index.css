@@ -130,16 +130,9 @@ a:hover {
   padding-inline: 0;
 }
 
-.shell-column:has(> .shell-body > .map-page) .top-nav {
-  padding-inline: var(--page-pad-x);
-}
-
 .top-nav {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem 1.25rem;
   flex-shrink: 0;
+  width: 100%;
   padding: 0.55rem 0;
   background: color-mix(in srgb, var(--panel) 84%, #ffffff);
   border-bottom: 1px solid color-mix(in srgb, var(--line-strong) 78%, white);
@@ -148,6 +141,14 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 1000;
+}
+
+.shell-column--nav {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
 }
 
 .logo {

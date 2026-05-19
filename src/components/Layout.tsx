@@ -18,8 +18,8 @@ export function Layout() {
 
   return (
     <div className="shell">
-      <div className="shell-column">
-        <header className="top-nav">
+      <header className="top-nav">
+        <div className="shell-column shell-column--nav">
           <Link to="/" className="logo">
             Moments
           </Link>
@@ -84,8 +84,10 @@ export function Layout() {
               ) : null}
             </div>
           </div>
-        </header>
+        </div>
+      </header>
 
+      <div className="shell-column">
         <div className="shell-body">
           <Outlet />
         </div>
