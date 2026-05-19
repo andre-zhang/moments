@@ -18,8 +18,8 @@ export function Layout() {
 
   return (
     <div className="shell">
-      <header className="top-nav">
-        <div className="app-chrome top-nav__chrome">
+      <div className="shell-column">
+        <header className="top-nav">
           <Link to="/" className="logo">
             Moments
           </Link>
@@ -84,11 +84,9 @@ export function Layout() {
               ) : null}
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <div className="shell-body">
-        <div className="app-chrome app-chrome--main">
+        <div className="shell-body">
           <Outlet />
         </div>
       </div>

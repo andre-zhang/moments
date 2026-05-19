@@ -62,6 +62,8 @@
   --shadow-sheet: none;
   /** Page gutters — one horizontal rhythm across Passport / Journal / Settings */
   --page-pad-x: clamp(1.2rem, 4.2vw, 2.1rem);
+  /** Centered column — nav + page content share the same max width when zoomed out */
+  --shell-column-max: 72rem;
   --page-pad-y-top: 1.25rem;
   --page-pad-y-bottom: 1.75rem;
   /** Inset padding for bordered blocks (panels, list cards) */
@@ -83,10 +85,6 @@ body,
 #root {
   height: 100%;
   margin: 0;
-}
-
-html {
-  overflow-x: clip;
 }
 
 body {
@@ -114,15 +112,34 @@ a:hover {
   flex-direction: column;
 }
 
-/* Shared horizontal frame — top nav + page chrome stay aligned when zooming/resizing */
-.app-chrome {
+/* Centered shell — nav bar and page share one column (see Clasher-style layout) */
+.shell-column {
   box-sizing: border-box;
   width: 100%;
+  max-width: min(var(--shell-column-max), 100%);
   margin-inline: auto;
+  padding-inline: var(--page-pad-x);
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.shell-column:has(> .shell-body > .map-page) {
+  max-width: none;
+  padding-inline: 0;
+}
+
+.shell-column:has(> .shell-body > .map-page) .top-nav {
   padding-inline: var(--page-pad-x);
 }
 
 .top-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  flex-shrink: 0;
   padding: 0.55rem 0;
   background: color-mix(in srgb, var(--panel) 84%, #ffffff);
   border-bottom: 1px solid color-mix(in srgb, var(--line-strong) 78%, white);
@@ -131,13 +148,6 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 1000;
-}
-
-.top-nav__chrome {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem 1.25rem;
 }
 
 .logo {
@@ -313,19 +323,7 @@ a:hover {
   background: var(--app-canvas);
 }
 
-.app-chrome--main {
-  flex: 1 1 auto;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  padding-inline: var(--page-pad-x);
-}
-
-.app-chrome--main:has(> .map-page) {
-  padding-inline: 0;
-}
-
-.app-chrome--main > * {
+.shell-body > * {
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
