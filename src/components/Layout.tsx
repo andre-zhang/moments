@@ -19,7 +19,7 @@ export function Layout() {
   return (
     <div className="shell">
       <header className="top-nav">
-        <div className="shell-column shell-column--nav">
+        <div className="top-nav__inner">
           <Link to="/" className="logo">
             Moments
           </Link>

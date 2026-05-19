@@ -143,11 +143,17 @@ a:hover {
   z-index: 1000;
 }
 
-.shell-column--nav {
-  flex: none;
+.top-nav__inner {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: min(var(--shell-column-max), 100%);
+  margin-inline: auto;
+  padding-inline: var(--page-pad-x);
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-start;
   gap: 0.75rem 1.25rem;
 }
 
@@ -3164,8 +3170,10 @@ a.btn-surface-ghost {
   border: 1px solid var(--line);
   background: var(--panel);
   color: var(--text);
-  font-weight: 600;
+  font-family: var(--font-sans);
   font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
   cursor: pointer;
 }
 
@@ -5351,13 +5359,9 @@ a.btn-surface-ghost {
     justify-content: flex-end;
   }
 
-  .nav-primary {
+  .top-nav__inner .nav-primary {
     width: 100%;
     order: 3;
-  }
-
-  .nav-actions {
-    margin-left: 0;
   }
 }
 
